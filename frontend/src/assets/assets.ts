@@ -1,3 +1,7 @@
+import banner1 from '../../public/fit-cta.jpg'
+import banner2 from '../../public/group-cta.jpg'
+import banner3 from '../../public/swatch-cta.jpg'
+
 export const Occasions = [
     `Men's Wedding Suits`,
     `Men's Wedding Tuxedos`,
@@ -56,4 +60,10 @@ export const StartHere = [
     `Book an Appointment`,
     `Fabric Swatches`,
     `Register a Group`,
+]
+
+export const Banner = [
+    banner1,
+    banner2,
+    banner3
 ]

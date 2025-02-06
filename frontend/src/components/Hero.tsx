@@ -28,7 +28,7 @@ const Hero = () => {
                     <Image src={imageHero} alt='image hero' />
                 </div>
             </div>
-            <div className='my-12 px-3.5 md:px-7 xl:px-16 flex flex-wrap justify-evenly gap-5'>
+            <div className='my-20 px-3.5 md:px-7 xl:px-16 flex flex-wrap justify-evenly gap-5'>
                 <div className='flex gap-3'>
                     <FaTruckFast className='text-5xl text-[#0e141a]' />
                     <div>
