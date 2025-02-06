@@ -9,6 +9,7 @@ import image1 from '../../public/spotlight-collection-essentials.jpg'
 import image2 from '../../public/spotlight-collection-mens-2.jpg'
 import image3 from '../../public/spotlight-collection-prom.jpg'
 import image4 from '../../public/spotlight-collection-womens.jpg'
+import fullImage from '../../public/tan-magazine.jpg'
 
 const Hero = () => {
     return (
@@ -88,7 +89,18 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
-        </div>
+            <div className='mt-10 relative'>
+                <Image src={fullImage} alt='image' />
+                <div className='absolute bottom-5 left-5  md:bottom-20 md:left-20 lx:bottom-32 xl:left-32 text-white'>
+                    <p className='text-xl md:text-3xl xl:text-5xl font-semibold font-serif'>
+                        Street-stopping: <br />
+                        Tan takes noteworthy <br />
+                        neutrals in stride
+                    </p>
+                    <button className='mt-3 md:mt-7 border border-white px-5 py-2 md:px-8 md:py-3.5 transition-colors hover:bg-[#0e141a] hover:border-[#0e141a]'>FIND YOUR LOOK</button>
+                </div>
+            </div>
+        </div >
     )
 }
 

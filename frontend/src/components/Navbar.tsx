@@ -24,8 +24,8 @@ import {
 
 const Navbar = () => {
     return (
-        <div className='mt-3 relative'>
-            <div className='flex justify-between px-3.5 md:px-7 xl:px-16'>
+        <div className=' bg-white relative'>
+            <div className='flex justify-between py-3 px-3.5 md:px-7 xl:px-16'>
                 <p className='font-semibold text-2xl'>SUIT <span className='font-normal'>SHOP</span></p>
 
                 <div className=' hidden lg:flex'>
