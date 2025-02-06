@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Button } from './ui/button'
 import { LuUser } from "react-icons/lu";
@@ -21,18 +23,23 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { useRouter } from 'next/navigation';
+
 
 const Navbar = () => {
+
+    const router = useRouter()
+
     return (
         <div className=' bg-white relative'>
             <div className='flex justify-between py-3 px-3.5 md:px-7 xl:px-16'>
-                <p className='font-semibold text-2xl'>SUIT <span className='font-normal'>SHOP</span></p>
+                <p onClick={() => router.push('/')} className='font-semibold text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
 
                 <div className=' hidden lg:flex'>
-                    <div className='p-3.5 pt-0 group'>
+                    <div onClick={() => router.push("/collections")} className='p-3.5 pt-0 group'>
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Shop</p>
 
-                        <div className='absolute right-0 top-8 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
+                        <div className='absolute right-0 top-10 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
                             <div >
                                 <p className='font-semibold hover:underline cursor-pointer'>Occasions</p>
                                 <div className='my-3'>
@@ -108,7 +115,7 @@ const Navbar = () => {
                     <div className='p-3.5 pt-0 group'>
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Get Started</p>
 
-                        <div className='absolute right-0 top-8 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
+                        <div className='absolute right-0 top-10 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
                             <div >
                                 <p className='font-semibold hover:underline cursor-pointer'>Start Here</p>
                                 <div className='my-3'>
