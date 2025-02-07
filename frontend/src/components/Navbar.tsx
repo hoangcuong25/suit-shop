@@ -144,7 +144,7 @@ const Navbar = () => {
 
                 <div className='flex items-center gap-5'>
                     <Button className='hidden sm:block'>Suit a group</Button>
-                    <div className='flex items-center gap-2 cursor-pointer'>
+                    <div onClick={() => router.push('/sign-up')} className='flex items-center gap-2 cursor-pointer'>
                         <LuUser className='text-bg-[#0e141a] text-lg' />
                         <p>Account</p>
                     </div>
