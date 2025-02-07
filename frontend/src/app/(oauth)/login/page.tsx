@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AppContext } from '@/context/AppContext';
+import GoogleLogin from '@/components/GoogleLogin';
 
 const Login = () => {
 
@@ -100,7 +101,7 @@ const Login = () => {
 
                     <p className='mt-3 text-center font-medium'>Sign in with</p>
 
-                    {/* <GoogleLogin /> */}
+                    <GoogleLogin />
 
                 </form>
 
