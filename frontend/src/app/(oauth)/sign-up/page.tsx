@@ -1,19 +1,19 @@
 'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { AiOutlineReload } from 'react-icons/ai';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-// import axios from 'axios'
-// import { toast } from 'react-toastify';
-// import { AppContext } from '@/context/AppContext';
+import axios from 'axios'
+import { toast } from 'react-toastify';
+import { AppContext } from '@/context/AppContext';
 
 const Register = () => {
 
-    // const { setToken } = useContext(AppContext)
+    const { setToken } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -34,36 +34,33 @@ const Register = () => {
         e.preventDefault()
         setLoadingLogin(true)
 
-        // try {
-        //     
-        //     const payload = {
-        //         firstName,
-        //         lastName,
-        //         email,
-        //         phone,
-        //         password_1,
-        //         password_2,
-        //         dob
-        //     }
+        try {
 
-        //     const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/register', payload, {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
+            const payload = {
+                firstName,
+                lastName,
+                email,
+                phone,
+                password_1,
+                password_2,
+                dob
+            }
 
-        //     if (data.success) {
-        //         toast.success("Đăng Ký Thành Công")
-        //         localStorage.setItem('token', data.token)
-        //         setToken(data.token)
-        //         router.push('/')
-        //         scrollTo(0, 0)
-        //     } else {
-        //         toast.error(data.message)
-        //     }
-        // } catch (error: any) {
-        //     toast.error(error.response?.data?.message || "Something went wrong")
-        // }
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/oauth/register`, payload)
+
+            if (data.success) {
+                localStorage.setItem('token', data.token)
+                setToken(data.token)
+                router.push('/')
+                window.scrollTo(0, 0);
+                toast.success("Registration Successful")
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong!")
+        }
 
         setLoadingLogin(false)
     }

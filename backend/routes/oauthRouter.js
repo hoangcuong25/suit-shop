@@ -1,8 +1,9 @@
 import express from 'express'
-import { registerUser } from '../controllers/oauthController.js'
+import { loginUser, registerUser } from '../controllers/oauthController.js'
 
 const oauthRouter = express.Router()
 
 oauthRouter.post('/register', registerUser)
+oauthRouter.post('/login', loginUser)
 
 export default oauthRouter

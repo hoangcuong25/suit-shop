@@ -1,19 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { AiOutlineReload } from 'react-icons/ai';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// import axios from 'axios';
-// import { toast } from 'react-toastify';
-// import { AppContext } from '@/context/AppContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { AppContext } from '@/context/AppContext';
 
 const Login = () => {
 
-    // const { setToken } = useContext(AppContext)
+    const { setToken } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -28,22 +29,22 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
 
-        // try {
-        //     const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/login', { email, password })
+        try {
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/oauth/login', { email, password })
 
-        //     if (data.success) {
-        //         toast.success("Đăng Nhập Thành Công")
-        //         localStorage.setItem('token', data.token)
-        //         setToken(data.token)
-        //         router.push('/')
-        //         scrollTo(0, 0)
-        //     } else {
-        //         toast.error(data.message)
-        //     }
+            if (data.success) {
+                toast.success("Đăng Nhập Thành Công")
+                localStorage.setItem('token', data.token)
+                setToken(data.token)
+                router.push('/')
+                scrollTo(0, 0)
+            } else {
+                toast.error(data.message)
+            }
 
-        // } catch (error: any) {
-        //     toast.error(error.response?.data?.message || "Something went wrong")
-        // }
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
 
         setLoading(false)
     }
