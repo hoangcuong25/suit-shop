@@ -25,13 +25,20 @@ import {
 } from "@/components/ui/accordion"
 import { useRouter } from 'next/navigation';
 import { AppContext } from '@/context/AppContext';
+import Link from 'next/link';
+import GoogleLogin from './GoogleLogin';
 
 
 const Navbar = () => {
 
-    const { userData, token } = useContext(AppContext)
+    const { userData, token, setToken } = useContext(AppContext)
 
     const router = useRouter()
+
+    const logout = (): void => {
+        setToken(false)
+        localStorage.removeItem('token')
+    }
 
     return (
         <div className=' bg-white relative'>
@@ -149,13 +156,50 @@ const Navbar = () => {
                     <Button className='hidden sm:block'>Suit a group</Button>
                     {token
                         ? userData &&
-                        <div className='flex items-center gap-1.5 cursor-pointer'>
-                            <Image src={userData.image} width={50} height={50} className='rounded-full' alt='avata' />
-                            <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
+                        <div className='cursor-pointer relative group'>
+                            <div className='flex items-center gap-1.5 '>
+                                <Image src={userData.image} width={50} height={50} className='rounded-full' alt='avata' />
+                                <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
+                            </div>
+
+                            <div className='absolute z-50 pt-8 top-3.5 -right-10 hidden group-hover:flex'>
+                                <div className='border border-gray-300 rounded-md bg-white w-max px-7 py-3.5 flex flex-col gap-3.5'>
+                                    <Link href='/my-profile' className='group/item'>
+                                        <p className=' group-hover/item:text-red-500'>Tài khoản của tôi</p>
+                                    </Link>
+                                    <div className='group/item'>
+                                        <p onClick={logout} className=' group-hover/item:text-red-500'>Đăng xuất</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        : <div onClick={() => router.push('/login')} className='flex items-center gap-1.5 cursor-pointer'>
+                        : <div className='flex items-center gap-1.5 cursor-pointer relative group'>
                             <LuUser className='text-bg-[#0e141a] text-lg' />
                             <p>Account</p>
+
+                            <div className='absolute z-50 pt-8 top-2.5 -right-3.5 hidden group-hover:flex'>
+                                <div className='border border-gray-300 rounded-md bg-white w-max px-3.5 py-3.5 flex flex-col gap-3.5'>
+                                    <div className='flex items-center gap-5'>
+                                        <LuUser className='text-2xl' />
+                                        <div className='flex flex-col'>
+                                            <p className=''>Welcome</p>
+                                            <p className='text-xs font-light'>Login to join us</p>
+                                        </div>
+                                    </div>
+                                    <div className='flex text-xs font-bold justify-between text-center border-b pb-5'>
+                                        <Link href='/login' className='border border-gray-300 px-3.5 py-1 w-28 cursor-pointer hover:bg-red-500 hover:text-white'>
+                                            Login
+                                        </Link>
+                                        <Link href='/sign-up' className='border border-gray-300 px-3.5 py-1 w-28 cursor-pointer hover:bg-red-500 hover:text-white'>
+                                            Sign Up
+                                        </Link>
+                                    </div>
+                                    <div className='text-sm font-bold flex flex-col'>
+                                        <p className='text-center mb-3.5'>Or Login With</p>
+                                        <GoogleLogin />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     }
                     <PiHandbagBold className='text-bg-[#0e141a] text-lg cursor-pointer' />

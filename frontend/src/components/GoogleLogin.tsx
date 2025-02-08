@@ -55,7 +55,7 @@ const GoogleLogin = () => {
                     <FcGoogle className="text-3xl " />
                 </div>
                 <div className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-600 group-hover:text-red-500">
-                    Đăng Nhập Với Google
+                    Login With Google
                 </div>
             </div>
         </div>
