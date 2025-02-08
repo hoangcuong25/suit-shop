@@ -34,7 +34,7 @@ const Login = () => {
             const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/oauth/login', { email, password })
 
             if (data.success) {
-                toast.success("Đăng Nhập Thành Công")
+                toast.success("Login Successfully")
                 localStorage.setItem('token', data.token)
                 setToken(data.token)
                 router.push('/')
@@ -93,7 +93,7 @@ const Login = () => {
                     <Link className='text-[13px] text-blue-400 text-center mt-3' href='/reset-password'>Forgot Password</Link>
 
                     {loading ?
-                        <button type='submit' className='flex justify-center bg-gray-300 text-white  rounded-[13px] w-[264px] text-center py-3 '>
+                        <button type='submit' className='flex justify-center bg-gray-300 text-white  rounded-[13px] w-[230px] text-center py-3 '>
                             <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
                         </button>
                         : <button type='submit' className='bg-red-500 text-white  rounded-[13px] px-24 py-3'>Login</button>

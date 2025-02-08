@@ -30,7 +30,7 @@ const GoogleLogin = () => {
             const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/oauth/login-google", { lastName, firstName, email, image })
 
             if (data.success) {
-                toast.success("Đăng Nhập Thành Công")
+                toast.success("Login Successfully")
                 localStorage.setItem('token', data.token)
                 setToken(data.token)
                 router.push('/')
