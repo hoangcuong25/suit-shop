@@ -6,6 +6,7 @@ import connectCloudinary from './config/cloudinary.js'
 // import userRouter from './routes/userRouter.js'
 // import adminRouter from './routes/adminRouter.js'
 import oauthRouter from './routes/oauthRouter.js'
+import userRouter from './routes/userRouter.js'
 
 // app config
 const app = express()
@@ -21,7 +22,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }))
 
 // api endpoints
 app.use('/api/oauth', oauthRouter)
-// app.use('/api/user', userRouter)
+app.use('/api/user', userRouter)
 // app.use('/api/admin', adminRouter)
 
 app.get('/', (req, res) => {

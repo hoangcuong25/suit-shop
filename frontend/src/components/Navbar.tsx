@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from './ui/button'
 import { LuUser } from "react-icons/lu";
 import { PiHandbagBold } from "react-icons/pi";
@@ -24,22 +24,25 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { useRouter } from 'next/navigation';
+import { AppContext } from '@/context/AppContext';
 
 
 const Navbar = () => {
+
+    const { userData, token } = useContext(AppContext)
 
     const router = useRouter()
 
     return (
         <div className=' bg-white relative'>
-            <div className='flex justify-between py-3 px-3.5 md:px-7 xl:px-16'>
+            <div className='flex items-center justify-between py-3 px-3.5 md:px-7 xl:px-16'>
                 <p onClick={() => router.push('/')} className='font-semibold text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
 
                 <div className=' hidden lg:flex'>
                     <div onClick={() => router.push("/collections")} className='p-3.5 pt-0 group'>
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Shop</p>
 
-                        <div className='absolute right-0 top-10 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
+                        <div className='absolute right-0 top-12 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
                             <div >
                                 <p className='font-semibold hover:underline cursor-pointer'>Occasions</p>
                                 <div className='my-3'>
@@ -115,7 +118,7 @@ const Navbar = () => {
                     <div className='p-3.5 pt-0 group'>
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Get Started</p>
 
-                        <div className='absolute right-0 top-10 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
+                        <div className='absolute right-0 top-12 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
                             <div >
                                 <p className='font-semibold hover:underline cursor-pointer'>Start Here</p>
                                 <div className='my-3'>
@@ -144,10 +147,17 @@ const Navbar = () => {
 
                 <div className='flex items-center gap-5'>
                     <Button className='hidden sm:block'>Suit a group</Button>
-                    <div onClick={() => router.push('/login')} className='flex items-center gap-2 cursor-pointer'>
-                        <LuUser className='text-bg-[#0e141a] text-lg' />
-                        <p>Account</p>
-                    </div>
+                    {token
+                        ? userData &&
+                        <div className='flex items-center gap-1.5 cursor-pointer'>
+                            <Image src={userData.image} width={50} height={50} className='rounded-full' alt='avata' />
+                            <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
+                        </div>
+                        : <div onClick={() => router.push('/login')} className='flex items-center gap-1.5 cursor-pointer'>
+                            <LuUser className='text-bg-[#0e141a] text-lg' />
+                            <p>Account</p>
+                        </div>
+                    }
                     <PiHandbagBold className='text-bg-[#0e141a] text-lg cursor-pointer' />
 
                     <div className='block lg:hidden'>
@@ -163,7 +173,7 @@ const Navbar = () => {
                                         <p>Search</p>
                                     </div>
                                     <Accordion type="single" collapsible className="w-full">
-                                        <AccordionItem value="item-1">
+                                        <AccordionItem onClick={() => router.push('/collections')} value="item-1">
                                             <AccordionTrigger className='text-base'>Shop</AccordionTrigger>
                                             <AccordionContent className='cursor-pointer'>Occasions</AccordionContent>
                                             <AccordionContent className='cursor-pointer'>SuitShop Specials</AccordionContent>
