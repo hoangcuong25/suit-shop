@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
             if (data.success) {
                 setIsEmailSent(true)
-                toast.success("Mã OTP đã được gửi đến Email của bạn")
+                toast.success("OTP code has been sent to your Email")
             }
 
         } catch (error: any) {
@@ -75,7 +75,7 @@ const ResetPassword = () => {
             const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/oauth/reset-password', { email, otp, newPassword })
             if (data.success) {
                 router.push('/login')
-                toast.success('Thay đổi mật khẩu thành công')
+                toast.success('Password changed successfully')
             }
 
         } catch (error: any) {
