@@ -7,8 +7,7 @@ import Sidebar from '@/components/Sidebar';
 import { AppContext } from '@/context/AppContext';
 import { useContext, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaRegWindowClose } from "react-icons/fa";
-
+import { FaRegWindowClose } from 'react-icons/fa';
 
 const MyProfile = () => {
 
@@ -17,9 +16,9 @@ const MyProfile = () => {
     const [show, setShow] = useState<boolean>(false)
 
     return (
-        <div className='mb-8'>
+        <div className='mb-8 mt-5'>
 
-            <div className='flex mt-1.5 gap-3 sm:mt-3.5 px-3.5 sm:px-7'>
+            <div className='flex mt-1.5 gap-3 px-3.5 md:px-7 xl:px-16'>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} />
 
                 {sidebar === '' &&
@@ -29,14 +28,16 @@ const MyProfile = () => {
                             onClick={() => setShow(!show)}
                         >
                             {show ?
-                                <FaRegWindowClose className='text-gray-700' />
-                                : <AiOutlineMenu className='text-gray-700' />
+                                <FaRegWindowClose className='text-gray-700 transition-all' />
+                                : <AiOutlineMenu className='text-gray-700 transition-all' />
                             }
                             <p>Menu</p>
                         </div>
+                        <div className='text-center mt-16 mb-10'>
+                            <p className='font-semibold text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
+                            <p>Always by Your Side, Growing Greater Together</p>
+                        </div>
 
-                        <p className='text-3xl font-bold text-red-500 md:mt-0 mt-7'>namperfume</p>
-                        <p>Thương hiệu nước hoa uy tín từ 2013</p>
                     </div>
                 }
 
