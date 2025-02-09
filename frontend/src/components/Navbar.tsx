@@ -165,10 +165,10 @@ const Navbar = () => {
                             <div className='absolute z-50 pt-8 top-3.5 -right-10 hidden group-hover:flex'>
                                 <div className='border border-gray-300 rounded-md bg-white w-max px-7 py-3.5 flex flex-col gap-3.5'>
                                     <Link href='/my-profile' className='group/item'>
-                                        <p className=' group-hover/item:text-red-500'>Tài khoản của tôi</p>
+                                        <p className=' group-hover/item:text-red-500'>My account</p>
                                     </Link>
                                     <div className='group/item'>
-                                        <p onClick={logout} className=' group-hover/item:text-red-500'>Đăng xuất</p>
+                                        <p onClick={logout} className=' group-hover/item:text-red-500'>Log Out</p>
                                     </div>
                                 </div>
                             </div>

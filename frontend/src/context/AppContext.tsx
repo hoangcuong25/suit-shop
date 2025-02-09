@@ -29,14 +29,18 @@ interface AppContextType {
     formatMoney: (amount: number) => string
     userData: UserData | false
     loadUserProfileData: () => Promise<void>
+    sidebar: string
+    setSidebar: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const AppContext = createContext<AppContextType>({
     token: false,
-    setToken: () => {},
+    setToken: () => { },
     formatMoney: () => '',
     userData: false,
-    loadUserProfileData: async () => {}
+    loadUserProfileData: async () => { },
+    sidebar: '',
+    setSidebar: () => { },
 });
 
 interface AppContextProviderProps {
@@ -46,6 +50,7 @@ interface AppContextProviderProps {
 const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
 
     const [token, setToken] = useState<string | false>(false)
+    const [sidebar, setSidebar] = useState<string>('')
 
     const [userData, setUserData] = useState<UserData | false>(false)
 
@@ -74,7 +79,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         token, setToken,
         formatMoney,
         userData,
-        loadUserProfileData
+        loadUserProfileData,
+        sidebar, setSidebar
     }
 
     useEffect(() => {
