@@ -158,7 +158,7 @@ const Navbar = () => {
                         ? userData &&
                         <div className='cursor-pointer relative group'>
                             <div className='flex items-center gap-1.5 '>
-                                <Image src={userData.image || ""} width={50} height={50} className='rounded-full' alt='avata' />
+                                <Image src={userData.image || ""} width={50} height={50} className='rounded-full size-8' alt='avata' />
                                 <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
                             </div>
 
@@ -174,10 +174,12 @@ const Navbar = () => {
                             </div>
                         </div>
                         : <div className='flex items-center gap-1.5 cursor-pointer relative group'>
-                            <LuUser className='text-bg-[#0e141a] text-lg' />
-                            <p>Account</p>
+                            <div onClick={() => router.push('/login')} className='flex items-center gap-1.5'>
+                                <LuUser className='text-bg-[#0e141a] text-lg' />
+                                <p>Account</p>
+                            </div>
 
-                            <div className='absolute z-50 pt-8 top-2.5 -right-3.5 hidden group-hover:flex'>
+                            <div className='absolute z-50 pt-8 top-2.5 -right-3.5 hidden sm:group-hover:flex'>
                                 <div className='border border-gray-300 rounded-md bg-white w-max px-3.5 py-3.5 flex flex-col gap-3.5'>
                                     <div className='flex items-center gap-5'>
                                         <LuUser className='text-2xl' />
