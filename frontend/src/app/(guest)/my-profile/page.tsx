@@ -18,7 +18,7 @@ const MyProfile = () => {
     return (
         <div className='mb-8 mt-5'>
 
-            <div className='flex mt-1.5 gap-3 px-3.5 md:px-7 xl:px-16'>
+            <div className='flex mt-1.5 gap-3'>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} />
 
                 {sidebar === '' &&
@@ -35,7 +35,7 @@ const MyProfile = () => {
                         </div>
                         <div className='text-center mt-16 mb-10'>
                             <p className='font-semibold text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
-                            <p>Always by Your Side, Growing Greater Together</p>
+                            <p className='sm:text-base text-sm'>Always by Your Side, Growing Greater Together</p>
                         </div>
 
                     </div>

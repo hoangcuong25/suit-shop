@@ -114,12 +114,12 @@ const EditProfile = ({ setShow, show }: Props) => {
                     }
                     <p>Menu</p>
                 </div>
-                <p className='font-bold text-lg'>Thông tin tài khoản</p>
+                <p className='font-bold text-lg'>Account information</p>
                 <div className='flex flex-col md:flex-row gap-7 mt-3'>
                     <label htmlFor="image">
                         <div className='inline-block relative cursor-pointer'>
                             <Image className='size-24 rounded-full' width={100} height={100} src={image ? URL.createObjectURL(image) : userData && userData.image ? userData.image : ''} alt="avata" />
-                            <p className='mt-3 text-sm text-center'>Tải ảnh của bạn</p>
+                            <p className='mt-3 text-sm text-center'>Upload your photo</p>
                         </div>
                         <input onChange={handleFileChange} type="file" id='image' hidden />
                     </label>
@@ -131,7 +131,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                         </div>
                         <div className='flex gap-8'>
                             <div>
-                                <p className='text-sm'>Họ</p>
+                                <p className='text-sm'>Last name</p>
                                 <input
                                     className='w-32 py-2 border border-gray-300 px-3 focus:outline-none'
                                     type="text"
@@ -142,7 +142,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                             </div>
 
                             <div>
-                                <p className='text-sm'>Tên</p>
+                                <p className='text-sm'>First name</p>
                                 <input
                                     className='w-32 py-2 border border-gray-300 px-3 focus:outline-none'
                                     type="text"
@@ -154,7 +154,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                         </div>
 
                         <div className="flex space-x-4">
-                            {['Nam', 'Nữ', 'Không xác định'].map((selectGender) => (
+                            {['Male', 'Female', 'Unknown'].map((selectGender) => (
                                 <label key={selectGender} className="inline-flex items-center text-sm">
                                     <input
                                         type="radio"
@@ -169,7 +169,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                             ))}
                         </div>
 
-                        <p className='text-sm font-semibold'>Ngày sinh</p>
+                        <p className='text-sm font-semibold'>Date of birth</p>
                         <input
                             type="date"
                             className='w-72 py-2 border border-gray-300 px-3'
@@ -177,7 +177,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                             onChange={(e) => setdob(e.target.value)}
                         />
 
-                        <p className='text-sm font-semibold'>Địa chỉ</p>
+                        <p className='text-sm font-semibold'>Address</p>
                         <input
                             type="text"
                             className='w-72 py-2 border border-gray-300 px-3'
@@ -187,14 +187,14 @@ const EditProfile = ({ setShow, show }: Props) => {
 
                         <div className='flex text-sm gap-3'>
                             <input type="checkbox" />
-                            <p>Nhận thông tin khuyến mãi qua e-mail</p>
+                            <p>Receive promotional information via e-mail</p>
                         </div>
 
                         {loading ?
                             <div className='flex items-center justify-center w-32 h-9 cursor-pointer bg-gray-300 text-center'>
                                 <AiOutlineReload className='animate-spin text-green-500 text-2xl' />
                             </div>
-                            : <div onClick={editProfile} className='w-32 py-1.5 cursor-pointer bg-red-500 hover:bg-red-600 text-center text-white'>Lưu thay đổi</div>
+                            : <div onClick={editProfile} className='w-32 py-1.5 cursor-pointer bg-red-500 hover:bg-red-600 text-center text-white'>Save changes</div>
                         }
                     </div>
                 </div>
@@ -203,14 +203,14 @@ const EditProfile = ({ setShow, show }: Props) => {
             <hr className='xl:hidden block my-3.5' />
 
             <div className='w-full xl:w-1/2'>
-                <p className='font-bold text-lg'>Số điện thoại và Email</p>
+                <p className='font-bold text-lg'>Phone Number and Email</p>
 
                 <div className='mt-5 flex justify-between'>
                     {isUpdatePhone ?
                         <div className=''>
                             <div className='flex gap-3 items-center'>
                                 <MdLocalPhone className='text-2xl text-gray-700' />
-                                <p>Số điện thoại mới:</p>
+                                <p>New phone number:</p>
                             </div>
 
                             <input
@@ -224,7 +224,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                             <MdLocalPhone className='text-2xl text-gray-700' />
 
                             <div>
-                                <p>Số điện thoại</p>
+                                <p>Phone number</p>
                                 <p className='text-gray-400'>{userData && userData.phone}</p>
                             </div>
                         </div>
@@ -232,10 +232,10 @@ const EditProfile = ({ setShow, show }: Props) => {
 
                     {isUpdatePhone ?
                         <div onClick={updatePhone} className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300 cursor-pointer '>
-                            Cập Nhật
+                            Update
                         </div>
                         : <div onClick={() => setIsUpdatePhone(!isUpdatePhone)} className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300 cursor-pointer '>
-                            Cập Nhật
+                            Update
                         </div>
                     }
                 </div>
@@ -245,23 +245,23 @@ const EditProfile = ({ setShow, show }: Props) => {
 
                     <div>
                         <p>Email</p>
-                        <p className='text-gray-400'>Cập nhật email</p>
+                        <p className='text-gray-400'>Update email</p>
                     </div>
                 </div>
 
-                <p className='font-bold text-lg mt-5'>Bảo mật</p>
+                <p className='font-bold text-lg mt-5'>Security</p>
 
                 <div className='flex justify-between mt-3'>
                     <div className='flex items-center gap-5'>
                         <IoMdLock className='text-2xl text-gray-700' />
-                        <p>Đổi mât khẩu</p>
+                        <p>Change password</p>
                     </div>
                     <div className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300 cursor-pointer'>
-                        Cập Nhật
+                        Update
                     </div>
                 </div>
 
-                <p className='font-bold text-lg mt-5'>Liên kết mạng xã hội</p>
+                <p className='font-bold text-lg mt-5'>Social Network Links</p>
 
                 <div className='flex justify-between mt-3'>
                     <div className='flex items-center gap-5'>
@@ -269,7 +269,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                         <p>Facebook</p>
                     </div>
                     <div className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300'>
-                        Cập Nhật
+                        Update
                     </div>
                 </div>
 
@@ -279,7 +279,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                         <p>Google</p>
                     </div>
                     <div className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300'>
-                        Cập Nhật
+                        Update
                     </div>
                 </div>
             </div>

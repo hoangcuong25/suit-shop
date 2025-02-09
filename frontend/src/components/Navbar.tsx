@@ -43,7 +43,7 @@ const Navbar = () => {
     return (
         <div className=' bg-white relative'>
             <div className='flex items-center justify-between py-3 px-3.5 md:px-7 xl:px-16'>
-                <p onClick={() => router.push('/')} className='font-semibold text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
+                <p onClick={() => router.push('/')} className='font-semibold text-lg sm:text-2xl cursor-pointer'>SUIT <span className='font-normal'>SHOP</span></p>
 
                 <div className=' hidden lg:flex'>
                     <div onClick={() => router.push("/collections")} className='p-3.5 pt-0 group'>
@@ -152,7 +152,7 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                <div className='flex items-center gap-5'>
+                <div className='flex items-center gap-3 sm:gap-5'>
                     <Button className='hidden sm:block'>Suit a group</Button>
                     {token
                         ? userData &&
