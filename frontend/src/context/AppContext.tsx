@@ -31,7 +31,13 @@ interface AppContextType {
     loadUserProfileData: () => Promise<void>
 }
 
-export const AppContext = createContext<AppContextType | any>({});
+export const AppContext = createContext<AppContextType>({
+    token: false,
+    setToken: () => {},
+    formatMoney: () => '',
+    userData: false,
+    loadUserProfileData: async () => {}
+});
 
 interface AppContextProviderProps {
     children: ReactNode
