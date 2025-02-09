@@ -6,10 +6,11 @@ import React, { useContext } from 'react'
 type Props = {
     sidebar: string
     setSidebar: React.Dispatch<React.SetStateAction<string>>
-    show: boolean
+    show: boolean,
+    setShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Sidebar = ({ sidebar, setSidebar, show }: Props) => {
+const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
 
     const { userData, setToken } = useContext(AppContext)
 
@@ -40,38 +41,38 @@ const Sidebar = ({ sidebar, setSidebar, show }: Props) => {
 
                 <div className='flex flex-col text-sm '>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Quản lí tài khoản' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Quản lí tài khoản')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Account Management' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('Account Management'); setShow(false); }}
                     >
                         Account Management
                     </p>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Tích điểm' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Tích điểm')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Earn points' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('Earn points'); setShow(false); }}
                     >
                         Earn points
                     </p>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Giỏ hàng của tôi' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Giỏ hàng của tôi')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My Cart' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('My Cart'); setShow(false); }}
                     >
                         My Cart
                     </p>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Đơn hàng của tôi' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Đơn hàng của tôi')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My order' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('My order'); setShow(false); }}
                     >
                         My order
                     </p>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Danh sách yêu thích' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Danh sách yêu thích')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My Wishlist' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('My Wishlist'); setShow(false); }}
                     >
                         My Wishlist
                     </p>
                     <p
-                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Hỏi đáp' && 'bg-stone-200 text-orange-500'}`}
-                        onClick={() => setSidebar('Hỏi đáp')}
+                        className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Q&A' && 'bg-stone-200 text-orange-500'}`}
+                        onClick={() => { setSidebar('Q&A'); setShow(false); }}
                     >
                         Q&A
                     </p>

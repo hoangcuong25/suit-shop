@@ -97,7 +97,7 @@ export const LoginGoogle = async (req, res) => {
         const { firstName, lastName, email, image } = req.body
 
         if (!firstName || !lastName || !email || !image) {
-            return res.json({ success: false, message: "Thiếu thông tin" })
+            return res.json({ success: false, message: "Please Fill In All Information" })
         }
 
         const isEmail = await userModel.findOne({ email: email })
@@ -114,9 +114,9 @@ export const LoginGoogle = async (req, res) => {
                 firstName,
                 lastName,
                 email,
-                phone: "Không xác định",
+                phone: "Unknown",
                 password: hashedPassword,
-                dob: "Không xác định",
+                dob: "Unknown",
                 image
             }
 

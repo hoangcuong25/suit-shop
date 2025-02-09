@@ -19,7 +19,7 @@ const MyProfile = () => {
         <div className='mb-8 mt-5'>
 
             <div className='flex mt-1.5 gap-3'>
-                <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} />
+                <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} setShow={setShow} />
 
                 {sidebar === '' &&
                     <div className='flex flex-col justify-center items-center w-full bg-gray-100 shadow-md relative'>
@@ -41,12 +41,12 @@ const MyProfile = () => {
                     </div>
                 }
 
-                {sidebar === 'Quản lí tài khoản' && <EditProfile show={show} setShow={setShow} />}
-                {sidebar === 'Tích điểm' && <Point show={show} setShow={setShow} />}
+                {sidebar === 'Account Management' && <EditProfile show={show} setShow={setShow} />}
+                {sidebar === 'Earn points' && <Point show={show} setShow={setShow} />}
                 {/* {sidebar === 'Giỏ hàng của tôi' && <Cart show={show} setShow={setShow} />}
                 {sidebar === 'Đơn hàng của tôi' && <TrackOrder show={show} setShow={setShow} />}
                 {sidebar === 'Danh sách yêu thích' && <WishList show={show} setShow={setShow} />} */}
-                {sidebar === 'Hỏi đáp' && <FAQ show={show} setShow={setShow} />}
+                {sidebar === 'Q&A' && <FAQ show={show} setShow={setShow} />}
             </div>
         </div>
     )

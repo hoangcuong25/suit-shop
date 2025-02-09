@@ -13,6 +13,13 @@ import { toast } from 'react-toastify';
 import { AiOutlineMenu, AiOutlineReload } from "react-icons/ai";
 import Image from 'next/image';
 import { AppContext } from '@/context/AppContext';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,6 +42,10 @@ const EditProfile = ({ setShow, show }: Props) => {
     const [dob, setdob] = useState(userData ? userData.dob : '')
     const [phone, setPhone] = useState<string>()
 
+    const [oldPassword, setOldPassword] = useState<string>()
+    const [newPassword1, setnewPassword1] = useState<string>()
+    const [newPassword2, setnewPassword2] = useState<string>()
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null
         if (file) {
@@ -45,58 +56,74 @@ const EditProfile = ({ setShow, show }: Props) => {
     const editProfile = async (): Promise<void> => {
         setLoading(true)
 
-        // try {
-        //     const formData = new FormData()
-        //     formData.append('firstName', firstName)
-        //     formData.append('lastName', lastName)
-        //     formData.append('gender', gender)
-        //     formData.append('address', address)
-        //     formData.append('dob', dob)
+        try {
+            const formData = new FormData()
+            formData.append('firstName', firstName)
+            formData.append('lastName', lastName)
+            formData.append('gender', gender)
+            formData.append('address', address)
+            formData.append('dob', dob)
 
-        //     if (image) {
-        //         formData.append('image', image)  // Append image file
-        //     }
+            if (image) {
+                formData.append('image', image)  // Append image file
+            }
 
-        //     const { data } = await axios.put(
-        //         backendUrl + '/api/user/update-profile',
-        //         formData,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'multipart/form-data',
-        //                 token: token
-        //             }
-        //         }
-        //     )
+            const { data } = await axios.put(
+                process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-profile',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        token: token
+                    }
+                }
+            )
 
-        //     if (data.success) {
-        //         toast.success('Lưu thay đổi thành công');
-        //         await loadUserProfileData();
-        //     } else {
-        //         toast.error(data.message);
-        //     }
+            if (data.success) {
+                toast.success('Changes saved successfully');
+                await loadUserProfileData();
+            } else {
+                toast.error(data.message);
+            }
 
-        // } catch (error: any) {
-        //     toast.error(error.response?.data?.message || error.message)
-        // }
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || error.message)
+        }
 
         setLoading(false)
+    }
+
+    const updatePassword = async (): Promise<void> => {
+        try {
+            const { data } = await axios.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-password', { oldPassword, newPassword1, newPassword2 }, { headers: { token } })
+
+            if (data.success) {
+                toast.success('Password changed successfully')
+                // loadProductData()
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
     }
 
     const updatePhone = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault()
 
-        // try {
-        //     const { data } = await axios.put(backendUrl + '/api/user/update-phone', { phone }, { headers: { token } })
+        try {
+            const { data } = await axios.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-phone', { phone }, { headers: { token } })
 
-        //     if (data.success) {
-        //         toast.success('Thay đổi số điện thoại thành công')
-        //         loadUserProfileData();
-        //     }
+            if (data.success) {
+                toast.success('Change phone number successfully')
+                loadUserProfileData();
+            }
 
-        // }
-        // catch (error: any) {
-        //     toast.error(error.response?.data?.message || error.message)
-        // }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || error.message)
+        }
 
         setIsUpdatePhone(false)
     }
@@ -256,9 +283,52 @@ const EditProfile = ({ setShow, show }: Props) => {
                         <IoMdLock className='text-2xl text-gray-700' />
                         <p>Change password</p>
                     </div>
-                    <div className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300 cursor-pointer'>
-                        Update
-                    </div>
+                    <Dialog>
+                        <DialogTrigger>
+                            <div className='bg-gray-300 shadow-lg rounded-md text-gray-500 font-bold px-5 py-1.5 h-fit hover:bg-green-300 cursor-pointer'>
+                                Update
+                            </div>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Change password</DialogTitle>
+                                <div>
+                                    <div className='mt-10'>
+                                        <p>Mật khẩu cũ:</p>
+                                        <input
+                                            type="text"
+                                            className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
+                                            onChange={(e) => setOldPassword(e.target.value)}
+                                            value={oldPassword}
+                                        />
+                                    </div>
+
+                                    <div className='mt-3.5'>
+                                        <p>Mật khẩu Mới:</p>
+                                        <input
+                                            type="text"
+                                            className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
+                                            onChange={(e) => setnewPassword1(e.target.value)}
+                                            value={newPassword1}
+                                        />
+                                    </div>
+
+                                    <div className='mt-3.5'>
+                                        <p>Nhập lại mật khẩu Mới:</p>
+                                        <input
+                                            type="text"
+                                            className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
+                                            onChange={(e) => setnewPassword2(e.target.value)}
+                                            value={newPassword2}
+                                        />
+                                    </div>
+
+                                    <div onClick={() => updatePassword()} className='mt-5 bg-red-500 py-2 text-center text-white hover:bg-red-600 cursor-pointer '>Lưu thay đổi</div>
+
+                                </div>
+                            </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
                 </div>
 
                 <p className='font-bold text-lg mt-5'>Social Network Links</p>
