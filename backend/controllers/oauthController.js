@@ -133,6 +133,48 @@ export const LoginGoogle = async (req, res) => {
     }
 }
 
+// api login with github
+export const LoginGithub = async (req, res) => {
+    try {
+        const { firstName, lastName, image } = req.body
+
+        if (!firstName || !lastName || !image) {
+            return res.json({ success: false, message: "Please Fill In All Information" })
+        }
+
+        const isEmail = await userModel.findOne({ email: email })
+
+        if (isEmail) {
+            const token = jwt.sign({ id: isEmail._id }, process.env.JWT_SECERT)
+
+            return res.json({ success: true, token })
+        } else {
+            const generatedPassword = Math.random().toString(36).slice(-8)
+            const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+            const userData = {
+                firstName,
+                lastName,
+                email,
+                phone: "Unknown",
+                password: hashedPassword,
+                dob: "Unknown",
+                image
+            }
+
+            const newUser = new userModel(userData)
+            await newUser.save()
+
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECERT)
+            return res.json({ success: true, token })
+        }
+
+    } catch (error) {
+        console.log(error.message)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 export const sendResetOtp = async (req, res) => {
     try {
         const { email } = req.body

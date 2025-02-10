@@ -28,7 +28,6 @@ import { AppContext } from '@/context/AppContext';
 import Link from 'next/link';
 import GoogleLogin from './GoogleLogin';
 
-
 const Navbar = () => {
 
     const { userData, token, setToken } = useContext(AppContext)
@@ -196,8 +195,8 @@ const Navbar = () => {
                                             Sign Up
                                         </Link>
                                     </div>
-                                    <div className='text-sm font-bold flex flex-col'>
-                                        <p className='text-center mb-3.5'>Or Login With</p>
+                                    <div className='text-sm font-bold flex flex-col gap-3.5'>
+                                        <p className='text-center mb-2'>Or Login With</p>
                                         <GoogleLogin />
                                     </div>
                                 </div>
