@@ -19,41 +19,41 @@ const SidebarAdmin = () => {
         <div className='min-h-screen bg-white border-r'>
             <div className='text-[#515151] mt-5'>
                 <Link
-                    href={'/'}
+                    href={'/admin/dashboard'}
                     className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
-                        ${isActive('') ? '' : 'border-r-4 border-[#0e141a]'}`}>
+                        ${isActive('dashboard') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>Dashboard</p>
                     <RiDashboardHorizontalFill className='text-xl' />
                 </Link>
 
                 <Link
-                    href={'/manage-user'}
+                    href={'/admin/manage-user'}
                     className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
-                        ${isActive('/manage-user') ? 'border-r-4 border-[#0e141a]' : ''}`}>
+                        ${isActive('manage-user') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>Member Management</p>
                     <FaUsers className='text-xl' />
                 </Link>
 
                 <Link
-                    href={'/products'}
+                    href={'/admin/products'}
                     className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
-                        ${isActive('/products') ? 'border-r-4 border-[#0e141a]' : ''}`}>
+                        ${isActive('products') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>All products</p>
                     <GiPerfumeBottle className='text-xl' />
                 </Link>
 
                 <Link
-                    href={'/add-product'}
+                    href={'/admin/add-product'}
                     className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
-                        ${isActive('/add-product') ? 'border-r-4 border-[#0e141a]' : ''}`}>
+                        ${isActive('add-product') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>Add product</p>
                     <IoMdAdd className='text-xl' />
                 </Link>
 
                 <Link
-                    href={'/orders'}
+                    href={'/admin/orders'}
                     className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
-                        ${isActive('/orders') ? 'border-r-4 border-[#0e141a]' : ''}`}>
+                        ${isActive('orders') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>Orders</p>
                     <FaBox className='text-xl' />
                 </Link>

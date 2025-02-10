@@ -22,11 +22,9 @@ export type UserData = {
     wishlist: any[]
 }
 
-
 interface AppContextType {
     token: string | false
     setToken: React.Dispatch<React.SetStateAction<string | false>>
-    formatMoney: (amount: number) => string
     userData: UserData | false
     loadUserProfileData: () => Promise<void>
     sidebar: string
@@ -36,7 +34,6 @@ interface AppContextType {
 export const AppContext = createContext<AppContextType>({
     token: false,
     setToken: () => { },
-    formatMoney: () => '',
     userData: false,
     loadUserProfileData: async () => { },
     sidebar: '',
@@ -50,13 +47,10 @@ interface AppContextProviderProps {
 const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
 
     const [token, setToken] = useState<string | false>(false)
+
     const [sidebar, setSidebar] = useState<string>('')
 
     const [userData, setUserData] = useState<UserData | false>(false)
-
-    function formatMoney(amount: number): string {
-        return amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    }
 
     const loadUserProfileData = async (): Promise<void> => {
         try {
@@ -77,10 +71,9 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const value = {
         token, setToken,
-        formatMoney,
         userData,
         loadUserProfileData,
-        sidebar, setSidebar
+        sidebar, setSidebar,
     }
 
     useEffect(() => {

@@ -1,21 +1,13 @@
 'use client'
-
-import { AppContext } from '@/context/AppContext'
 import { useRouter } from 'next/navigation'
-
-import { useContext } from 'react'
 import { Button } from './ui/button'
 
 const NavbarAdmin = () => {
-
-    const { setToken } = useContext(AppContext)
 
     const router = useRouter()
 
     const logout = () => {
         router.push('/admin')
-        setToken(false)
-        localStorage.removeItem('atoken')
     }
 
     return (

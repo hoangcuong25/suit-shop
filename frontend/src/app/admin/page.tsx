@@ -1,78 +1,49 @@
+'use client'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext } from 'react'
-import { FaUsers } from "react-icons/fa";
-import { GiPerfumeBottle } from "react-icons/gi";
-import { FaBox } from "react-icons/fa";
-import { FaMoneyBill } from "react-icons/fa";
+import React, { useState } from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
-const Dashboard = () => {
+const Login = () => {
 
-    // const { users, products, orders, formatMoney } = useContext(AppContext)
+    const router = useRouter()
 
-    // const totalRevenue = (): number => {
-    //     let revenue = 0
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
-    //     orders.map((i: any) => {
-    //         revenue += i.price
-    //     })
+    const onSubmitHandler = async (e: React.FormEvent): Promise<void> => {
+        e.preventDefault()
 
-    //     return revenue
-    // }
+        try {
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/admin/login", { email, password })
+            if (data.success) {
+                router.push('/admin/dashboard')
+            } else {
+                toast.error("Incorrect account or password")
+            }
+        } catch (error: any) {
+            toast.error(error.message)
+        }
+    }
 
     return (
-        <div className='m-5'>
-            <div className='flex flex-wrap gap-3'>
-                <div className='flex items-center gap-3.5 bg-gray-100 p-4 min-w-52 rounded shadow-md cursor-pointer hover:-translate-y-2 transition-all duration-300'>
-                    <FaUsers className='text-3xl text-gray-800' />
-                    <div>
-                        <p className='text-xl font-medium text-gray-600'>
-                            {/* {users.length} */}
-                            123
-                        </p>
-                        <p className='text-gray-500'>Member</p>
-                    </div>
+        <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
+            <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5e5e5e] text-sm shadow-lg'>
+                <p className='text-2xl font-semibold m-auto text-red-500'>Admin Login</p>
+                <div className='w-full '>
+                    <p>Email</p>
+                    <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
                 </div>
-
-                <div className='flex items-center gap-3.5 bg-gray-100 p-4 min-w-52 rounded shadow-md cursor-pointer hover:-translate-y-2 transition-all duration-300'>
-                    <GiPerfumeBottle className='text-3xl text-gray-800' />
-                    <div>
-                        <p className='text-xl font-medium text-gray-600'>
-                            {/* {products.length} */} 123
-                        </p>
-                        <p className='text-gray-500'>Product</p>
-                    </div>
+                <div className='w-full '>
+                    <p>Password</p>
+                    <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
                 </div>
-
-                <div className='flex items-center gap-3.5 bg-gray-100 p-4 min-w-52 rounded shadow-md cursor-pointer hover:-translate-y-2 transition-all duration-300'>
-                    <FaBox className='text-3xl text-gray-800' />
-                    <div>
-                        <p className='text-xl font-medium text-gray-600'>
-                            {/* {orders.length} */} 123
-                        </p>
-                        <p className='text-gray-500'>Orders</p>
-                    </div>
-                </div>
-
-                <div className='flex items-center gap-3.5 bg-gray-100 p-4 min-w-52 rounded shadow-md cursor-pointer hover:-translate-y-2 transition-all duration-300'>
-                    <FaMoneyBill className='text-3xl text-gray-800' />
-                    <div>
-                        <p className='text-xl font-medium text-gray-600'>
-                            {/* {formatMoney(totalRevenue())} */}
-                            123 vnđ</p>
-                        <p className='text-gray-500'>Revenue</p>
-                    </div>
-                </div>
-
+                <button className='bg-red-500 text-white w-full py-2 rounded-md text-base'>Login</button>
             </div>
-
-            <div className='bg-white'>
-                <div className='flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t bg-gray-100 shadow-md'>
-                    <p className='font-bold text-xl'>Recent Orders</p>
-                </div>
-
-            </div>
-        </div>
+        </form>
     )
 }
 
-export default Dashboard
+export default Login
