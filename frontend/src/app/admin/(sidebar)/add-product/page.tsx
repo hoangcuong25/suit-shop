@@ -11,35 +11,47 @@ import Image from 'next/image';
 const AddProduct = () => {
 
     const [loading, setLoading] = useState<boolean>(false)
+    const [image1, setImage1] = useState<File | null>(null)
+    const [image2, setImage2] = useState<File | null>(null)
 
     const [product, setProduct] = useState({
         name: '',
         type: '',
         oldPrice: '',
         newPrice: '',
-        image: null as File | null
     })
 
-
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-        setLoading(true)
+
         e.preventDefault()
+        setLoading(true)
+
+        const formData = new FormData()
+        formData.append('name', product.name)
+        formData.append('type', product.type)
+        formData.append('oldPrice', product.oldPrice)
+        formData.append('newPrice', product.newPrice)
+        if (image1) formData.append('images', image1)
+        if (image2) formData.append('images', image2)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/admin/add-product', product, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            const { data } = await axios.post(
+                process.env.NEXT_PUBLIC_BACKEND_URL + '/api/admin/add-product',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 }
-            })
+            )
 
             if (data.success) {
-                toast.success("Add Product Successfully")
+                toast.success("Add Product Successfully");
             } else {
-                toast.error(data.message)
+                toast.error(data.message);
             }
-
         } catch (error: any) {
-            toast.error(error.response?.data?.message || "Something went wrong")
+            toast.error(error.response?.data?.message || "Something went wrong");
         }
 
         setLoading(false)
@@ -96,20 +108,37 @@ const AddProduct = () => {
                 </div>
                 <div>
                     <label className="block mb-2">Product Image</label>
-                    <label htmlFor="image">
+                    <label htmlFor="image1">
                         <div className='inline-block relative cursor-pointer'>
-                            <Image className='size-36' width={100} height={100} src={product.image ? URL.createObjectURL(product.image) : upload} alt="" />
+                            <Image className='size-36' width={100} height={100} src={image1 ? URL.createObjectURL(image1) : upload} alt="" />
                             <p className='mt-3 text-sm text-center'>Upload your photo</p>
                         </div>
                         <input
                             onChange={(e) => {
                                 const file = e.target.files ? e.target.files[0] : null
                                 if (file) {
-                                    setProduct((prev) => ({ ...prev, image: file }))
+                                    setImage1(file)
                                 }
                             }}
                             type="file"
-                            id='image'
+                            id='image1'
+                            hidden
+                        />
+                    </label>
+                    <label htmlFor="image2" className='ml-3.5'>
+                        <div className='inline-block relative cursor-pointer'>
+                            <Image className='size-36' width={100} height={100} src={image2 ? URL.createObjectURL(image2) : upload} alt="" />
+                            <p className='mt-3 text-sm text-center'>Upload your photo</p>
+                        </div>
+                        <input
+                            onChange={(e) => {
+                                const file = e.target.files ? e.target.files[0] : null
+                                if (file) {
+                                    setImage2(file)
+                                }
+                            }}
+                            type="file"
+                            id='image2'
                             hidden
                         />
                     </label>

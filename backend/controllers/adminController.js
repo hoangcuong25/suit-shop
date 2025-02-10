@@ -23,18 +23,21 @@ export const login = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { name, type, oldPrice, newPrice } = req.body
-        const imageFile = req.file
+        const imageFiles = req.files
 
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
-        const imageUrl = imageUpload.secure_url
+        const imageUpload1 = await cloudinary.uploader.upload(imageFiles[0].path, { resource_type: 'image' })
+        const imageUrl1 = imageUpload1.secure_url
 
-        if (!name || !type || !oldPrice || !newPrice || !imageFile) {
-            return res.json({ success: false, message: 'Please Fill In All Information' })
+        const imageUpload2 = await cloudinary.uploader.upload(imageFiles[1].path, { resource_type: 'image' })
+        const imageUrl2 = imageUpload2.secure_url
+
+        if (!name || !type || !oldPrice || !newPrice || !imageFiles) {
+            return res.json({ success: false, message: 'Hãy Điền Đầy Đủ Thông Tin' })
         }
 
         const isName = await productModel.findOne({ name });
         if (isName) {
-            return res.status(400).json({ success: false, message: 'This product already exists' });
+            return res.status(400).json({ success: false, message: 'Sản phẩm này đã tồn tại' });
         }
 
         const productData = {
@@ -42,7 +45,8 @@ export const addProduct = async (req, res) => {
             type,
             oldPrice,
             newPrice,
-            image: imageUrl
+            image1: imageUrl1,
+            image2: imageUrl2,
         }
 
         const newProduct = new productModel(productData)

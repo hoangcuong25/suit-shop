@@ -24,7 +24,7 @@ export const updateProfile = async (req, res) => {
         const imageFile = req.file
 
         if (!firstName || !lastName || !dob || !gender || !address) {
-            return res.json({ success: false, message: "Missing information" })
+            return res.json({ success: false, message: "Thiếu thông tin" })
         }
 
         await userModel.findByIdAndUpdate(userId, { firstName, lastName, dob, gender, address })
