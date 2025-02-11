@@ -89,15 +89,15 @@ const Page = () => {
             </div>
 
             <div className='mt-7'>
-                <div className='grid grid-cols-5 justify-center gap-3'>
+                <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center gap-3'>
                     {
                         productData?.map((product, index) => (
                             <div onClick={() => router.push(`/collections/${product._id}`)} key={index} className='group cursor-pointer'>
                                 <Image src={product.image1} height={500} width={500} quality={100} alt='product' className='w-96 h-auto' />
-                                <p className='mb-3 group-hover:underline underline-offset-8'>{product.name}</p>
+                                <p className=' mb-0 md:mb-3 text-sm md:text-base group-hover:underline underline-offset-2 md:underline-offset-8'>{product.name}</p>
                                 <div className='flex gap-2'>
-                                    <p className='text-sm text-gray-600 font-semibold'>{product.newPrice},00 US$</p>
-                                    <p className='text-sm text-gray-400 line-through font-semibold'>{product.oldPrice},00 US$</p>
+                                    <p className='text-[13px] md:text-sm text-gray-600 font-semibold'>{product.newPrice},00 US$</p>
+                                    <p className='text-[13px] md:text-sm text-gray-400 line-through font-semibold'>{product.oldPrice},00 US$</p>
                                 </div>
                             </div>
                         ))
