@@ -11,6 +11,14 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from 'next/image';
@@ -27,18 +35,22 @@ const Page = () => {
 
     const pathName = usePathname()
 
-    const [productData, setProductData] = useState<ProductData[]>([]);
-    const [typeProduct, setTypeProduct] = useState<string | false>(false)
-
     const searchParams = useSearchParams()
 
-    const limit = Number(searchParams.get('limit')) || 15;
-    const page = Number(searchParams.get('page')) || 1;
-    const type = searchParams.get('type') || false;
+    const limit = Number(searchParams.get('limit')) || 15
+    const page = Number(searchParams.get('page')) || 1
+    const type = searchParams.get('type') || false
+    const price_option = searchParams.get('price_option') || false
+    const sort = searchParams.get('sort') || false
+
+    const [productData, setProductData] = useState<ProductData[]>([]);
+    const [typeProduct, setTypeProduct] = useState<string | false>(type)
+    const [priceOptionData, setPriceOptionData] = useState<string | false>(price_option)
+    const [sorting, setSorting] = useState<string | false>(sort)
 
     const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type })
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type, price_option, sort })
 
             setProductData(data.productData)
         }
@@ -49,19 +61,19 @@ const Page = () => {
 
     const handlePre = () => {
         if (page > 1) {
-            router.push(`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=${page - 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page - 1}`)
         }
     }
 
     const handleNext = () => {
         if (page < 2) {
-            router.push(`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=${page + 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page + 1}`)
         }
     }
 
     useEffect(() => {
         getProduct()
-    }, [page, limit, type])
+    }, [page, limit, type, price_option, sort])
 
     return (
         <div className='mt-8 px-3.5 md:px-7 xl:px-16'>
@@ -84,8 +96,8 @@ const Page = () => {
                         <SheetContent side={'left'}>
                             <SheetHeader>
                                 <SheetTitle>Fillter and Sort</SheetTitle>
-                                <div className='flex flex-col gap-3.5 justify-between h-full'>
-                                    <div className='flex flex-col gap-3'>
+                                <div className='flex flex-col gap-5 justify-between h-full'>
+                                    <div className='flex flex-col gap-2'>
                                         <p className='text-left'>Type:</p>
                                         <RadioGroup>
                                             <div
@@ -109,38 +121,57 @@ const Page = () => {
                                         </Button>
                                     </div>
 
-                                    <div className='flex flex-col gap-3'>
+                                    <div className='flex flex-col gap-2'>
                                         <p className='text-left'>Price:</p>
                                         <RadioGroup>
                                             <div
-                                                onClick={() => setTypeProduct('men')}
+                                                onClick={() => setPriceOptionData('option1')}
                                                 className="flex items-center space-x-2">
-                                                <RadioGroupItem checked={typeProduct === 'men'} id="r1" value="men" />
+                                                <RadioGroupItem checked={priceOptionData === 'option1'} id="r1" value="men" />
                                                 <Label htmlFor="r1">100,00 - 299,00 usd</Label>
                                             </div>
                                             <div
-                                                onClick={() => setTypeProduct('women')}
+                                                onClick={() => setPriceOptionData('option2')}
                                                 className="flex items-center space-x-2">
-                                                <RadioGroupItem checked={typeProduct === 'women'} id="r2" value="women" />
+                                                <RadioGroupItem checked={priceOptionData === 'option2'} id="r2" value="women" />
                                                 <Label htmlFor="r2">300,00 - 350,00 usd</Label>
                                             </div>
                                             <div
-                                                onClick={() => setTypeProduct('women')}
+                                                onClick={() => setPriceOptionData('option3')}
                                                 className="flex items-center space-x-2">
-                                                <RadioGroupItem checked={typeProduct === 'women'} id="r2" value="women" />
+                                                <RadioGroupItem checked={priceOptionData === 'option3'} id="r2" value="women" />
                                                 <Label htmlFor="r2">351,00 - 500,00 usd</Label>
                                             </div>
                                         </RadioGroup>
                                         <Button
-                                            onClick={() => setTypeProduct(false)}
+                                            onClick={() => setPriceOptionData(false)}
                                             className='border border-[#0e141a] w-1/2'
                                         >
-                                            Unsort
+                                            Unfilter
                                         </Button>
                                     </div>
 
+                                    <div className='flex flex-col gap-2'>
+                                        <p className='text-left'>Sorting:</p>
+                                        <Select>
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Sorting" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem onClick={() => setSorting('low to high')} value="low to high">
+                                                        Price from low to high
+                                                    </SelectItem>
+                                                    <SelectItem onClick={() => setSorting('high to low')} value="high to low">
+                                                        Price from high to low
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
                                     <Button
-                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}limit=15&page=1`)}
+                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=1`)}
                                         className='border border-[#0e141a] w-full mt-8'
                                     >
                                         Apply
@@ -178,13 +209,13 @@ const Page = () => {
 
                     <Link
                         className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}
-                        href={`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=1`}
+                        href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=1`}
                     >
                         1
                     </Link>
                     <Link
                         className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 2 && 'bg-[#20303f] text-white'}`}
-                        href={`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=2`}
+                        href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=2`}
                     >
                         2
                     </Link>

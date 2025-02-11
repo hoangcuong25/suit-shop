@@ -113,22 +113,36 @@ export const updatePassword = async (req, res) => {
 // API fetch product data
 export const fetchProduct = async (req, res) => {
     try {
-        const { limit = 15, page = 1, type } = req.body
+        const { limit = 15, page = 1, type, price_option, sort } = req.body
 
-        let query = productModel.find();
+        let query = productModel.find()
 
         if (type) {
-            query = query.where('type').equals(type);
+            query = query.where('type').equals(type)
         }
 
-        const products = await query
-            .skip((page - 1) * limit)
-            .limit(Number(limit))
+        if (price_option === 'option1') {
+            query = query.where('newPrice').gte(100).lt(300)
+        }
+        if (price_option === 'option2') {
+            query = query.where('newPrice').gte(300).lte(350)
+        }
+        if (price_option === 'option3') {
+        }
+
+        if (sort === 'low to high') {
+            query = query.sort({ newPrice: 1 })
+        }
+
+        if (sort === 'high to low') {
+            query = query.sort({ newPrice: -1 })
+        }
+
+        const products = await query.skip((page - 1) * limit).limit(Number(limit))
 
         res.json({ success: true, productData: products })
-
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
