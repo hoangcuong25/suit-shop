@@ -81,8 +81,8 @@ const AddProduct = () => {
                         className="border p-2 w-full"
                     >
                         <option value="">Select type</option>
-                        <option value="Men">Men</option>
-                        <option value="Women">Women</option>
+                        <option value="men">Men</option>
+                        <option value="women">Women</option>
                     </select>
                 </div>
                 <div>

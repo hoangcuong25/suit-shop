@@ -11,24 +11,34 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ProductData } from '@/type/appType';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const Page = () => {
 
+    const router = useRouter()
+
+    const pathName = usePathname()
+
     const [productData, setProductData] = useState<ProductData[]>([]);
+    const [typeProduct, setTypeProduct] = useState<string | false>(false)
+
     const searchParams = useSearchParams()
 
     const limit = Number(searchParams.get('limit')) || 15;
     const page = Number(searchParams.get('page')) || 1;
+    const type = searchParams.get('type') || false;
 
     const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page })
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type })
 
             setProductData(data.productData)
         }
@@ -39,23 +49,19 @@ const Page = () => {
 
     const handlePre = () => {
         if (page > 1) {
-            router.push(`/collections?limit=15&page=${page - 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=${page - 1}`)
         }
     }
 
     const handleNext = () => {
         if (page < 2) {
-            router.push(`/collections?limit=15&page=${page + 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=${page + 1}`)
         }
     }
 
     useEffect(() => {
         getProduct()
-    }, [page, limit])
-
-    const router = useRouter()
-
-    console.log(page === 1)
+    }, [page, limit, type])
 
     return (
         <div className='mt-8 px-3.5 md:px-7 xl:px-16'>
@@ -67,7 +73,7 @@ const Page = () => {
             </p>
 
             <div className='mt-7'>
-                <div className='flex justify-between'>
+                <div className='flex'>
                     <Sheet>
                         <SheetTrigger asChild>
                             <div className='flex items-center text-sm gap-2 border border-gray-300 hover:border-gray-600 px-3.5 py-2 cursor-pointer'>
@@ -77,14 +83,72 @@ const Page = () => {
                         </SheetTrigger>
                         <SheetContent side={'left'}>
                             <SheetHeader>
-                                <SheetTitle></SheetTitle>
-                                <div>
+                                <SheetTitle>Fillter and Sort</SheetTitle>
+                                <div className='flex flex-col gap-3.5 justify-between h-full'>
+                                    <div className='flex flex-col gap-3'>
+                                        <p className='text-left'>Type:</p>
+                                        <RadioGroup>
+                                            <div
+                                                onClick={() => setTypeProduct('men')}
+                                                className="flex items-center space-x-2">
+                                                <RadioGroupItem checked={typeProduct === 'men'} id="r1" value="men" />
+                                                <Label htmlFor="r1">Men</Label>
+                                            </div>
+                                            <div
+                                                onClick={() => setTypeProduct('women')}
+                                                className="flex items-center space-x-2">
+                                                <RadioGroupItem checked={typeProduct === 'women'} id="r2" value="women" />
+                                                <Label htmlFor="r2">Women</Label>
+                                            </div>
+                                        </RadioGroup>
+                                        <Button
+                                            onClick={() => setTypeProduct(false)}
+                                            className='border border-[#0e141a] w-1/2'
+                                        >
+                                            Unfilter
+                                        </Button>
+                                    </div>
 
+                                    <div className='flex flex-col gap-3'>
+                                        <p className='text-left'>Price:</p>
+                                        <RadioGroup>
+                                            <div
+                                                onClick={() => setTypeProduct('men')}
+                                                className="flex items-center space-x-2">
+                                                <RadioGroupItem checked={typeProduct === 'men'} id="r1" value="men" />
+                                                <Label htmlFor="r1">100,00 - 299,00 usd</Label>
+                                            </div>
+                                            <div
+                                                onClick={() => setTypeProduct('women')}
+                                                className="flex items-center space-x-2">
+                                                <RadioGroupItem checked={typeProduct === 'women'} id="r2" value="women" />
+                                                <Label htmlFor="r2">300,00 - 350,00 usd</Label>
+                                            </div>
+                                            <div
+                                                onClick={() => setTypeProduct('women')}
+                                                className="flex items-center space-x-2">
+                                                <RadioGroupItem checked={typeProduct === 'women'} id="r2" value="women" />
+                                                <Label htmlFor="r2">351,00 - 500,00 usd</Label>
+                                            </div>
+                                        </RadioGroup>
+                                        <Button
+                                            onClick={() => setTypeProduct(false)}
+                                            className='border border-[#0e141a] w-1/2'
+                                        >
+                                            Unsort
+                                        </Button>
+                                    </div>
+
+                                    <Button
+                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}limit=15&page=1`)}
+                                        className='border border-[#0e141a] w-full mt-8'
+                                    >
+                                        Apply
+                                    </Button>
                                 </div>
                             </SheetHeader>
                         </SheetContent>
                     </Sheet>
-                    <p className='text-sm'>{productData.length} Results</p>
                 </div>
             </div>
 
@@ -112,8 +176,18 @@ const Page = () => {
                         Previous
                     </div>
 
-                    <Link className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`} href={"/collections?limit=15&page=1"}>1</Link>
-                    <Link className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 2 && 'bg-[#20303f] text-white'}`} href={"/collections?limit=15&page=2"}>2</Link>
+                    <Link
+                        className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}
+                        href={`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=1`}
+                    >
+                        1
+                    </Link>
+                    <Link
+                        className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 2 && 'bg-[#20303f] text-white'}`}
+                        href={`${pathName}?${type ? `type=${type}&` : ''}limit=15&page=2`}
+                    >
+                        2
+                    </Link>
 
                     <div
                         onClick={handleNext}
@@ -139,7 +213,7 @@ const Page = () => {
                     Browse the collection today!
                 </p>
             </div>
-        </div>
+        </div >
     )
 }
 

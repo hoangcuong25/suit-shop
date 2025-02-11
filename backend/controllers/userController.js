@@ -113,11 +113,19 @@ export const updatePassword = async (req, res) => {
 // API fetch product data
 export const fetchProduct = async (req, res) => {
     try {
-        const { limit = 15, page = 1 } = req.body
+        const { limit = 15, page = 1, type } = req.body
 
-        const productData = await productModel.find().skip((page - 1) * limit).limit(limit)
+        let query = productModel.find();
 
-        res.json({ success: true, productData })
+        if (type) {
+            query = query.where('type').equals(type);
+        }
+
+        const products = await query
+            .skip((page - 1) * limit)
+            .limit(Number(limit))
+
+        res.json({ success: true, productData: products })
 
     } catch (error) {
         console.error(error)
