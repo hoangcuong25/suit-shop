@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { CiSliderHorizontal } from "react-icons/ci";
+import { FaCaretLeft } from "react-icons/fa";
 import {
     Sheet,
     SheetContent,
@@ -10,27 +11,20 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ProductData } from '@/type/appType';
+import Link from 'next/link';
 
 const Page = () => {
 
     const [productData, setProductData] = useState<ProductData[]>([]);
     const searchParams = useSearchParams()
 
-    const limit = searchParams.get('limit') || 15
-    const page = searchParams.get('page') || 1
+    const limit = Number(searchParams.get('limit')) || 15;
+    const page = Number(searchParams.get('page')) || 1;
 
     const getProduct = async (): Promise<void> => {
         try {
@@ -43,11 +37,25 @@ const Page = () => {
         }
     }
 
+    const handlePre = () => {
+        if (page > 1) {
+            router.push(`/collections?limit=15&page=${page - 1}`)
+        }
+    }
+
+    const handleNext = () => {
+        if (page < 2) {
+            router.push(`/collections?limit=15&page=${page + 1}`)
+        }
+    }
+
     useEffect(() => {
         getProduct()
-    }, [])
+    }, [page, limit])
 
     const router = useRouter()
+
+    console.log(page === 1)
 
     return (
         <div className='mt-8 px-3.5 md:px-7 xl:px-16'>
@@ -96,22 +104,24 @@ const Page = () => {
                     }
                 </div>
 
-                <Pagination className='mt-10'>
-                    <PaginationContent>
-                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg `}>
-                            <PaginationPrevious href="/collections?limit=15&page=1" />
-                        </PaginationItem>
-                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}>
-                            <PaginationLink href="/collections?limit=15&page=1" isActive>1</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}>
-                            <PaginationLink href="/collections?limit=15&page=2" >2</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg`}>
-                            <PaginationNext href="/collections?limit=15&page=2" />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+                <div className='mt-10 flex justify-center items-center gap-5'>
+                    <div
+                        onClick={handlePre}
+                        className='flex items-center cursor-pointer px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg'>
+                        <FaCaretLeft />
+                        Previous
+                    </div>
+
+                    <Link className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`} href={"/collections?limit=15&page=1"}>1</Link>
+                    <Link className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 2 && 'bg-[#20303f] text-white'}`} href={"/collections?limit=15&page=2"}>2</Link>
+
+                    <div
+                        onClick={handleNext}
+                        className='flex items-center cursor-pointer px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg'>
+                        Next
+                        <FaCaretLeft className='rotate-180' />
+                    </div>
+                </div>
             </div>
 
             <div className='mt-20 mx-0 xl:mx-56 font-serif'>
