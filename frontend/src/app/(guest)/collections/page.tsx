@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiSliderHorizontal } from "react-icons/ci";
 import {
     Sheet,
@@ -12,9 +12,28 @@ import {
 import { products } from '@/assets/assets';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const Page = () => {
+
+    const [productData, setProductData] = useState()
+
+    const getProduct = async () => {
+        try {
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products")
+
+            setProductData(data.productData)
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
+    useEffect(() => {
+        getProduct()
+    }, [])
 
     const router = useRouter()
 

@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import userModel from '../models/userModel.js'
 import bcrypt from 'bcrypt'
+import productModel from '../models/productModel.js'
 
 // api get profile
 export const profile = async (req, res) => {
@@ -103,6 +104,21 @@ export const updatePassword = async (req, res) => {
         await userModel.findByIdAndUpdate(userId, { password: hashedPassword })
 
         res.json({ success: true, message: "Password updated successfully." })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
+    }
+}
+
+// API fetch product data
+export const fetchProduct = async (req, res) => {
+    try {
+        const { limit = 15, page = 1 } = req.body
+
+        const productData = await productModel.find().skip((page - 1) * limit).limit(limit)
+
+        res.json({ success: true, productData })
+
     } catch (error) {
         console.error(error)
         res.status(500).json({ success: false, message: "An error occurred. Please try again." })
