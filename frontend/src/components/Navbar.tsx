@@ -152,7 +152,7 @@ const Navbar = () => {
                 </div>
 
                 <div className='flex items-center gap-3 sm:gap-5'>
-                    <Button className='hidden sm:block'>Suit a group</Button>
+                    <Button className='hidden sm:block border border-[#0e141a]'>Suit a group</Button>
                     {token
                         ? userData &&
                         <div className='cursor-pointer relative group'>

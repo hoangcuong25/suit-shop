@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type UserData = {
     _id: string
     firstName: string
@@ -13,6 +15,13 @@ export type UserData = {
     wishlist: any[]
 }
 
-export type productData = {
-    
-}
+export type ProductData = {
+    _id: string;
+    name: string;
+    type: string;
+    oldPrice: number;
+    newPrice: number;
+    image1: string;
+    image2: string;
+    comments: any[];
+};

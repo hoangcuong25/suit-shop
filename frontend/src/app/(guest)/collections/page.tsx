@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import React, { useEffect, useState } from 'react'
@@ -9,20 +10,31 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { products } from '@/assets/assets';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import { ProductData } from '@/type/appType';
 
 const Page = () => {
 
-    const [productData, setProductData] = useState()
+    const [productData, setProductData] = useState<ProductData[]>([]);
+    const searchParams = useSearchParams()
 
-    const getProduct = async () => {
+    const limit = searchParams.get('limit') || 15
+    const page = searchParams.get('page') || 1
+
+    const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products")
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page })
 
             setProductData(data.productData)
         }
@@ -64,22 +76,42 @@ const Page = () => {
                             </SheetHeader>
                         </SheetContent>
                     </Sheet>
-                    <p className='text-sm'>32 Results</p>
+                    <p className='text-sm'>{productData.length} Results</p>
                 </div>
             </div>
 
             <div className='mt-7'>
                 <div className='grid grid-cols-5 justify-center gap-3'>
                     {
-                        products.map((product, index) => (
+                        productData?.map((product, index) => (
                             <div onClick={() => router.push(`/collections/${product._id}`)} key={index} className='group cursor-pointer'>
-                                <Image src={product.image} alt='product' className='w-96 h-auto' />
+                                <Image src={product.image1} height={500} width={500} quality={100} alt='product' className='w-96 h-auto' />
                                 <p className='mb-3 group-hover:underline underline-offset-8'>{product.name}</p>
-                                <p className='text-sm text-gray-600 font-semibold'>{product.price},00 US$</p>
+                                <div className='flex gap-2'>
+                                    <p className='text-sm text-gray-600 font-semibold'>{product.newPrice},00 US$</p>
+                                    <p className='text-sm text-gray-400 line-through font-semibold'>{product.oldPrice},00 US$</p>
+                                </div>
                             </div>
                         ))
                     }
                 </div>
+
+                <Pagination className='mt-10'>
+                    <PaginationContent>
+                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg `}>
+                            <PaginationPrevious href="/collections?limit=15&page=1" />
+                        </PaginationItem>
+                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}>
+                            <PaginationLink href="/collections?limit=15&page=1" isActive>1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}>
+                            <PaginationLink href="/collections?limit=15&page=2" >2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem className={`hover:bg-[#20303f] hover:text-white rounded-lg`}>
+                            <PaginationNext href="/collections?limit=15&page=2" />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
             </div>
 
             <div className='mt-20 mx-0 xl:mx-56 font-serif'>
