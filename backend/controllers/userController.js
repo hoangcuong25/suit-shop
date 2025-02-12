@@ -146,3 +146,18 @@ export const fetchProduct = async (req, res) => {
         res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
+
+// API get product by id
+export const getProductById = async (req, res) => {
+    try {
+        const { productId } = req.body
+
+        const productData = await productModel.findById(productId)
+
+        res.json({ success: true, productData })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
+    }
+}

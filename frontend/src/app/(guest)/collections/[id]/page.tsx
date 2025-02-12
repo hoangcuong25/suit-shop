@@ -1,6 +1,7 @@
-import { products } from '@/assets/assets'
+'use client'
+
 import Image from 'next/image'
-import React from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa";
 import { FaRuler } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -10,20 +11,60 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { ProductData } from '@/type/appType';
+import { usePathname } from 'next/navigation';
 
-const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+const page = () => {
 
-    const id = (await params).id
+    const pathName = usePathname()
 
-    const productInfo = products?.find((i) => i._id === id)
+    const productId = pathName.split('/')[2]
+
+    const [productInfo, setProductInfo] = useState<ProductData>()
+    const [loading, setLoading] = useState<boolean>(true)
+
+    const getProductById = async (): Promise<void> => {
+        try {
+            setLoading(true)
+
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-product-by-id', { productId })
+
+            if (data.success) {
+                setProductInfo(data.productData)
+            }
+
+            setLoading(false)
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
+    useEffect(() => {
+        getProductById()
+    }, [productId])
+
+    console.log(productInfo)
+
+    if (loading) {
+        return <p className="text-center mt-20">Loading...</p>
+    }
+
+    if (!productInfo) {
+        return <p className="text-center mt-20">Product not found.</p>
+    }
 
     return (
         <div className='mt-10 px-3.5 md:px-7 xl:px-16 flex justify-between'>
-            <div className='flex flex-col gap-16'>
-                <div className='flex gap-2'>
-                    <Image src={productInfo?.image || ''} alt='product' className='w-96 h-fit' />
-                    <Image src={productInfo?.image || ''} alt='product' className='w-96 h-fit' />
-                </div>
+            <div className='flex flex-col gap-8 2xl:gap-16'>
+                {productInfo &&
+                    <div className='flex gap-2'>
+                        <Image src={productInfo?.image1 || ''} width={380} height={300} quality={100} alt='product' className='w-96 h-fit' />
+                        <Image src={productInfo?.image2 || ''} width={380} height={300} quality={100} alt='product' className='w-96 h-fit' />
+                    </div>
+                }
                 <div className='mt-16'>
                     <p className='text-3xl font-semibold'>Reviews</p>
                 </div>
@@ -38,7 +79,11 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                     <FaStar />
                     <p className='mx-3 underline underline-offset-4'>123 Reviews</p>
                 </div>
-                <p>{productInfo?.price},00 US$</p>
+                <div className='flex gap-2'>
+                    <p>{productInfo?.newPrice},00 US$</p>
+                    <p className='text-gray-700 line-through'>{productInfo?.oldPrice},00 US$</p>
+                </div>
+
 
                 <hr className='border-gray-300 my-2' />
 
