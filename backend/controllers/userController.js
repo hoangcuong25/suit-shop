@@ -201,16 +201,12 @@ export const addToCard = async (req, res) => {
                 await userModel.findByIdAndUpdate(userId, { cart });
             }
             else {
-                let thisCartAmount = cart[indexProduct].amount
-                let amount = [...thisCartAmount]
-
-                amount.push({
+                cart[indexProduct].amount.push({
                     quantity: 1,
                     size: size,
                     length: length
                 })
-
-                await userModel.findByIdAndUpdate(userId, { amount })
+                await userModel.findByIdAndUpdate(userId, { cart })
             }
 
             res.json({ success: true })
@@ -221,12 +217,10 @@ export const addToCard = async (req, res) => {
                 size: size,
                 length: length
             })
-
             const addToCart = {
                 product: productData,
                 amount: amount
             }
-
             const cartData = [...cart, addToCart]
 
             await userModel.findByIdAndUpdate(userId, { cart: cartData })
