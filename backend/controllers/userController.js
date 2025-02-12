@@ -173,41 +173,61 @@ export const addToCard = async (req, res) => {
 
         const productData = await productModel.findById(productId)
         const user = await userModel.findById(userId)
+        const cart = user.cart
 
         let isProduct = false
         let indexProduct = 0
-        let isHave = false
 
-        user.cart.forEach((i, index) => {
+        let isHave = false
+        let indexHave = 0
+
+        cart.forEach((i, index) => {
             if (i.product._id.toString() === productId) {
                 isProduct = true
                 indexProduct = index
 
-                if (i.amount.size === size && i.amount.length === length) {
-                    isHave = true
-
-                }
+                i.amount.forEach((i, index) => {
+                    if (i.size === size && i.length === length) {
+                        isHave = true
+                        indexHave = index
+                    }
+                })
             }
         })
 
         if (isProduct) {
-
             if (isHave) {
-
+                cart[indexProduct].amount[indexHave].quantity += 1
+                await userModel.findByIdAndUpdate(userId, { cart });
             }
-            res.json({ success: true })
+            else {
+                let thisCartAmount = cart[indexProduct].amount
+                let amount = [...thisCartAmount]
 
-        } else {
-            const addToCart = {
-                product: productData,
-                amount: {
+                amount.push({
                     quantity: 1,
                     size: size,
                     length: length
-                }
+                })
+
+                await userModel.findByIdAndUpdate(userId, { amount })
             }
 
-            const cartData = [...user.cart, addToCart]
+            res.json({ success: true })
+        } else {
+            let amount = []
+            amount.push({
+                quantity: 1,
+                size: size,
+                length: length
+            })
+
+            const addToCart = {
+                product: productData,
+                amount: amount
+            }
+
+            const cartData = [...cart, addToCart]
 
             await userModel.findByIdAndUpdate(userId, { cart: cartData })
             res.json({ success: true })
