@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import Image from 'next/image'
-import React, { use, useContext, useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa";
 import { FaRuler } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -17,8 +17,9 @@ import { ProductData } from '@/type/appType';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { AppContext } from '@/context/AppContext';
+import { useContext, useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
 
     const { token } = useContext(AppContext)
 
@@ -66,6 +67,8 @@ const page = () => {
             toast.error(error.response?.data?.message || "Something went wrong")
         }
     }
+
+    console.log(loadingAddToCart)
 
     useEffect(() => {
         getProductById()
@@ -229,4 +232,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

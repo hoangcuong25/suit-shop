@@ -161,7 +161,7 @@ const Navbar = () => {
                                 <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
                             </div>
 
-                            <div className='absolute z-50 pt-8 top-3.5 -right-10 hidden group-hover:flex'>
+                            <div className='absolute z-50 pt-8 top-2 -right-2 hidden group-hover:flex'>
                                 <div className='border border-gray-300 rounded-md bg-white w-max px-7 py-3.5 flex flex-col gap-3.5'>
                                     <Link href='/my-profile' className='group/item'>
                                         <p className=' group-hover/item:text-red-500'>My account</p>
@@ -178,7 +178,7 @@ const Navbar = () => {
                                 <p>Account</p>
                             </div>
 
-                            <div className='absolute z-50 pt-8 top-2.5 -right-3.5 hidden sm:group-hover:flex'>
+                            <div className='absolute z-50 pt-8 top-1 -right-3.5 hidden sm:group-hover:flex'>
                                 <div className='border border-gray-300 rounded-md bg-white w-max px-3.5 py-3.5 flex flex-col gap-3.5'>
                                     <div className='flex items-center gap-5'>
                                         <LuUser className='text-2xl' />

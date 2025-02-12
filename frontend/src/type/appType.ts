@@ -11,7 +11,7 @@ export type UserData = {
     image: string | null
     address: string
     gender: string
-    cart: any[]
+    cart: CartData[]
     wishlist: any[]
 }
 
@@ -24,4 +24,9 @@ export type ProductData = {
     image1: string;
     image2: string;
     comments: any[];
-};
+}
+
+export type CartData = {
+    product: ProductData
+    amount: any[]
+}

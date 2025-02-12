@@ -1,5 +1,6 @@
 'use client'
 
+import Cart from '@/components/Cart';
 import EditProfile from '@/components/EditProfile';
 import FAQ from '@/components/FAQ';
 import Point from '@/components/Point';
@@ -8,6 +9,7 @@ import { AppContext } from '@/context/AppContext';
 import { useContext, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaRegWindowClose } from 'react-icons/fa';
+import empty from './empty.png'
 
 const MyProfile = () => {
 
@@ -16,9 +18,9 @@ const MyProfile = () => {
     const [show, setShow] = useState<boolean>(false)
 
     return (
-        <div className='mb-8 mt-5'>
+        <div className='mb-8 mt-5 px-3.5 md:px-7 xl:px-16'>
 
-            <div className='flex mt-1.5 gap-3'>
+            <div className='flex justify-center mt-1.5 gap-0 md:gap-3'>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} setShow={setShow} />
 
                 {sidebar === '' &&
@@ -43,8 +45,8 @@ const MyProfile = () => {
 
                 {sidebar === 'Account Management' && <EditProfile show={show} setShow={setShow} />}
                 {sidebar === 'Earn points' && <Point show={show} setShow={setShow} />}
-                {/* {sidebar === 'Giỏ hàng của tôi' && <Cart show={show} setShow={setShow} />}
-                {sidebar === 'Đơn hàng của tôi' && <TrackOrder show={show} setShow={setShow} />}
+                {sidebar === 'My Cart' && <Cart show={show} setShow={setShow} empty={empty} />}
+                {/* {sidebar === 'Đơn hàng của tôi' && <TrackOrder show={show} setShow={setShow} />}
                 {sidebar === 'Danh sách yêu thích' && <WishList show={show} setShow={setShow} />} */}
                 {sidebar === 'Q&A' && <FAQ show={show} setShow={setShow} />}
             </div>

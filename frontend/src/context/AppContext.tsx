@@ -3,7 +3,7 @@
 
 'use client'
 
-import { UserData } from "@/type/appType";
+import { CartData, UserData } from "@/type/appType";
 import axios from "axios";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ interface AppContextType {
     loadUserProfileData: () => Promise<void>
     sidebar: string
     setSidebar: React.Dispatch<React.SetStateAction<string>>
+    cart: CartData[] | false
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -24,6 +25,7 @@ export const AppContext = createContext<AppContextType>({
     loadUserProfileData: async () => { },
     sidebar: '',
     setSidebar: () => { },
+    cart: false
 });
 
 interface AppContextProviderProps {
@@ -37,6 +39,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     const [sidebar, setSidebar] = useState<string>('')
 
     const [userData, setUserData] = useState<UserData | false>(false)
+    const [cart, setCart] = useState<CartData[] | false>(false)
 
     const loadUserProfileData = async (): Promise<void> => {
         try {
@@ -44,7 +47,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
             if (data.success) {
                 setUserData(data.userData)
-                // setCart(data.userData.cart)
+                setCart(data.userData.cart)
                 // setWishlist(data.userData.wishlist)
             } else {
                 toast.error(data.message)
@@ -60,6 +63,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         userData,
         loadUserProfileData,
         sidebar, setSidebar,
+        cart
     }
 
     useEffect(() => {
