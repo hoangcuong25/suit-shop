@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa";
 import { FaRuler } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -15,8 +15,12 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { ProductData } from '@/type/appType';
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { AppContext } from '@/context/AppContext';
 
 const page = () => {
+
+    const { token } = useContext(AppContext)
 
     const pathName = usePathname()
 
@@ -24,6 +28,10 @@ const page = () => {
 
     const [productInfo, setProductInfo] = useState<ProductData>()
     const [loading, setLoading] = useState<boolean>(true)
+    const [loadingAddToCart, setLoadingAddToCart] = useState<boolean>(false)
+
+    const [size, setSize] = useState<string>('')
+    const [length, setLength] = useState<string>('')
 
     const getProductById = async (): Promise<void> => {
         try {
@@ -42,11 +50,26 @@ const page = () => {
         }
     }
 
+    const addToCard = async () => {
+        try {
+            setLoadingAddToCart(true)
+
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/add-to-card', { productId, size, length }, { headers: { token } })
+
+            if (data.success) {
+                toast.success("Add to card successfully")
+            }
+
+            setLoadingAddToCart(false)
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     useEffect(() => {
         getProductById()
     }, [productId])
-
-    console.log(productInfo)
 
     if (loading) {
         return <p className="text-center mt-20">Loading...</p>
@@ -65,7 +88,7 @@ const page = () => {
                         <Image src={productInfo?.image2 || ''} width={380} height={300} quality={100} alt='product' className='w-96 h-fit' />
                     </div>
                 }
-                <div className='mt-16'>
+                <div className='mt-5'>
                     <p className='text-3xl font-semibold'>Reviews</p>
                 </div>
             </div>
@@ -107,19 +130,59 @@ const page = () => {
                         <p className='underline underline-offset-4 cursor-pointer'>View Size Charts</p>
                     </div>
                     <div className='flex gap-2'>
-                        <div className='py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>34</div>
-                        <div className='py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>36</div>
-                        <div className='py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>38</div>
-                        <div className='py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>40</div>
-                        <div className='py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>42</div>
+                        <div
+                            onClick={() => setSize('34')}
+                            className={`py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${size === '34' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            34
+                        </div>
+                        <div
+                            onClick={() => setSize('36')}
+                            className={`py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${size === '36' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            36
+                        </div>
+                        <div
+                            onClick={() => setSize('38')}
+                            className={`py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${size === '38' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            38
+                        </div>
+                        <div
+                            onClick={() => setSize('40')}
+                            className={`py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${size === '40' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            40
+                        </div>
+                        <div
+                            onClick={() => setSize('42')}
+                            className={`py-1 w-12 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${size === '42' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            42
+                        </div>
                     </div>
                 </div>
                 <div className='text-sm mt-5'>
                     <p>Length</p>
                     <div className='flex gap-2 mt-2'>
-                        <div className='py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>Short</div>
-                        <div className='py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>Regular</div>
-                        <div className='py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer'>Long</div>
+                        <div
+                            onClick={() => setLength('short')}
+                            className={`py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${length === 'short' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            Short
+                        </div>
+                        <div
+                            onClick={() => setLength('regular')}
+                            className={`py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${length === 'regular' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            Regular
+                        </div>
+                        <div
+                            onClick={() => setLength('long')}
+                            className={`py-1 w-20 text-center border border-gray-300 hover:border-gray-600 cursor-pointer ${length === 'long' && 'bg-[#0e141a] text-white'}`}
+                        >
+                            Long
+                        </div>
                     </div>
                 </div>
 
@@ -155,6 +218,12 @@ const page = () => {
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
+
+                <Button
+                    onClick={addToCard}
+                    className='mt-5 py-6 text-lg font-semibold'>
+                    Buy Now
+                </Button>
             </div>
         </div >
     )

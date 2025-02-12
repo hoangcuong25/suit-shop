@@ -161,3 +161,60 @@ export const getProductById = async (req, res) => {
         res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
+
+// API add product to card
+export const addToCard = async (req, res) => {
+    try {
+        const { productId, size, length, userId } = req.body
+
+        if (!productId || !size || !length || !userId) {
+            return res.json({ success: false, message: 'Missing required fields.' })
+        }
+
+        const productData = await productModel.findById(productId)
+        const user = await userModel.findById(userId)
+
+        let isProduct = false
+        let indexProduct = 0
+        let isHave = false
+
+        user.cart.forEach((i, index) => {
+            if (i.product._id.toString() === productId) {
+                isProduct = true
+                indexProduct = index
+
+                if (i.amount.size === size && i.amount.length === length) {
+                    isHave = true
+
+                }
+            }
+        })
+
+        if (isProduct) {
+
+            if (isHave) {
+
+            }
+            res.json({ success: true })
+
+        } else {
+            const addToCart = {
+                product: productData,
+                amount: {
+                    quantity: 1,
+                    size: size,
+                    length: length
+                }
+            }
+
+            const cartData = [...user.cart, addToCart]
+
+            await userModel.findByIdAndUpdate(userId, { cart: cartData })
+            res.json({ success: true })
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
+    }
+}

@@ -71,9 +71,14 @@ const Page = () => {
         }
     }
 
+    const handleChange = (value: string) => {
+        setSorting(value);
+    };
+
     useEffect(() => {
         getProduct()
     }, [page, limit, type, price_option, sort])
+
 
     return (
         <div className='mt-8 px-3.5 md:px-7 xl:px-16'>
@@ -153,16 +158,16 @@ const Page = () => {
 
                                     <div className='flex flex-col gap-2'>
                                         <p className='text-left'>Sorting:</p>
-                                        <Select>
+                                        <Select onValueChange={handleChange}>
                                             <SelectTrigger className="w-[180px]">
                                                 <SelectValue placeholder="Sorting" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
-                                                    <SelectItem onClick={() => setSorting('low to high')} value="low to high">
+                                                    <SelectItem value="low to high">
                                                         Price from low to high
                                                     </SelectItem>
-                                                    <SelectItem onClick={() => setSorting('high to low')} value="high to low">
+                                                    <SelectItem value="high to low">
                                                         Price from high to low
                                                     </SelectItem>
                                                 </SelectGroup>
@@ -171,7 +176,7 @@ const Page = () => {
                                     </div>
 
                                     <Button
-                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=1`)}
+                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `sort=${sorting}&` : ''}limit=15&page=1`)}
                                         className='border border-[#0e141a] w-full mt-8'
                                     >
                                         Apply
