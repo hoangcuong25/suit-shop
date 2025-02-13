@@ -1,6 +1,5 @@
 'use client'
 
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState } from 'react'
 import axios from 'axios'

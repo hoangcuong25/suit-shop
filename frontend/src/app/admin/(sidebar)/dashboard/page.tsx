@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext } from 'react'
 import { FaUsers } from "react-icons/fa";
 import { GiPerfumeBottle } from "react-icons/gi";
 import { FaBox } from "react-icons/fa";
