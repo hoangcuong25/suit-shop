@@ -45,11 +45,11 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
         setLoadingDelete(false)
     }
 
-    const increaseQuantity = async (productId: string): Promise<void> => {
+    const increaseQuantity = async (productId: string, size: string, length: string): Promise<void> => {
         setLoading(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/increase-quantity', { productId }, { headers: { token } })
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/increase-quantity', { productId, size, length }, { headers: { token } })
 
             if (data.success) {
                 loadUserProfileData()
@@ -62,11 +62,11 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
         setLoading(false)
     }
 
-    const decreaseQuantity = async (productId: string): Promise<void> => {
+    const decreaseQuantity = async (productId: string, size: string, length: string): Promise<void> => {
         setLoading(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/decrease-quantity', { productId }, { headers: { token } })
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/decrease-quantity', { productId, size, length }, { headers: { token } })
 
             if (data.success) {
                 loadUserProfileData()
@@ -114,7 +114,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                         <div className='flex justify-start items-center gap-3.5'>
                                             <p
                                                 className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                                onClick={() => decreaseQuantity(i.product._id)}
+                                                onClick={() => decreaseQuantity(i.product._id, i.amount.size, i.amount.length)}
                                             >
                                                 -
                                             </p>
@@ -126,7 +126,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                             </p>
                                             <p
                                                 className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                                onClick={() => increaseQuantity(i.product._id)}
+                                                onClick={() => increaseQuantity(i.product._id, i.amount.size, i.amount.length)}
                                             >
                                                 +
                                             </p>
@@ -151,7 +151,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                 <div className='lg:flex hidden justify-center items-center gap-3.5'>
                                     <p
                                         className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                        onClick={() => decreaseQuantity(i.product._id)}
+                                        onClick={() => decreaseQuantity(i.product._id, i.amount.size, i.amount.length)}
                                     >
                                         -
                                     </p>
@@ -163,7 +163,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                     </p>
                                     <p
                                         className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                        onClick={() => increaseQuantity(i.product._id)}
+                                        onClick={() => increaseQuantity(i.product._id, i.amount.size, i.amount.length)}
                                     >
                                         +
                                     </p>
