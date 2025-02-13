@@ -8,9 +8,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiOutlineMenu, AiOutlineReload } from 'react-icons/ai';
 import { AppContext } from '@/context/AppContext';
-import { Link } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,6 +21,8 @@ type Props = {
 const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
 
     const { cart, token, loadUserProfileData } = useContext(AppContext)
+
+    const router = useRouter()
 
     const [loading, setLoading] = useState<boolean>(false)
     const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
@@ -188,7 +190,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                         <p className='text-2xl font-bold mb-3.5'>Your cart is empty!</p>
                         <p>Sorry! We know you were looking to buy something.</p>
                         <p>But first you need to add the item to your cart.</p>
-                        <p>Click <Link onClick={() => scrollTo(0, 0)} to='/' className='font-bold hover:underline'>here</Link> to continue shopping.</p>
+                        <p>Click <span onClick={() => router.push('/collections')} className='text-blue-500 hover:underline cursor-pointer'>here</span> to continue shopping.</p>
                     </div>
                 </div>
             }

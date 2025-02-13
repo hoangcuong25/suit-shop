@@ -21,7 +21,7 @@ import { useContext, useEffect, useState } from 'react';
 
 const Page = () => {
 
-    const { token } = useContext(AppContext)
+    const { token, loadUserProfileData } = useContext(AppContext)
 
     const pathName = usePathname()
 
@@ -58,7 +58,10 @@ const Page = () => {
             const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/add-to-card', { productId, size, length }, { headers: { token } })
 
             if (data.success) {
+                loadUserProfileData()
                 toast.success("Add to card successfully")
+            } else {
+                toast.warning("Chose size and length")
             }
 
             setLoadingAddToCart(false)
