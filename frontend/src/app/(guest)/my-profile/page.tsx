@@ -20,7 +20,7 @@ const MyProfile = () => {
     return (
         <div className='mb-8 mt-5 px-3.5 md:px-7 xl:px-16'>
 
-            <div className='flex justify-center mt-1.5 gap-0 md:gap-3'>
+            <div className='flex justify-center mt-1.5 gap-0 md:gap-1.5'>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} show={show} setShow={setShow} />
 
                 {sidebar === '' &&

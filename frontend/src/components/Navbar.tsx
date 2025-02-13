@@ -30,7 +30,7 @@ import GoogleLogin from './GoogleLogin';
 
 const Navbar = () => {
 
-    const { userData, token, setToken } = useContext(AppContext)
+    const { userData, token, setToken, cart } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -203,7 +203,12 @@ const Navbar = () => {
                             </div>
                         </div>
                     }
-                    <PiHandbagBold className='text-bg-[#0e141a] text-lg cursor-pointer' />
+                    <div className='relative'>
+                        <PiHandbagBold className='text-bg-[#0e141a] text-2xl cursor-pointer' />
+                        <div className='absolute -top-3 -right-3 bg-[#273d52] text-white size-6 flex justify-center items-center rounded-full text-[13px]'>
+                            {cart ? cart.length : 0}
+                        </div>
+                    </div>
 
                     <div className='block lg:hidden'>
                         <Sheet >

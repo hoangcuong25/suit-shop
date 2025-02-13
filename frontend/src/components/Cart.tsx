@@ -97,38 +97,41 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                         <FaShoppingBasket className='text-3xl text-gray-600' />
                         <p className='text-xl font-semibold'>Your cart</p>
                     </div>
-                    <div className='mt-3.5 flex lg:grid lg:grid-cols-[50%_13%_17%_13%_7%] lg:justify-center bg-gray-200 shadow-md px-3 py-2'>
+                    <div className='mt-3.5 flex lg:grid lg:grid-cols-[40%_15%_27%_15%_3%] lg:justify-center bg-gray-200 shadow-md px-3 py-2'>
                         <p className='text-lg font-semibold'>{cart.length} products</p>
                         <p className='text-lg font-semibold text-center hidden lg:block'>Price</p>
                         <p className='text-lg font-semibold text-center hidden lg:block'>Quantity</p>
                         <p className='text-lg font-semibold text-center hidden lg:block'>Total</p>
                     </div>
                     {cart && cart.map((i: any, index: number) => (
-                        <div key={index} className='mt-3.5 flex lg:grid items-center text-center lg:grid-cols-[50%_13%_17%_13%_7%] px-3 py-2'>
-                            <div className='flex gap-5 items-center'>
-                                <Image src={i.product && i.product.image1} width={200} height={200} className='w-28' alt="" />
+                        <div key={index} className='mt-3.5 flex lg:grid items-center text-center lg:grid-cols-[40%_15%_27%_15%_3%] px-3 py-2'>
+                            <div className='flex xl:gap-5 gap-3 items-center'>
+                                <Image src={i.product && i.product.image1} width={200} height={200} className='xl:w-28 w-[70px]' alt="" />
                                 <p className='lg:block hidden text-start'>{i.product.name}</p>
                                 <div className='lg:hidden flex flex-col gap-2 text-[13px]'>
                                     <p className='text-start'>{i.product.name}</p>
-                                    <div className='flex justify-start items-center gap-3.5'>
-                                        <p
-                                            className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                            onClick={() => decreaseQuantity(i.product._id)}
-                                        >
-                                            -
-                                        </p>
-                                        <p className='px-5 py-2 text-center font-semibold bg-gray-100 rounded-md  shadow-md'>
-                                            {loading ?
-                                                <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
-                                                : i.quantity
-                                            }
-                                        </p>
-                                        <p
-                                            className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                            onClick={() => increaseQuantity(i.product._id)}
-                                        >
-                                            +
-                                        </p>
+                                    <div>
+                                        <div className='flex justify-start items-center gap-3.5'>
+                                            <p
+                                                className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
+                                                onClick={() => decreaseQuantity(i.product._id)}
+                                            >
+                                                -
+                                            </p>
+                                            <p className='px-5 py-2 text-center font-semibold bg-gray-100 rounded-md  shadow-md'>
+                                                {loading ?
+                                                    <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
+                                                    : i.amount.quantity
+                                                }
+                                            </p>
+                                            <p
+                                                className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
+                                                onClick={() => increaseQuantity(i.product._id)}
+                                            >
+                                                +
+                                            </p>
+                                        </div>
+                                        <p className='mt-1.5'>size: {i.amount.size} - length: {i.amount.length}</p>
                                     </div>
                                     <div className='flex justify-between items-center'>
                                         <p className=''>{(i.product.newPrice * i.quantity)},00 usd</p>
@@ -143,26 +146,29 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                     </div>
                                 </div>
                             </div>
-                            <p className='lg:block hidden'>{(i.product.newPrice)},00 usd</p>
-                            <div className='lg:flex hidden justify-center items-center gap-3.5'>
-                                <p
-                                    className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                    onClick={() => decreaseQuantity(i.product._id)}
-                                >
-                                    -
-                                </p>
-                                <p className='px-5 py-2 text-center font-semibold bg-gray-100 rounded-md  shadow-md'>
-                                    {loading ?
-                                        <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
-                                        : i.quantity
-                                    }
-                                </p>
-                                <p
-                                    className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
-                                    onClick={() => increaseQuantity(i.product._id)}
-                                >
-                                    +
-                                </p>
+                            <p className='lg:block hidden text-center'>{(i.product.newPrice)},00 usd</p>
+                            <div className=''>
+                                <div className='lg:flex hidden justify-center items-center gap-3.5'>
+                                    <p
+                                        className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
+                                        onClick={() => decreaseQuantity(i.product._id)}
+                                    >
+                                        -
+                                    </p>
+                                    <p className='px-5 flex justify-center items-center font-semibold bg-gray-100 rounded-md  shadow-md'>
+                                        {loading ?
+                                            <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
+                                            : i.amount.quantity
+                                        }
+                                    </p>
+                                    <p
+                                        className='text-xl cursor-pointer py-0.5 w-7 rounded-full bg-gray-100 shadow-md'
+                                        onClick={() => increaseQuantity(i.product._id)}
+                                    >
+                                        +
+                                    </p>
+                                </div>
+                                <p className='mt-3.5 lg:block hidden'>size: {i.amount.size} - length: {i.amount.length}</p>
                             </div>
                             <p className='lg:block hidden'>{(i.product.newPrice * i.quantity)},00 usd</p>
 
@@ -176,9 +182,9 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                         </div>
                     ))}
 
-                    <div className='mt-3.5 flex items-center gap-5 place-self-start lg:place-self-end'>
+                    <div className='mt-3.5 flex flex-col items-center gap-5 place-self-start lg:place-self-end'>
                         <p className='text-lg font-semibold'>Subtotal: 123,00 usd</p>
-                        <Button className='w-52 py-3.5 mr-10 text-base font-semibold'>
+                        <Button className='w-52 py-3.5 text-base font-semibold'>
                             Pay Now
                         </Button>
                     </div>

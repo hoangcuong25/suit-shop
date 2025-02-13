@@ -24,12 +24,12 @@ const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
 
     return (
         <div className='relative'>
-            <div className={`md:flex flex-col bg-gray-100 border border-gray-300 rounded-md pt-2 w-72 h-fit shadow-md hover:shadow-lg transition-all ${show ? 'flex absolute z-50 top-10 left-3.5' : 'hidden'}`}>
+            <div className={`md:flex flex-col bg-gray-100 border border-gray-300 rounded-md pt-2 w-52 h-fit shadow-md hover:shadow-lg transition-all ${show ? 'flex absolute z-50 top-10 left-3.5' : 'hidden'}`}>
                 <div className='flex items-center mx-3.5 gap-2 mb-3.5'>
                     {userData && (
                         <>
                             <Image src={userData.image || ''} height={50} width={50} className='rounded-full size-12' alt="avata" />
-                            <div className='flex flex-col'>
+                            <div className='flex flex-col text-nowrap'>
                                 <p className='font-semibold'>Welcome {userData.firstName}</p>
                                 <p className='text-sm text-gray-500 cursor-pointer'>Edit account</p>
                             </div>
