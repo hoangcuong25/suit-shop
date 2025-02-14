@@ -11,12 +11,16 @@ interface AdminContextType {
     users: UserData[]
     products: ProductData[]
     orders: any[]
+    getAllUser: () => Promise<void>
+    getAllProduct: () => Promise<void>
 }
 
 export const AdminContext = createContext<AdminContextType>({
     users: [],
     products: [],
-    orders: []
+    orders: [],
+    getAllUser: async () => { },
+    getAllProduct: async () => { },
 })
 
 interface AdminContextProviderProps {
@@ -39,7 +43,7 @@ const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ children })
 
         } catch (error: any) {
             toast.error(
-                error.response?.data?.message || "Something went wrong"
+                error.response?.data?.message || "Something went wrong!"
             )
         }
     }
@@ -54,7 +58,7 @@ const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ children })
 
         } catch (error: any) {
             toast.error(
-                error.response?.data?.message || "Something went wrong"
+                error.response?.data?.message || "Something went wrong!"
             )
         }
     }
@@ -69,7 +73,7 @@ const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ children })
 
         } catch (error: any) {
             toast.error(
-                error.response?.data?.message || "Something went wrong"
+                error.response?.data?.message || "Something went wrong!"
             )
         }
     }
@@ -77,7 +81,9 @@ const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ children })
     const value = {
         users,
         products,
-        orders
+        orders,
+        getAllUser,
+        getAllProduct
     }
 
     useEffect(() => {

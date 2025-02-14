@@ -258,7 +258,7 @@ const Page = () => {
                         : <Button
                             onClick={addToCard}
                             className='mt-5 py-6 text-lg font-semibold'>
-                            Buy Now
+                            Add To Cart
                         </Button>
                     }
 

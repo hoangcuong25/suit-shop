@@ -2,11 +2,12 @@
 'use client'
 
 import { FaUsers } from "react-icons/fa";
-import { GiPerfumeBottle } from "react-icons/gi";
+import { FaVest } from "react-icons/fa";
 import { FaBox } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
 import { useContext } from "react";
 import { AdminContext } from "@/context/AdminContext";
+import Image from "next/image";
 
 const Dashboard = () => {
 
@@ -36,7 +37,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className='flex items-center gap-3.5 bg-gray-100 p-4 min-w-52 rounded shadow-md cursor-pointer hover:-translate-y-2 transition-all duration-300'>
-                    <GiPerfumeBottle className='text-3xl text-gray-800' />
+                    <FaVest className='text-3xl text-gray-800' />
                     <div>
                         <p className='text-xl font-medium text-gray-600'>
                             {products.length}
@@ -72,6 +73,31 @@ const Dashboard = () => {
                     <p className='font-bold text-xl'>Recent Orders</p>
                 </div>
 
+                <div className='flex flex-col gap-5 md:gap-8 mt-7'>
+                    {orders.reverse().slice(0, 5).map((i: any, index: number) => (
+                        <div key={index} className='bg-gray-100 border border-gray-200 rounded-md shadow-md hover:shadow-xl flex flex-col gap-2 px-2 py-1.5 md:px-5 md:py-5'>
+                            <p>Order code: <span className='font-semibold'>{i._id}</span></p>
+                            <p>Status: <span className='font-semibold'>{i.status}</span></p>
+                            <p>Subtotal: <span className='font-semibold'>{i.price} usd</span></p>
+                            <p>Order date: <span className='font-semibold'></span></p>
+                            <p>Shipping method: <span className='font-semibold'>{i.optionShip}</span></p>
+                            <p>Payment method: <span className='font-semibold'>{i.optionPayment}</span></p>
+
+                            <div className='flex flex-col gap-5 mt-3.5'>
+                                {i.productList.map((i: any, index: number) => (
+                                    <div key={index} className='flex items-center gap-3 text-[13px] md:text-sm'>
+                                        <Image src={i.productList && i.productList.image1} width={200} height={200} className='w-20' alt="" />
+                                        <div>
+                                            <p>Name: <span className='font-semibold'>{i.productList.name}</span> </p>
+                                            <p>Quantity: <span className='font-semibold'>{i.quantity}</span></p>
+                                            <p>Price per product: <span className='font-semibold'>{i.productList.newPrice}</span> usd</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )
