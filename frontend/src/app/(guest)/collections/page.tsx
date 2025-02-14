@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Suspense, useContext, useEffect, useState } from 'react'
 import { CiSliderHorizontal } from "react-icons/ci";
 import { FaCaretLeft } from "react-icons/fa";
 import {
@@ -33,12 +33,23 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AppContext } from '@/context/AppContext';
 
+
 const Page = () => {
 
     const { wishlistProduct, isWishlist } = useContext(AppContext)
 
     const router = useRouter()
     const pathName = usePathname()
+
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Content router={router} pathName={pathName} wishlistProduct={wishlistProduct} isWishlist={isWishlist} />
+        </Suspense>
+    )
+}
+
+const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
+
     const searchParams = useSearchParams()
 
     const limit = Number(searchParams.get('limit')) || 15
