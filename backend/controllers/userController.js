@@ -2,6 +2,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import userModel from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import productModel from '../models/productModel.js'
+import orderModel from '../models/orderModel.js'
 
 // api get profile
 export const profile = async (req, res) => {
@@ -328,6 +329,64 @@ export const wishlist = async (req, res) => {
 
             res.json({ success: true, message: 'Thêm vào danh sách thành công' })
         }
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api order
+export const order = async (req, res) => {
+    try {
+        const { userId, productInfor, subtotal, optionShip, optionPayment } = req.body
+
+        const cart = []
+        const productList = []
+
+        for (const i of productInfor) {
+            const product = await productModel.findById(i.productId)
+
+            console.log(i)
+
+            // productList.push({
+            //     productList: product,
+            //     quantity: i.amount.quantity,
+            // })
+        }
+
+        // const orderData = {
+        //     userId: userId,
+        //     productList: productList,
+        //     date: Date.now(),
+        //     price: subtotal,
+        //     optionShip: optionShip,
+        //     optionPayment: optionPayment
+        // }
+
+        // const newOrder = new orderModel(orderData)
+        // await newOrder.save()
+
+        // await userModel.findByIdAndUpdate(userId, { cart: cart })
+
+        res.status(200).json({ success: true })
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api get order
+export const getOrder = async (req, res) => {
+    try {
+        const { userId } = req.body
+
+        const orderData = await orderModel.find({ userId })
+
+        res.json({ success: true, orderData })
 
     }
     catch (error) {

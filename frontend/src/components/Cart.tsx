@@ -184,7 +184,10 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
 
                     <div className='mt-3.5 flex flex-col items-center gap-5 place-self-start lg:place-self-end'>
                         <p className='text-lg font-semibold'>Subtotal: 123,00 usd</p>
-                        <Button className='w-52 py-3.5 text-base font-semibold'>
+                        <Button
+                            onClick={() => router.push('/pay-ment')}
+                            className='w-52 py-3.5 text-base font-semibold'
+                        >
                             Pay Now
                         </Button>
                     </div>

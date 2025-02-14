@@ -30,3 +30,14 @@ export type CartData = {
     product: ProductData
     amount: any[]
 }
+
+export type OrderData = {
+    _id: string
+    userId: string
+    status: string
+    productList: []
+    date: string
+    price: number
+    optionShip: string
+    optionPayment: string
+}
