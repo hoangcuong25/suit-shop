@@ -208,7 +208,7 @@ const Navbar = () => {
                         className='relative'
                     >
                         <PiHandbagBold className='text-bg-[#0e141a] text-2xl cursor-pointer' />
-                        <div className='absolute -top-3 -right-3 bg-[#273d52] text-white size-6 flex justify-center items-center rounded-full text-[13px]'>
+                        <div className='absolute -top-3 -right-2.5 bg-[#273d52] text-white size-6 flex justify-center items-center rounded-full text-[13px]'>
                             {cart ? cart.length : 0}
                         </div>
                     </div>

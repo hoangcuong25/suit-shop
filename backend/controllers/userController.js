@@ -426,3 +426,29 @@ export const comment = async (req, res) => {
         res.status(400).json({ success: false, message: error.message })
     }
 }
+
+// api search
+export const search = async (req, res) => {
+    try {
+        const { query } = req.query
+
+        if (!query || typeof query !== 'string') {
+            return res.json({ success: false, message: 'Query parameter is required and must be a string' })
+        }
+
+        const searchCriteria = {
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+                { type: { $regex: query, $options: 'i' } }
+            ]
+        }
+
+        const products = await productModel.find(searchCriteria)
+        res.json({ success: true, products })
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+

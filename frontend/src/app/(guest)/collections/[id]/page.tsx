@@ -22,7 +22,6 @@ import { useContext, useEffect, useState } from 'react';
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -252,11 +251,17 @@ const Page = () => {
                         </AccordionItem>
                     </Accordion>
 
-                    <Button
-                        onClick={addToCard}
-                        className='mt-5 py-6 text-lg font-semibold'>
-                        Buy Now
-                    </Button>
+                    {loadingAddToCart
+                        ? <Button className='mt-5 py-6 text-lg font-semibold'>
+                            Loading...
+                        </Button>
+                        : <Button
+                            onClick={addToCard}
+                            className='mt-5 py-6 text-lg font-semibold'>
+                            Buy Now
+                        </Button>
+                    }
+
                 </div>
             </div>
 
