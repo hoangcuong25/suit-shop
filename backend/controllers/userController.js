@@ -297,3 +297,41 @@ export const decreaseQuantity = async (req, res) => {
         res.status(400).json({ success: false, message: error.message })
     }
 }
+
+// api add to wishlist
+export const wishlist = async (req, res) => {
+    try {
+        const { userId, productId } = req.body
+
+        const user = await userModel.findById(userId)
+        const productData = await productModel.findById(productId)
+
+        let isProduct = false
+        let indexProduct = 0
+
+        user.wishlist.forEach((i, index) => {
+            if (i._id.toString() === productId) {
+                isProduct = true
+                indexProduct = index
+            }
+        })
+
+        if (isProduct) {
+            const wishlist = user.wishlist
+            wishlist.splice(indexProduct, 1)
+            await userModel.findByIdAndUpdate(userId, { wishlist })
+
+            res.json({ success: true, message: 'Bỏ khỏi danh sách thành công' })
+        } else {
+            const wishlistData = [...user.wishlist, productData]
+            await userModel.findByIdAndUpdate(userId, { wishlist: wishlistData })
+
+            res.json({ success: true, message: 'Thêm vào danh sách thành công' })
+        }
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}

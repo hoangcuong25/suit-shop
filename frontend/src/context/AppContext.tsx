@@ -3,7 +3,7 @@
 
 'use client'
 
-import { CartData, UserData } from "@/type/appType";
+import { CartData, ProductData, UserData } from "@/type/appType";
 import axios from "axios";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -16,6 +16,9 @@ interface AppContextType {
     sidebar: string
     setSidebar: React.Dispatch<React.SetStateAction<string>>
     cart: CartData[] | false
+    wishlist: ProductData[] | false
+    wishlistProduct: (productId: string) => Promise<void>,
+    isWishlist: (productId: string) => boolean
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -25,8 +28,11 @@ export const AppContext = createContext<AppContextType>({
     loadUserProfileData: async () => { },
     sidebar: '',
     setSidebar: () => { },
-    cart: false
-});
+    cart: false,
+    wishlist: false,
+    wishlistProduct: async () => { },
+    isWishlist: () => false
+})
 
 interface AppContextProviderProps {
     children: ReactNode
@@ -40,6 +46,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const [userData, setUserData] = useState<UserData | false>(false)
     const [cart, setCart] = useState<CartData[] | false>(false)
+    const [wishlist, setWishlist] = useState<ProductData[] | false>(false)
 
     const loadUserProfileData = async (): Promise<void> => {
         try {
@@ -48,7 +55,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
             if (data.success) {
                 setUserData(data.userData)
                 setCart(data.userData.cart)
-                // setWishlist(data.userData.wishlist)
+                setWishlist(data.userData.wishlist)
             } else {
                 toast.error(data.message)
             }
@@ -58,12 +65,33 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         }
     }
 
+    const wishlistProduct = async (productId: string): Promise<void> => {
+        try {
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/wishlist', { productId }, { headers: { token } })
+
+            if (data.success) {
+                toast.success(data.message)
+                loadUserProfileData()
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
+    const isWishlist = (productId: string): boolean => {
+        return wishlist && wishlist.some((i) => i?._id === productId)
+    }
+
     const value = {
         token, setToken,
         userData,
         loadUserProfileData,
         sidebar, setSidebar,
-        cart
+        cart,
+        wishlist,
+        wishlistProduct,
+        isWishlist
     }
 
     useEffect(() => {

@@ -25,7 +25,6 @@ const Page = () => {
     const { token, loadUserProfileData } = useContext(AppContext)
 
     const pathName = usePathname()
-
     const productId = pathName.split('/')[2]
 
     const [productInfo, setProductInfo] = useState<ProductData>()
