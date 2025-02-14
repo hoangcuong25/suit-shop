@@ -12,6 +12,7 @@ import { FaRegWindowClose } from 'react-icons/fa';
 import empty from './empty.png'
 import wishlist_icon from './wishlist.jpg'
 import WishList from '@/components/WishList';
+import TrackOrder from '@/components/TrackOrder';
 
 const MyProfile = () => {
 
@@ -48,7 +49,7 @@ const MyProfile = () => {
                 {sidebar === 'Account Management' && <EditProfile show={show} setShow={setShow} />}
                 {sidebar === 'Earn points' && <Point show={show} setShow={setShow} />}
                 {sidebar === 'My Cart' && <Cart show={show} setShow={setShow} empty={empty} />}
-                {/* {sidebar === 'Đơn hàng của tôi' && <TrackOrder show={show} setShow={setShow} />} */}
+                {sidebar === 'My order' && <TrackOrder show={show} setShow={setShow} />}
                 {sidebar === 'My Wishlist' && <WishList show={show} setShow={setShow} wishlist_icon={wishlist_icon} />}
                 {sidebar === 'Q&A' && <FAQ show={show} setShow={setShow} />}
             </div>

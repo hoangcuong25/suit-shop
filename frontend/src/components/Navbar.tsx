@@ -204,7 +204,7 @@ const Navbar = () => {
                         </div>
                     }
                     <div
-                        onClick={() => { setSidebar('My Cart'); router.push('my-profile') }}
+                        onClick={() => { setSidebar('My Cart'); router.push('/my-profile') }}
                         className='relative'
                     >
                         <PiHandbagBold className='text-bg-[#0e141a] text-2xl cursor-pointer' />

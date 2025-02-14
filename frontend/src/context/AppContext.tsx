@@ -138,6 +138,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     useEffect(() => {
         if (token) {
             loadUserProfileData()
+            getOrder()
         } else {
             setUserData(false)
         }
