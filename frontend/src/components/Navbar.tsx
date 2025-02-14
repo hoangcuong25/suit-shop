@@ -4,7 +4,6 @@ import React, { useContext } from 'react'
 import { Button } from './ui/button'
 import { LuUser } from "react-icons/lu";
 import { PiHandbagBold } from "react-icons/pi";
-import { CiSearch } from "react-icons/ci";
 import { Occasions, SuitShopSpecials, SuitsTuxedos, Separates, Accessories, GiftsExtras, StartHere } from '@/assets/assets'
 import Image from 'next/image';
 import image1 from '../../public/get_started_shipping2.png'
@@ -27,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import { AppContext } from '@/context/AppContext';
 import Link from 'next/link';
 import GoogleLogin from './GoogleLogin';
+import Search from './Search';
 
 const Navbar = () => {
 
@@ -221,10 +221,7 @@ const Navbar = () => {
                             <SheetContent>
                                 <SheetHeader>
                                     <SheetTitle></SheetTitle>
-                                    <div className='flex md:hidden gap-2 items-center hover:underline cursor-pointer'>
-                                        <CiSearch className='text-xl' />
-                                        <p>Search</p>
-                                    </div>
+                                    <Search />
                                     <Accordion type="single" collapsible className="w-full">
                                         <AccordionItem onClick={() => router.push('/collections')} value="item-1">
                                             <AccordionTrigger className='text-base'>Shop</AccordionTrigger>

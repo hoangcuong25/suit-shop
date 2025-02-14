@@ -1,6 +1,6 @@
 import React from 'react'
-import { CiSearch } from "react-icons/ci";
 import { IoIosInformationCircleOutline } from "react-icons/io"
+import Search from './Search'
 
 const Header = () => {
     return (
@@ -8,7 +8,7 @@ const Header = () => {
             <p className='text-sm font-semibold hover:underline'>Fast & free shipping, returns, & exchanges</p>
 
             <div className='hidden md:flex items-center'>
-                <CiSearch className='text-xl cursor-pointer' />
+                <Search />
                 <p className='border-x px-3 mx-3 hover:underline cursor-pointer'>Location</p>
                 <div className='flex items-center gap-1.5 cursor-pointer hover:underline'>
                     <IoIosInformationCircleOutline className='text-xl' />
