@@ -86,15 +86,15 @@ const Page = () => {
     }
 
     return (
-        <div className='mt-10 px-3.5 md:px-7 xl:px-16 flex justify-between'>
+        <div className='mt-10 px-3.5 md:px-7 xl:px-16 flex flex-col items-center gap-5 md:flex-row 2xl:justify-evenly justify-between'>
             <div className='flex flex-col gap-8 2xl:gap-16'>
                 {productInfo &&
-                    <div className='flex gap-2'>
-                        <Image src={productInfo?.image1 || ''} width={380} height={300} quality={100} alt='product' className='w-96 h-fit' />
-                        <Image src={productInfo?.image2 || ''} width={380} height={300} quality={100} alt='product' className='w-96 h-fit' />
+                    <div className='flex flex-col lg:flex-row gap-2'>
+                        <Image src={productInfo?.image1 || ''} width={380} height={300} quality={100} alt='product' className='w-72 xl:w-96 h-fit' />
+                        <Image src={productInfo?.image2 || ''} width={380} height={300} quality={100} alt='product' className='w-72 xl:w-96 h-fit' />
                     </div>
                 }
-                <div className='mt-5'>
+                <div className='mt-5 hidden md:block'>
                     <p className='text-3xl font-semibold'>Reviews</p>
                 </div>
             </div>
@@ -230,6 +230,10 @@ const Page = () => {
                     className='mt-5 py-6 text-lg font-semibold'>
                     Buy Now
                 </Button>
+            </div>
+
+            <div className='mt-5 md:hidden block'>
+                <p className='text-3xl font-semibold'>Reviews</p>
             </div>
         </div >
     )
