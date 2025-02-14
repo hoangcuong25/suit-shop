@@ -12,16 +12,16 @@ const FAQ = ({ setShow, show }: Props) => {
 
     const faqs = [
         {
-            question: 'Làm thế nào để đăng ký tài khoản?',
-            answer: 'Bạn có thể đăng ký tài khoản bằng cách nhấn vào nút "Đăng ký" trên trang chủ và điền thông tin cần thiết.'
+            question: 'How to register an account?',
+            answer: 'You can register an account by clicking the "Register" button on the home page and filling in the required information.'
         },
         {
-            question: 'Quên mật khẩu, làm sao để khôi phục?',
-            answer: 'Hãy nhấp vào "Quên mật khẩu" tại trang đăng nhập và làm theo hướng dẫn để khôi phục mật khẩu của bạn.'
+            question: 'Forgot password, how to recover?',
+            answer: 'Click "Forgot Password" on the login page and follow the instructions to recover your password.'
         },
         {
-            question: 'Làm thế nào để liên hệ với bộ phận hỗ trợ?',
-            answer: 'Bạn có thể liên hệ qua biểu mẫu "Liên hệ" hoặc gửi email trực tiếp tới support@example.com.'
+            question: 'How do I contact support?',
+            answer: 'You can contact us via the "Contact" form or email us directly at support@example.com.'
         }
     ];
 
@@ -41,7 +41,7 @@ const FAQ = ({ setShow, show }: Props) => {
                 }
                 <p>Menu</p>
             </div>
-            <p className='font-bold text-xl md:text-2xl text-center mb-3'>Câu hỏi thường gặp</p>
+            <p className='font-bold text-xl md:text-2xl text-center mb-3'>Frequently Asked Questions</p>
 
             {faqs.map((faq, index) => (
                 <div key={index} className='bg-white rounded-lg shadow p-4 cursor-pointer'>

@@ -20,6 +20,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { Button } from './ui/button';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -294,7 +295,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                                 <DialogTitle>Change password</DialogTitle>
                                 <div>
                                     <div className='mt-10'>
-                                        <p>Mật khẩu cũ:</p>
+                                        <p>Old password:</p>
                                         <input
                                             type="text"
                                             className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
@@ -304,7 +305,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                                     </div>
 
                                     <div className='mt-3.5'>
-                                        <p>Mật khẩu Mới:</p>
+                                        <p>New Password:</p>
                                         <input
                                             type="text"
                                             className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
@@ -314,7 +315,7 @@ const EditProfile = ({ setShow, show }: Props) => {
                                     </div>
 
                                     <div className='mt-3.5'>
-                                        <p>Nhập lại mật khẩu Mới:</p>
+                                        <p>Re-enter New Password:</p>
                                         <input
                                             type="text"
                                             className='border border-gray-300 w-60 py-1 pl-1.5 mt-1.5'
@@ -323,7 +324,9 @@ const EditProfile = ({ setShow, show }: Props) => {
                                         />
                                     </div>
 
-                                    <div onClick={() => updatePassword()} className='mt-5 bg-red-500 py-2 text-center text-white hover:bg-red-600 cursor-pointer '>Lưu thay đổi</div>
+                                    <Button onClick={() => updatePassword()} className='mt-8 py-6 font-semibold w-full '>
+                                        Save changes
+                                    </Button>
 
                                 </div>
                             </DialogHeader>

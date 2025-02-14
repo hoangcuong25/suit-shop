@@ -322,12 +322,12 @@ export const wishlist = async (req, res) => {
             wishlist.splice(indexProduct, 1)
             await userModel.findByIdAndUpdate(userId, { wishlist })
 
-            res.json({ success: true, message: 'Bỏ khỏi danh sách thành công' })
+            res.json({ success: true, message: 'Remove from success list' })
         } else {
             const wishlistData = [...user.wishlist, productData]
             await userModel.findByIdAndUpdate(userId, { wishlist: wishlistData })
 
-            res.json({ success: true, message: 'Thêm vào danh sách thành công' })
+            res.json({ success: true, message: 'Add to list successfuly' })
         }
 
     }
@@ -388,6 +388,38 @@ export const getOrder = async (req, res) => {
 
         res.json({ success: true, orderData })
 
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api comment 
+export const comment = async (req, res) => {
+    try {
+        const { userId, comment, productId } = req.body
+
+        if (!comment) {
+            return res.json({ success: false, message: 'Let us know what you think' })
+        }
+
+        const userData = await userModel.findById(userId)
+
+        const commentData = {
+            userData: userData,
+            comment: comment
+        }
+
+        const product = await productModel.findById(productId)
+
+        const comments = product.comments
+
+        comments.push(commentData)
+
+        await productModel.findByIdAndUpdate(productId, { comments: comments })
+
+        res.json({ success: true })
     }
     catch (error) {
         console.log(error)
