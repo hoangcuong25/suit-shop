@@ -1,5 +1,6 @@
 import NavbarAdmin from "@/components/NavbarAdmin";
 import SidebarAdmin from "@/components/SidebarAdmin";
+import AdminContextProvider from "@/context/AdminContext";
 
 export default function RootLayout({
     children,
@@ -7,12 +8,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div>
-            <NavbarAdmin />
-            <div className='flex items-start '>
-                <SidebarAdmin />
-                {children}
+        <AdminContextProvider>
+            <div>
+                <NavbarAdmin />
+                <div className='flex items-start '>
+                    <SidebarAdmin />
+                    {children}
+                </div>
             </div>
-        </div>
+        </AdminContextProvider>
     );
 }

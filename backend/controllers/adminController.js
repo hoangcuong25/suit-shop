@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import productModel from '../models/productModel.js'
 import userModel from '../models/userModel.js'
+import orderModel from '../models/orderModel.js'
 
 // api login 
 export const login = async (req, res) => {
@@ -12,6 +13,19 @@ export const login = async (req, res) => {
         }
 
         res.json({ success: false });
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api get all product
+export const getAllProduct = async (req, res) => {
+    try {
+        const products = await productModel.find()
+
+        res.json({ success: true, products })
     }
     catch (error) {
         console.log(error)
@@ -55,6 +69,62 @@ export const addProduct = async (req, res) => {
         res.json({ success: true, newProduct })
 
     } catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api delete product 
+export const deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.body
+
+        await productModel.findByIdAndDelete(productId)
+        res.json({ success: true, message: "Xóa sản phẩm thành công" })
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api get all user
+export const getAllUser = async (req, res) => {
+    try {
+        const users = await userModel.find()
+
+        res.json({ success: true, users })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api delete user
+export const deleteUser = async (req, res) => {
+    try {
+        const { userId } = req.body
+
+        await userModel.findByIdAndDelete(userId)
+        res.json({ success: true, message: "Xóa người dùng thành công" })
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// api get all order
+export const getAllOder = async (req, res) => {
+    try {
+        const orders = await orderModel.find()
+
+        res.json({ success: true, orders })
+    }
+    catch (error) {
         console.log(error)
         res.status(400).json({ success: false, message: error.message })
     }

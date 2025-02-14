@@ -1,21 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
+
 import { FaUsers } from "react-icons/fa";
 import { GiPerfumeBottle } from "react-icons/gi";
 import { FaBox } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
+import { useContext } from "react";
+import { AdminContext } from "@/context/AdminContext";
 
 const Dashboard = () => {
 
-    // const { users, products, orders, formatMoney } = useContext(AppContext)
+    const { users, orders, products } = useContext(AdminContext)
 
-    // const totalRevenue = (): number => {
-    //     let revenue = 0
+    const totalRevenue = (): number => {
+        let revenue = 0
 
-    //     orders.map((i: any) => {
-    //         revenue += i.price
-    //     })
+        orders.map((i: any) => {
+            revenue += i.price
+        })
 
-    //     return revenue
-    // }
+        return revenue
+    }
 
     return (
         <div className='m-5'>
@@ -24,8 +29,7 @@ const Dashboard = () => {
                     <FaUsers className='text-3xl text-gray-800' />
                     <div>
                         <p className='text-xl font-medium text-gray-600'>
-                            {/* {users.length} */}
-                            123
+                            {users.length}
                         </p>
                         <p className='text-gray-500'>Member</p>
                     </div>
@@ -35,7 +39,7 @@ const Dashboard = () => {
                     <GiPerfumeBottle className='text-3xl text-gray-800' />
                     <div>
                         <p className='text-xl font-medium text-gray-600'>
-                            {/* {products.length} */} 123
+                            {products.length}
                         </p>
                         <p className='text-gray-500'>Product</p>
                     </div>
@@ -45,7 +49,7 @@ const Dashboard = () => {
                     <FaBox className='text-3xl text-gray-800' />
                     <div>
                         <p className='text-xl font-medium text-gray-600'>
-                            {/* {orders.length} */} 123
+                            {orders.length}
                         </p>
                         <p className='text-gray-500'>Orders</p>
                     </div>
@@ -55,8 +59,8 @@ const Dashboard = () => {
                     <FaMoneyBill className='text-3xl text-gray-800' />
                     <div>
                         <p className='text-xl font-medium text-gray-600'>
-                            {/* {formatMoney(totalRevenue())} */}
-                            123 vnđ</p>
+                            {totalRevenue()}
+                        </p>
                         <p className='text-gray-500'>Revenue</p>
                     </div>
                 </div>
