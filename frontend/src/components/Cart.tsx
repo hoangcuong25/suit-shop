@@ -20,7 +20,7 @@ type Props = {
 
 const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
 
-    const { cart, token, loadUserProfileData } = useContext(AppContext)
+    const { cart, token, loadUserProfileData, totalPrice } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -134,7 +134,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                         <p className='mt-1.5'>size: {i.amount.size} - length: {i.amount.length}</p>
                                     </div>
                                     <div className='flex justify-between items-center'>
-                                        <p className=''>{(i.product.newPrice * i.quantity)},00 usd</p>
+                                        <p className=''>{(i.product.newPrice * i.amount.quantity)},00 usd</p>
 
                                         {loadingDelete ?
                                             <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
@@ -170,7 +170,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                 </div>
                                 <p className='mt-3.5 lg:block hidden'>size: {i.amount.size} - length: {i.amount.length}</p>
                             </div>
-                            <p className='lg:block hidden'>{(i.product.newPrice * i.quantity)},00 usd</p>
+                            <p className='lg:block hidden'>{(i.product.newPrice * i.amount.quantity)},00 usd</p>
 
                             {loadingDelete ?
                                 <AiOutlineReload className='animate-spin text-green-500 text-xl text-center lg:block hidden' />
@@ -183,7 +183,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                     ))}
 
                     <div className='mt-3.5 flex flex-col items-center gap-5 place-self-start lg:place-self-end'>
-                        <p className='text-lg font-semibold'>Subtotal: 123,00 usd</p>
+                        <p className='text-lg font-semibold'>Subtotal: {totalPrice()},00 usd</p>
                         <Button
                             onClick={() => router.push('/pay-ment')}
                             className='w-52 py-3.5 text-base font-semibold'

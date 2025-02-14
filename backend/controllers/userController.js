@@ -348,27 +348,27 @@ export const order = async (req, res) => {
         for (const i of productInfor) {
             const product = await productModel.findById(i.productId)
 
-            console.log(i)
-
-            // productList.push({
-            //     productList: product,
-            //     quantity: i.amount.quantity,
-            // })
+            productList.push({
+                productList: product,
+                quantity: i.quantity,
+                size: i.size,
+                length: i.length
+            })
         }
 
-        // const orderData = {
-        //     userId: userId,
-        //     productList: productList,
-        //     date: Date.now(),
-        //     price: subtotal,
-        //     optionShip: optionShip,
-        //     optionPayment: optionPayment
-        // }
+        const orderData = {
+            userId: userId,
+            productList: productList,
+            date: Date.now(),
+            price: subtotal,
+            optionShip: optionShip,
+            optionPayment: optionPayment
+        }
 
-        // const newOrder = new orderModel(orderData)
-        // await newOrder.save()
+        const newOrder = new orderModel(orderData)
+        await newOrder.save()
 
-        // await userModel.findByIdAndUpdate(userId, { cart: cart })
+        await userModel.findByIdAndUpdate(userId, { cart: cart })
 
         res.status(200).json({ success: true })
 
