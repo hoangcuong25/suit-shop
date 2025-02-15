@@ -6,7 +6,6 @@ import { IoMdAdd } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { FaVest } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { CgWebsite } from "react-icons/cg";
 import Link from "next/link";
 
 const SidebarAdmin = () => {
