@@ -48,6 +48,26 @@ const Products = () => {
         setLoading(false)
     }
 
+    const addToIntestingProducts = async (productId: any) => {
+        setLoadingInterestingProduct(true)
+
+        try {
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/admin/add-to-interesting-products", { productId })
+
+            if (data.success) {
+                toast.success(data.message)
+                getAllProduct()
+            }
+        }
+        catch (error: any) {
+            toast.error(
+                error.response?.data?.message || "Something went wrong"
+            )
+        }
+
+        setLoadingInterestingProduct(false)
+    }
+
     return (
         <div className='m-5'>
             <div className='flex flex-col w-96 gap-3'>
@@ -94,12 +114,16 @@ const Products = () => {
                             }
 
                             {loadingInterestingProduct
-                                ? <Button onClick={(() => deleteProduct(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
+                                ? <Button className='mt-3.5 py-5 font-semibold text-base'>
                                     Loading...
                                 </Button>
-                                : <Button onClick={(() => deleteProduct(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
-                                    Add To Interesting Products
-                                </Button>
+                                : i.interesting ?
+                                    <Button onClick={(() => addToIntestingProducts(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
+                                        Remove From Interesting Products
+                                    </Button>
+                                    : <Button onClick={(() => addToIntestingProducts(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
+                                        Add To Interesting Products
+                                    </Button>
                             }
                         </div>
                     ))}

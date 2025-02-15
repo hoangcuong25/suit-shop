@@ -129,3 +129,25 @@ export const getAllOder = async (req, res) => {
         res.status(400).json({ success: false, message: error.message })
     }
 }
+
+// api add to interesting products
+export const addToInterestingProducts = async (req, res) => {
+    try {
+        const { productId } = req.body
+
+        const product = await productModel.findById(productId)
+
+        const newInteresting = !product.interesting
+        await productModel.findByIdAndUpdate(productId, { interesting: newInteresting })
+
+        if (product.interesting) {
+            return res.json({ success: true, message: "Remove from interesting products successfully" })
+        } else {
+            return res.json({ success: true, message: "Add to interesting products successfully" })
+        }
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}

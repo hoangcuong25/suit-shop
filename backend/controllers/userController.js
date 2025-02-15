@@ -452,3 +452,17 @@ export const search = async (req, res) => {
     }
 }
 
+// api get interesting products
+export const getInterestingProducts = async (req, res) => {
+    try {
+        const interestingProducts = await productModel.find({ interesting: true });
+
+        res.json({ success: true, interestingProducts });
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ success: false, message: error.message })
+    }
+}
+

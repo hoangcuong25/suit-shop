@@ -13,6 +13,7 @@ import empty from './empty.png'
 import wishlist_icon from './wishlist.jpg'
 import WishList from '@/components/WishList';
 import TrackOrder from '@/components/TrackOrder';
+import Interested from '@/components/interestingProducts';
 
 const MyProfile = () => {
 
@@ -53,6 +54,8 @@ const MyProfile = () => {
                 {sidebar === 'My Wishlist' && <WishList show={show} setShow={setShow} wishlist_icon={wishlist_icon} />}
                 {sidebar === 'Q&A' && <FAQ show={show} setShow={setShow} />}
             </div>
+
+            <Interested />
         </div>
     )
 }

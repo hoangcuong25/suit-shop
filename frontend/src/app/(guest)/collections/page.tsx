@@ -213,7 +213,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                                     className='group cursor-pointer'
                                 >
                                     <Image src={product.image1} height={500} width={500} quality={100} alt='product' className='w-96 h-auto' />
-                                    <p className=' mb-0 md:mb-3 text-sm md:text-base group-hover:underline underline-offset-2 md:underline-offset-8'>{product.name}</p>
+                                    <p className='mt-2 mb-0 md:mb-3 text-sm md:text-base group-hover:underline underline-offset-2 md:underline-offset-8'>{product.name}</p>
                                     <div className='flex gap-2'>
                                         <p className='text-[13px] md:text-sm text-gray-600 font-semibold'>{product.newPrice},00 US$</p>
                                         <p className='text-[13px] md:text-sm text-gray-400 line-through font-semibold'>{product.oldPrice},00 US$</p>
