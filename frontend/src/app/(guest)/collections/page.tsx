@@ -32,8 +32,6 @@ import { Button } from '@/components/ui/button';
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AppContext } from '@/context/AppContext';
-import Interested from '@/components/interestingProducts';
-
 
 const Page = () => {
 
@@ -281,7 +279,6 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                     Browse the collection today!
                 </p>
             </div>
-            <Interested />
         </div >
     )
 }

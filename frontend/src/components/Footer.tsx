@@ -7,7 +7,7 @@ import { TiTick } from "react-icons/ti";
 
 const Footer = () => {
     return (
-        <div className='flex flex-col bg-[#141d25] text-xs text-white py-3.5 px-3.5 md:px-7 xl:px-16 mt-12'>
+        <div className='flex flex-col bg-[#141d25] text-xs text-white py-3.5 px-3.5 md:px-7 xl:px-16 mt-12 '>
             <div className='flex flex-col md:flex-row justify-between gap-3'>
                 <div className='flex flex-col gap-1'>
                     <p className='font-bold mb-3.5 text-base'>Customer Service</p>

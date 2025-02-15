@@ -121,7 +121,10 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='p-3.5 pt-0 group'>
+                    <div
+                        onClick={() => router.push('/get-started')}
+                        className='p-3.5 pt-0 group'
+                    >
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Get Started</p>
 
                         <div className='absolute right-0 top-12 hidden group-hover:flex justify-evenly bg-gray-50 shadow-xl px-3 py-5 h-fit w-screen '>
@@ -143,10 +146,16 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='p-3.5 pt-0 group'>
+                    <div
+                        onClick={() => router.push('/fit-guide')}
+                        className='p-3.5 pt-0 group'
+                    >
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Fit Guide</p>
                     </div>
-                    <div className='p-3.5 pt-0 group'>
+                    <div
+                        onClick={() => router.push('/contact-us')}
+                        className='p-3.5 pt-0 group'
+                    >
                         <p className='group-hover:underline underline-offset-8 cursor-pointer'>Contact Us</p>
                     </div>
                 </div>
