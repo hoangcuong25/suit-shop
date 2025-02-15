@@ -8,12 +8,25 @@ import axios from 'axios'
 import { AiOutlineReload } from 'react-icons/ai'
 import Image from 'next/image'
 import { AdminContext } from '@/context/AdminContext'
+import { Button } from '@/components/ui/button';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const Products = () => {
 
     const { products, getAllProduct } = useContext(AdminContext)
 
     const [loading, setLoading] = useState(false)
+    const [loadingInterestingProduct, setLoadingInterestingProduct] = useState(false)
 
     const deleteProduct = async (productId: any) => {
         setLoading(true)
@@ -59,9 +72,34 @@ const Products = () => {
                                 ? <button className='flex justify-center mt-3.5 bg-gray-300 py-2.5 text-white'>
                                     <AiOutlineReload className='animate-spin text-green-500 text-2xl' />
                                 </button>
-                                : <button onClick={(() => deleteProduct(i._id))} className='mt-3.5 bg-red-500 py-2.5 text-white'>
-                                    Delete product
-                                </button>
+                                : <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        <button className='mt-3.5 bg-red-500 py-2.5 rounded-[7px] font-semibold w-full text-white'>
+                                            Delete product
+                                        </button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete your product.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={(() => deleteProduct(i._id))}>Continue</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            }
+
+                            {loadingInterestingProduct
+                                ? <Button onClick={(() => deleteProduct(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
+                                    Loading...
+                                </Button>
+                                : <Button onClick={(() => deleteProduct(i._id))} className='mt-3.5 py-5 font-semibold text-base'>
+                                    Add To Interesting Products
+                                </Button>
                             }
                         </div>
                     ))}

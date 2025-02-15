@@ -7,6 +7,17 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AiOutlineReload } from 'react-icons/ai'
 import { AdminContext } from '@/context/AdminContext'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const ManageUser = () => {
 
@@ -59,9 +70,26 @@ const ManageUser = () => {
                                 ? <button className='flex justify-center mt-3.5 bg-gray-300 py-2.5 text-white'>
                                     <AiOutlineReload className='animate-spin text-green-500 text-2xl' />
                                 </button>
-                                : <button onClick={(() => deleteUser(i._id))} className='mt-3.5 bg-red-500 py-2.5 text-white'>
-                                    Delete user
-                                </button>
+                                :
+                                <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        <button className='mt-3.5 bg-red-500 rounded-[7px] w-full py-2.5 text-white'>
+                                            Delete user
+                                        </button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete this user.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={(() => deleteUser(i._id))}>Continue</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             }
                         </div>
                     ))}

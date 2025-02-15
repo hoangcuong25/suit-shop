@@ -1,14 +1,17 @@
 'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import upload from './upload.png'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AiOutlineReload } from 'react-icons/ai';
 import Image from 'next/image';
+import { AdminContext } from '@/context/AdminContext';
 
 const AddProduct = () => {
+
+    const {getAllProduct} = useContext(AdminContext)
 
     const [loading, setLoading] = useState<boolean>(false)
     const [image1, setImage1] = useState<File | null>(null)
@@ -47,6 +50,7 @@ const AddProduct = () => {
 
             if (data.success) {
                 toast.success("Add Product Successfully");
+                getAllProduct()
             } else {
                 toast.error(data.message);
             }
