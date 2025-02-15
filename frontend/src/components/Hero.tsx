@@ -10,6 +10,7 @@ import image2 from '../../public/spotlight-collection-mens-2.jpg'
 import image3 from '../../public/spotlight-collection-prom.jpg'
 import image4 from '../../public/spotlight-collection-womens.jpg'
 import fullImage from '../../public/tan-magazine.jpg'
+import Interested from './interestingProducts';
 
 const Hero = () => {
     return (
@@ -31,31 +32,31 @@ const Hero = () => {
             </div>
             <div className='my-20 px-3.5 md:px-7 xl:px-16 flex flex-wrap justify-evenly gap-5'>
                 <div className='flex gap-3'>
-                    <FaTruckFast className='text-5xl text-[#0e141a]' />
+                    <FaTruckFast className='text-3xl text-[#0e141a]' />
                     <div>
                         <p className='font-semibold'>Ready to Ship, Free</p>
-                        <p className='text-sm w-72'>Fast + free shipping, returns, + exchanges made easy</p>
+                        <p className='text-[13px] w-52'>Fast + free shipping, returns, + exchanges made easy</p>
                     </div>
                 </div>
                 <div className='flex gap-3'>
-                    <FaBox className='text-5xl text-[#0e141a]' />
+                    <FaBox className='text-3xl text-[#0e141a]' />
                     <div>
                         <p className='font-semibold'>Ownership at Rental Prices</p>
-                        <p className='text-sm w-72'>Starting at just $199, get brand new, quality suits to keep</p>
+                        <p className='text-[13px] w-52'>Starting at just $199, get brand new, quality suits to keep</p>
                     </div>
                 </div>
                 <div className='flex gap-3'>
-                    <BiSolidDrink className='text-5xl text-[#0e141a]' />
+                    <BiSolidDrink className='text-3xl text-[#0e141a]' />
                     <div>
                         <p className='font-semibold'>Well-Suited for Groups</p>
-                        <p className='text-sm w-72'>Weddings + event groups get organization + attention</p>
+                        <p className='text-[13px] w-52'>Weddings + event groups get organization + attention</p>
                     </div>
                 </div>
                 <div className='flex gap-3'>
-                    <FaRuler className='text-5xl text-[#0e141a]' />
+                    <FaRuler className='text-3xl text-[#0e141a]' />
                     <div>
                         <p className='font-semibold'>Sizing Made Simple</p>
-                        <p className='text-sm w-72'>Broad size range, easy fit tools, no measurements required</p>
+                        <p className='text-[13px] w-52'>Broad size range, easy fit tools, no measurements required</p>
                     </div>
                 </div>
             </div>
@@ -89,6 +90,11 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
+
+            <div className='px-3.5 md:px-7 xl:px-16 my-10'>
+                <Interested />
+            </div>
+
             <div className='mt-10 relative'>
                 <Image src={fullImage} alt='image' />
                 <div className='absolute bottom-5 left-5  md:bottom-20 md:left-20 lx:bottom-32 xl:left-32 text-white'>

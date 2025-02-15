@@ -36,7 +36,7 @@ const TrackOrder: React.FC<Props> = ({ setShow, show }) => {
                 }
                 <p>Menu</p>
             </div>
-            {order ?
+            {order && order.length > 0 ?
                 <>
                     <div className='flex flex-col'>
                         <div className='flex gap-3.5' >

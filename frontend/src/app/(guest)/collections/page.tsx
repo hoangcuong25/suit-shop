@@ -32,6 +32,7 @@ import { Button } from '@/components/ui/button';
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AppContext } from '@/context/AppContext';
+import Interested from '@/components/interestingProducts';
 
 
 const Page = () => {
@@ -222,7 +223,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
                                 <div
                                     onClick={() => wishlistProduct(product._id)}
-                                    className='absolute z-40 top-2 right-2 text-xl hover:scale-110 cursor-pointer'
+                                    className='absolute z-40 top-2 2xl:right-10 right-2 text-xl hover:scale-110 cursor-pointer'
                                 >
 
                                     {isWishlist(product._id)
@@ -280,6 +281,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                     Browse the collection today!
                 </p>
             </div>
+            <Interested />
         </div >
     )
 }

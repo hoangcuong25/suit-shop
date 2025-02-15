@@ -67,7 +67,7 @@ const Interested = () => {
     }
 
     return (
-        <div className='flex flex-col gap-5 mt-8'>
+        <div className='flex flex-col gap-5 mt-10'>
             <span className='text-lg md:text-2xl font-semibold w-fit border-b border-gray-500'>Interesting products:</span>
             <Slider {...setting}>
                 {interestingProducts && interestingProducts?.slice(0, 8).map((product: any, index: number) => {
@@ -87,7 +87,7 @@ const Interested = () => {
 
                             <div
                                 onClick={() => wishlistProduct(product._id)}
-                                className='absolute z-40 top-2 right-14 text-xl hover:scale-110 cursor-pointer'
+                                className='absolute z-40 top-2 2xl:right-10 right-2 text-xl hover:scale-110 cursor-pointer'
                             >
 
                                 {isWishlist(product._id)

@@ -286,7 +286,7 @@ const Page = () => {
 
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button>Edit Profile</Button>
+                            <Button>Comment</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
