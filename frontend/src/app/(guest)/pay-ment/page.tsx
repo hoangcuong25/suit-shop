@@ -41,20 +41,32 @@ const Payment = () => {
                 })
             })
 
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment }, { headers: { token } })
+            if (optionPayment === 'Cash on Delivery') {
+                const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment }, { headers: { token } })
 
-            if (data.success) {
-                toast.success('Order successful')
-                scrollTo(0, 0)
-                loadUserProfileData()
-                getOrder()
+                if (data.success) {
+                    toast.success('Order successful')
+                    scrollTo(0, 0)
+                    loadUserProfileData()
+                    getOrder()
+                }
             }
+            else {
+                const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/order/create_payment_url')
+
+                if (data.success) {
+                    toast.success('Order successful')
+                    // scrollTo(0, 0)
+                    // loadUserProfileData()
+                    // getOrder()
+                }
+            }
+
         }
         catch (error: any) {
             toast.error(error.response?.data?.message || "Something went wrong")
         }
 
-        scrollTo(0, 0)
         setLoading(false)
     }
 
@@ -151,7 +163,7 @@ const Payment = () => {
                                         Payment by bank transfer
                                     </p>
                                     <p className="text-gray-600">
-                                        You use e-wallet to pay online by scanning QR code
+                                        You use e-wallet to pay online
                                     </p>
                                 </div>
                             </div>
@@ -166,7 +178,7 @@ const Payment = () => {
                         <div className='flex justify-start md:justify-end mt-3.5'>
                             <input
                                 type="text"
-                                placeholder='Nhập mã khyến mãi'
+                                placeholder='Enter promo code'
                                 className='w-52 py-1 border border-gray-300 hover:border-gray-400 px-1.5 focus:outline-none'
                             />
                             <div className='w-24 py-1 bg-black text-white text-center'>
