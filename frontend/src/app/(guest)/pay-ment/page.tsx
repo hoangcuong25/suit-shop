@@ -29,6 +29,8 @@ const Payment = () => {
     const order = async (): Promise<void> => {
         setLoading(true)
 
+        let isPay = false
+
         if (!Array.isArray(cart)) return
 
         try {
@@ -41,25 +43,22 @@ const Payment = () => {
                 })
             })
 
-            if (optionPayment === 'Cash on Delivery') {
-                const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment }, { headers: { token } })
+            if (optionPayment !== 'Cash on Delivery') {
+                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/create_payment_url?amount=${subtotal}`
+                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/vnpay_return`
 
-                if (data.success) {
-                    toast.success('Order successful')
-                    scrollTo(0, 0)
-                    loadUserProfileData()
-                    getOrder()
-                }
+                if (!returnUrl) return
+
+                isPay = true
             }
-            else {
-                const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/order/create_payment_url')
 
-                if (data.success) {
-                    toast.success('Order successful')
-                    // scrollTo(0, 0)
-                    // loadUserProfileData()
-                    // getOrder()
-                }
+            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay }, { headers: { token } })
+
+            if (data.success) {
+                toast.success('Order successful')
+                scrollTo(0, 0)
+                loadUserProfileData()
+                getOrder()
             }
 
         }

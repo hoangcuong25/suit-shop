@@ -8,6 +8,7 @@ const orderSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     optionShip: { type: String, required: true },
     optionPayment: { type: String, required: true },
+    isPay: { type: Boolean, default: false }
 }, { minimize: false })
 
 const orderModel = mongoose.model('order', orderSchema)

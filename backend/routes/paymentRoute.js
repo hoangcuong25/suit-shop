@@ -13,7 +13,8 @@ paymentRouter.get('/', (req, res) => {
 });
 
 paymentRouter.get('/create_payment_url', (req, res) => {
-    res.render('order', { title: 'Tạo mới đơn hàng', amount: 10000 });
+    const amount = req.query.amount || 0
+    res.render('order', { title: 'Tạo mới đơn hàng', amount });
 });
 
 paymentRouter.get('/querydr', (req, res) => {
@@ -52,7 +53,7 @@ paymentRouter.post('/create_payment_url', (req, res) => {
         vnp_TxnRef: orderId,
         vnp_OrderInfo: `Thanh toan cho ma GD: ${orderId}`,
         vnp_OrderType: 'other',
-        vnp_Amount: amount * 100,
+        vnp_Amount: amount * 100 * 25190,
         vnp_ReturnUrl: returnUrl,
         vnp_IpAddr: ipAddr,
         vnp_CreateDate: createDate

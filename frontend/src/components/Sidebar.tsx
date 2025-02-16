@@ -50,7 +50,7 @@ const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
                         className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'Earn points' && 'bg-stone-200 text-orange-500'}`}
                         onClick={() => { setSidebar('Earn points'); setShow(false); }}
                     >
-                        Earn points
+                        Earn Points
                     </p>
                     <p
                         className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My Cart' && 'bg-stone-200 text-orange-500'}`}
@@ -62,7 +62,7 @@ const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
                         className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My order' && 'bg-stone-200 text-orange-500'}`}
                         onClick={() => { setSidebar('My order'); setShow(false); }}
                     >
-                        My order
+                        My Order
                     </p>
                     <p
                         className={`py-1.5 cursor-pointer px-3.5 ${sidebar === 'My Wishlist' && 'bg-stone-200 text-orange-500'}`}
