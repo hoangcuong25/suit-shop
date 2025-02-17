@@ -62,15 +62,24 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
     const [priceOptionData, setPriceOptionData] = useState<string | false>(price_option)
     const [sorting, setSorting] = useState<string | false>(sort)
 
+    const lastPostIndex = page * limit
+    const firstPostIndex = lastPostIndex - limit
+    const currentPosts = productData?.slice(firstPostIndex, lastPostIndex)
+
     const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type, price_option, sort })
-
-            setProductData(data.productData)
+            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products")
+            setProductData(data.products)
         }
         catch (error: any) {
             toast.error(error.response?.data?.message || "Something went wrong")
         }
+    }
+
+    const pages = []
+
+    for (let i = 1; i <= Math.ceil(productData.length / limit); i++) {
+        pages.push(i)
     }
 
     const handlePre = () => {
@@ -89,10 +98,19 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
         setSorting(value);
     };
 
+    const filteAndSort = () => {
+        if (type) {
+            setProductData(productData.filter((p) => p.type === type))
+        }
+    }
+
     useEffect(() => {
         getProduct()
-    }, [page, limit, type, price_option, sort])
+    }, [])
 
+    useEffect(() => {
+        filteAndSort()
+    }, [page, limit, type, price_option, sort])
 
     return (
         <div className='mt-8 px-3.5 md:px-7 xl:px-16'>
@@ -205,7 +223,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
             <div className='mt-7'>
                 <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center gap-3'>
                     {
-                        productData?.map((product, index) => (
+                        currentPosts?.map((product, index) => (
                             <div key={index} className='relative'>
                                 <div
                                     onClick={() => router.push(`/collections/${product._id}`)}
@@ -242,18 +260,16 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                         Previous
                     </div>
 
-                    <Link
-                        className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}
-                        href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=1`}
-                    >
-                        1
-                    </Link>
-                    <Link
-                        className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 2 && 'bg-[#20303f] text-white'}`}
-                        href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=2`}
-                    >
-                        2
-                    </Link>
+                    {pages.map((page, index) => (
+                        <Link
+                            key={index}
+                            className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}
+                            href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page}`}
+                        >
+                            {page}
+                        </Link>
+                    ))
+                    }
 
                     <div
                         onClick={handleNext}
