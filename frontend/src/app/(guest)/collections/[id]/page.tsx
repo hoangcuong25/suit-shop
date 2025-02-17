@@ -13,7 +13,6 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { ProductData } from '@/type/appType';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -27,10 +26,11 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { AiOutlineReload } from 'react-icons/ai';
+import axiosClient from '@/lib/axiosClient';
 
 const Page = () => {
 
-    const { token, loadUserProfileData } = useContext(AppContext)
+    const { loadUserProfileData } = useContext(AppContext)
 
     const [loadingComment, setLoadingComment] = useState<boolean>(false)
 
@@ -50,7 +50,7 @@ const Page = () => {
         try {
             setLoading(true)
 
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-product-by-id', { productId })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-product-by-id', { productId })
 
             if (data.success) {
                 setProductInfo(data.productData)
@@ -67,7 +67,7 @@ const Page = () => {
         try {
             setLoadingAddToCart(true)
 
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/add-to-card', { productId, size, length }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/add-to-card', { productId, size, length })
 
             if (data.success) {
                 loadUserProfileData()
@@ -87,7 +87,7 @@ const Page = () => {
         setLoadingComment(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/comment', { comment, productId }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/comment', { comment, productId })
 
             if (data.success) {
                 toast.success('Comments successfully')

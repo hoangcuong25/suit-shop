@@ -3,6 +3,11 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import userModel from '../models/userModel.js'
 import transporter from '../config/nodemailer.js'
+import { redis } from "../config/redis.js"
+
+const storeRefreshToken = async (userId, refreshToken) => {
+    await redis.set(`refresh_token:${userId}`, refreshToken, "EX", 7 * 24 * 60 * 60); // 7days
+}
 
 // api to register
 export const registerUser = async (req, res) => {
@@ -55,9 +60,12 @@ export const registerUser = async (req, res) => {
         const newUser = new userModel(userData)
         await newUser.save()
 
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECERT)
+        const access_token = jwt.sign({ id: newUser._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
+        const refresh_token = jwt.sign({ id: newUser._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
 
-        res.json({ success: true, token })
+        await storeRefreshToken(newUser._id, refresh_token);
+
+        res.json({ success: true, access_token, refresh_token })
 
     } catch (error) {
         console.log(error)
@@ -78,8 +86,12 @@ export const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (isMatch) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECERT)
-            return res.json({ success: true, token });
+            const access_token = jwt.sign({ id: newUser._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
+            const refresh_token = jwt.sign({ id: newUser._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
+
+            await storeRefreshToken(newUser._id, refresh_token);
+
+            return res.json({ success: true, access_token, refresh_token });
 
         } else {
             res.json({ success: false, message: 'Incorrect password' })
@@ -103,9 +115,12 @@ export const LoginGoogle = async (req, res) => {
         const isEmail = await userModel.findOne({ email: email })
 
         if (isEmail) {
-            const token = jwt.sign({ id: isEmail._id }, process.env.JWT_SECERT)
+            const access_token = jwt.sign({ id: isEmail._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
+            const refresh_token = jwt.sign({ id: isEmail._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
 
-            return res.json({ success: true, token })
+            await storeRefreshToken(isEmail._id, refresh_token);
+
+            return res.json({ success: true, access_token, refresh_token })
         } else {
             const generatedPassword = Math.random().toString(36).slice(-8)
             const hashedPassword = await bcrypt.hash(generatedPassword, 10);
@@ -123,8 +138,12 @@ export const LoginGoogle = async (req, res) => {
             const newUser = new userModel(userData)
             await newUser.save()
 
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECERT)
-            return res.json({ success: true, token })
+            const access_token = jwt.sign({ id: newUser._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
+            const refresh_token = jwt.sign({ id: newUser._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
+
+            await storeRefreshToken(newUser._id, refresh_token);
+
+            return res.json({ success: true, access_token, refresh_token })
         }
 
     } catch (error) {
@@ -133,47 +152,31 @@ export const LoginGoogle = async (req, res) => {
     }
 }
 
-// api login with github
-export const LoginGithub = async (req, res) => {
+// this will refresh the access token
+export const refreshToken = async (req, res) => {
     try {
-        const { firstName, lastName, image } = req.body
+        const refreshToken = req.headers.refreshtoken
 
-        if (!firstName || !lastName || !image) {
-            return res.json({ success: false, message: "Please Fill In All Information" })
+        if (!refreshToken) {
+            return res.status(401).json({ message: "No refresh token provided!!!" });
         }
 
-        const isEmail = await userModel.findOne({ email: email })
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECERT);
+        const storedToken = await redis.get(`refresh_token:${decoded.id}`);
 
-        if (isEmail) {
-            const token = jwt.sign({ id: isEmail._id }, process.env.JWT_SECERT)
-
-            return res.json({ success: true, token })
-        } else {
-            const generatedPassword = Math.random().toString(36).slice(-8)
-            const hashedPassword = await bcrypt.hash(generatedPassword, 10);
-
-            const userData = {
-                firstName,
-                lastName,
-                email,
-                phone: "Unknown",
-                password: hashedPassword,
-                dob: "Unknown",
-                image
-            }
-
-            const newUser = new userModel(userData)
-            await newUser.save()
-
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECERT)
-            return res.json({ success: true, token })
+        if (storedToken !== refreshToken) {
+            return res.status(401).json({ message: "Invalid refresh token" });
         }
+
+        const access_token = jwt.sign({ id: decoded.id }, process.env.ACCESS_JWT_SECERT, { expiresIn: "30m" });
+
+        res.json({ message: "Token refreshed successfully", access_token });
 
     } catch (error) {
-        console.log(error.message)
-        res.json({ success: false, message: error.message })
+        console.log("Error in refreshToken controller", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
 
 export const sendResetOtp = async (req, res) => {
     try {

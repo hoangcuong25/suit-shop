@@ -3,6 +3,7 @@
 
 'use client'
 
+import axiosClient from "@/lib/axiosClient";
 import { CartData, OrderData, ProductData, UserData } from "@/type/appType";
 import axios from "axios";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
@@ -57,7 +58,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const loadUserProfileData = async (): Promise<void> => {
         try {
-            const { data } = await axios.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/profile', { headers: { token } })
+            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/profile')
 
             if (data.success) {
                 setUserData(data.userData)
@@ -102,7 +103,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const getOrder = async (): Promise<void> => {
         try {
-            const { data } = await axios.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-order', { headers: { token } })
+            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-order')
 
             if (data.success) {
                 setOrder(data.orderData)
@@ -129,7 +130,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     }
 
     useEffect(() => {
-        const savedToken = localStorage.getItem("token");
+        const savedToken = localStorage.getItem("access_token");
         if (savedToken) {
             setToken(savedToken);
         }

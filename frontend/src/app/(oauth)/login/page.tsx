@@ -35,8 +35,9 @@ const Login = () => {
 
             if (data.success) {
                 toast.success("Login Successfully")
-                localStorage.setItem('token', data.token)
-                setToken(data.token)
+                localStorage.setItem('access_token', data.access_token)
+                localStorage.setItem('refresh_token', data.refresh_token)
+                setToken(data.access_token)
                 router.push('/')
                 scrollTo(0, 0)
             } else {

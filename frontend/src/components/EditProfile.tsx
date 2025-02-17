@@ -8,7 +8,6 @@ import { MdLocalPhone } from "react-icons/md";
 import { IoMdLock } from "react-icons/io";
 import { FaFacebook, FaRegWindowClose } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiOutlineMenu, AiOutlineReload } from "react-icons/ai";
 import Image from 'next/image';
@@ -21,6 +20,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from './ui/button';
+import axiosClient from '@/lib/axiosClient';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,7 +29,7 @@ type Props = {
 
 const EditProfile = ({ setShow, show }: Props) => {
 
-    const { userData, token, loadUserProfileData } = useContext(AppContext)
+    const { userData, loadUserProfileData } = useContext(AppContext)
 
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -69,13 +69,12 @@ const EditProfile = ({ setShow, show }: Props) => {
                 formData.append('image', image)  // Append image file
             }
 
-            const { data } = await axios.put(
+            const { data } = await axiosClient.put(
                 process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-profile',
                 formData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
-                        token: token
+                        'Content-Type': 'multipart/form-data'
                     }
                 }
             )
@@ -96,7 +95,7 @@ const EditProfile = ({ setShow, show }: Props) => {
 
     const updatePassword = async (): Promise<void> => {
         try {
-            const { data } = await axios.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-password', { oldPassword, newPassword1, newPassword2 }, { headers: { token } })
+            const { data } = await axiosClient.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-password', { oldPassword, newPassword1, newPassword2 })
 
             if (data.success) {
                 toast.success('Password changed successfully')
@@ -114,7 +113,7 @@ const EditProfile = ({ setShow, show }: Props) => {
         e.preventDefault()
 
         try {
-            const { data } = await axios.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-phone', { phone }, { headers: { token } })
+            const { data } = await axiosClient.put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/update-phone', { phone })
 
             if (data.success) {
                 toast.success('Change phone number successfully')

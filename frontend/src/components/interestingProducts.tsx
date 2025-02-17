@@ -6,12 +6,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { AppContext } from '@/context/AppContext';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ProductData } from '@/type/appType';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import axiosClient from '@/lib/axiosClient';
 
 const Interested = () => {
 
@@ -23,7 +23,7 @@ const Interested = () => {
 
     const getInterestingProducts = async (): Promise<any> => {
         try {
-            const { data } = await axios.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-interesting-products')
+            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-interesting-products')
             setInterestingProducts(data.interestingProducts)
         }
         catch (error: any) {

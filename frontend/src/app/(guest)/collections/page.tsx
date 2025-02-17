@@ -24,7 +24,6 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ProductData } from '@/type/appType';
 import Link from 'next/link';
@@ -32,6 +31,7 @@ import { Button } from '@/components/ui/button';
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AppContext } from '@/context/AppContext';
+import axiosClient from '@/lib/axiosClient';
 
 const Page = () => {
 
@@ -64,7 +64,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
     const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type, price_option, sort })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type, price_option, sort })
 
             setProductData(data.productData)
         }

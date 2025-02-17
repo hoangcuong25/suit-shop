@@ -6,10 +6,10 @@ import { FaTruck } from "react-icons/fa";
 import { IoIosWallet } from "react-icons/io";
 import { IoIosPricetags } from "react-icons/io";
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { AppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import axiosClient from '@/lib/axiosClient';
 
 const Payment = () => {
 
@@ -52,7 +52,7 @@ const Payment = () => {
                 isPay = true
             }
 
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay })
 
             if (data.success) {
                 toast.success('Order successful')

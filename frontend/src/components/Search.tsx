@@ -10,10 +10,10 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { CiSearch } from 'react-icons/ci'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { TiDeleteOutline } from 'react-icons/ti'
 import Image from 'next/image'
+import axiosClient from '@/lib/axiosClient'
 
 const Search = () => {
 
@@ -28,7 +28,7 @@ const Search = () => {
         }
 
         try {
-            const { data } = await axios.get(
+            const { data } = await axiosClient.get(
                 process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/search",
                 {
                     params: { query }

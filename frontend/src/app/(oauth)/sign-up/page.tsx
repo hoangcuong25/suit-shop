@@ -49,8 +49,9 @@ const Register = () => {
             const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/oauth/register`, payload)
 
             if (data.success) {
-                localStorage.setItem('token', data.token)
-                setToken(data.token)
+                localStorage.setItem('access_token', data.access_token)
+                localStorage.setItem('refresh_token', data.refresh_token)
+                setToken(data.access_token)
                 router.push('/')
                 window.scrollTo(0, 0);
                 toast.success("Registration Successful")

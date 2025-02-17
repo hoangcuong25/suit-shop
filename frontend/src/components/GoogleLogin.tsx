@@ -3,11 +3,11 @@
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import app from "@/firebase.js"
 import { FcGoogle } from "react-icons/fc"
-import axios from 'axios';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { AppContext } from '@/context/AppContext';
 import { useRouter } from 'next/navigation';
+import axiosClient from '@/lib/axiosClient';
 
 const GoogleLogin = () => {
 
@@ -27,12 +27,13 @@ const GoogleLogin = () => {
             const email = result.user.email
             const image = result.user.photoURL
 
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/oauth/login-google", { lastName, firstName, email, image })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/oauth/login-google", { lastName, firstName, email, image })
 
             if (data.success) {
                 toast.success("Login Successfully")
-                localStorage.setItem('token', data.token)
-                setToken(data.token)
+                localStorage.setItem('access_token', data.access_token)
+                localStorage.setItem('refresh_token', data.refresh_token)
+                setToken(data.access_token)
                 router.push('/')
                 scrollTo(0, 0)
             } else {

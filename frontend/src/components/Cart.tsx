@@ -4,13 +4,13 @@
 import React, { useContext, useState } from 'react'
 import { FaRegWindowClose, FaShoppingBasket } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiOutlineMenu, AiOutlineReload } from 'react-icons/ai';
 import { AppContext } from '@/context/AppContext';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
+import axiosClient from '@/lib/axiosClient';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +20,7 @@ type Props = {
 
 const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
 
-    const { cart, token, loadUserProfileData, totalPrice } = useContext(AppContext)
+    const { cart, loadUserProfileData, totalPrice } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -31,7 +31,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
         setLoadingDelete(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/remove-from-cart', { productId }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/remove-from-cart', { productId })
 
             if (data.success) {
                 toast.success('Xóa khỏi giỏ hàng thành công')
@@ -49,7 +49,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
         setLoading(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/increase-quantity', { productId, size, length }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/increase-quantity', { productId, size, length })
 
             if (data.success) {
                 loadUserProfileData()
@@ -66,7 +66,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
         setLoading(true)
 
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/decrease-quantity', { productId, size, length }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/decrease-quantity', { productId, size, length })
 
             if (data.success) {
                 loadUserProfileData()

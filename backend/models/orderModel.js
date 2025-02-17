@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     optionShip: { type: String, required: true },
     optionPayment: { type: String, required: true },
     isPay: { type: Boolean, default: false }
-}, { minimize: false })
+}, { minimize: false, timestamps: true })
 
 const orderModel = mongoose.model('order', orderSchema)
 

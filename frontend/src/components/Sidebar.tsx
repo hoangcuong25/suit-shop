@@ -18,7 +18,7 @@ const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
 
     const logout = (): void => {
         setToken(false)
-        localStorage.removeItem('token')
+        localStorage.removeItem('access_token')
         router.push('/')
     }
 

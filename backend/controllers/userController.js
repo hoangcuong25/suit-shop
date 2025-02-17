@@ -5,7 +5,7 @@ import productModel from '../models/productModel.js'
 import orderModel from '../models/orderModel.js'
 
 // api get profile
-export const profile = async (req, res) => {
+export const getProfile = async (req, res) => {
     try {
         const { userId } = req.body
 
@@ -14,8 +14,8 @@ export const profile = async (req, res) => {
         res.json({ success: true, userData })
 
     } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        console.error(error)
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
 
@@ -42,8 +42,8 @@ export const updateProfile = async (req, res) => {
         res.json({ success: true, messgae: 'profile updated' })
 
     } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        console.error(error)
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
 

@@ -36,7 +36,7 @@ const Navbar = () => {
 
     const logout = (): void => {
         setToken(false)
-        localStorage.removeItem('token')
+        localStorage.removeItem('access_token')
     }
 
     return (
