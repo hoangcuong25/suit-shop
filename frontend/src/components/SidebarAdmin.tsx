@@ -17,7 +17,7 @@ const SidebarAdmin = () => {
     const isActive = (path: string) => pathName === path
 
     return (
-        <div className='min-h-screen bg-white border-r sticky top-16'>
+        <div className='min-h-screen bg-white border-r'>
             <div className='text-[#515151] mt-5'>
                 <Link
                     href={'/admin/dashboard'}

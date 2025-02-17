@@ -82,6 +82,9 @@ const Dashboard = () => {
                             <p>Order date: <span className='font-semibold'></span></p>
                             <p>Shipping method: <span className='font-semibold'>{i.optionShip}</span></p>
                             <p>Payment method: <span className='font-semibold'>{i.optionPayment}</span></p>
+                            <div className={`${i.isPay ? 'bg-green-500' : 'bg-red-500'} py-3 w-56 text-center text-white text-lg font-semibold my-2 rounded-lg`}>
+                                {i.isPay ? 'Paid' : 'Unpaid'}
+                            </div>
 
                             <div className='flex flex-col gap-5 mt-3.5'>
                                 {i.productList.map((i: any, index: number) => (

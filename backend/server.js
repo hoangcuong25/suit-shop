@@ -42,7 +42,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }))
 app.use('/api/oauth', oauthRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)
-app.use('/order', paymentRouter)
+app.use('/api/payment', paymentRouter)
 
 app.get('/test', (req, res) => {
     res.send("API WORKING")

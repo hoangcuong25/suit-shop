@@ -44,8 +44,8 @@ const Payment = () => {
             })
 
             if (optionPayment !== 'Cash on Delivery') {
-                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/create_payment_url?amount=${subtotal}`
-                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/order/vnpay_return`
+                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/create_payment_url?amount=${subtotal}`
+                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/vnpay_return`
 
                 if (!returnUrl) return
 
