@@ -132,7 +132,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
             </p>
 
             <div className='mt-7'>
-                <div className='flex'>
+                <div className='flex justify-between'>
                     <Sheet>
                         <SheetTrigger asChild>
                             <div className='flex items-center text-sm gap-2 border border-gray-300 hover:border-gray-600 px-3.5 py-2 cursor-pointer'>
@@ -227,6 +227,8 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                             </SheetHeader>
                         </SheetContent>
                     </Sheet>
+
+                    <p> {remainProducts} products</p>
                 </div>
             </div>
 

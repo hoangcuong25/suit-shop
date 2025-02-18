@@ -44,10 +44,12 @@ const Payment = () => {
             })
 
             if (optionPayment !== 'Cash on Delivery') {
-                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/create_payment_url?amount=${subtotal}`
-                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/vnpay_return`
+                const paymentUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/create_payment_url?amount=${subtotal}`;
+                window.location.href = paymentUrl;
 
-                if (!returnUrl) return
+                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/vnpay_return`;
+                console.log(returnUrl)
+                if (returnUrl) return;
 
                 isPay = true
             }
@@ -60,7 +62,6 @@ const Payment = () => {
                 loadUserProfileData()
                 getOrder()
             }
-
         }
         catch (error: any) {
             toast.error(error.response?.data?.message || "Something went wrong")

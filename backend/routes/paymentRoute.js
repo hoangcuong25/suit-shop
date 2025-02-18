@@ -94,6 +94,7 @@ paymentRouter.get('/vnpay_return', (req, res) => {
 paymentRouter.get('/vnpay_ipn', (req, res) => {
     const vnp_Params = { ...req.query };
     const secureHash = vnp_Params.vnp_SecureHash;
+
     delete vnp_Params.vnp_SecureHash;
     delete vnp_Params.vnp_SecureHashType;
 
@@ -105,9 +106,16 @@ paymentRouter.get('/vnpay_ipn', (req, res) => {
 
     if (secureHash === signed) {
         const rspCode = vnp_Params.vnp_ResponseCode;
-        res.status(200).json({ RspCode: '00', Message: rspCode === '00' ? 'Success' : 'Failed' });
+
+        if (rspCode === '00') {
+            // Payment success
+            return res.status(200).json({ RspCode: '00', Message: 'Payment successful' });
+        } else {
+            // Payment failed
+            return res.status(400).json({ RspCode: rspCode, Message: 'Payment failed. Please try again.' });
+        }
     } else {
-        res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+        return res.status(400).json({ RspCode: '97', Message: 'Checksum failed' });
     }
 });
 

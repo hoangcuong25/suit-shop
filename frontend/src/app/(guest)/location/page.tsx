@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import React from 'react'
@@ -6,7 +7,7 @@ import { useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const page = () => {
+const Page = () => {
 
     const mapRef = useRef(null);
     const mapContainerRef = useRef(null);
@@ -24,9 +25,9 @@ const page = () => {
 
         // Add markers for the cities
         const cities = [
-            { name: "Ha noi", coordinates: [105.8412, 21.0285] as [number, number] },
-            { name: "Ho Chi Minh City", coordinates: [106.7074, 10.7769] as [number, number] },
-            { name: "Da Nang", coordinates: [108.2022, 16.0544] as [number, number] },
+            { name: "Ha noi - Suit shop", coordinates: [105.8412, 21.0285] as [number, number] },
+            { name: "Ho Chi Minh City - Suit shop", coordinates: [106.7074, 10.7769] as [number, number] },
+            { name: "Da Nang - Suit shop", coordinates: [108.2022, 16.0544] as [number, number] },
         ];
 
         cities.forEach(city => {
@@ -70,4 +71,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
