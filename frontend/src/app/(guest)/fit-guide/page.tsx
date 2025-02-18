@@ -18,10 +18,10 @@ const page = () => {
                 </p>
             </div>
 
-            <div className='flex flex-col md:flex-row gap-5 px-3.5 md:px-7 xl:px-16 mt-7'>
+            <div className='flex flex-col md:flex-row gap-5 px-3.5 md:px-7 xl:px-16 mt-7 md:text-base text-sm'>
                 <div className='flex gap-5'>
                     <div className='flex flex-col gap-1 text-start'>
-                        <p className='font-semibold text-2xl mb-5'>Men&apos;s Slim Fit</p>
+                        <p className='font-semibold text-xl md:text-2xl mb-5'>Men&apos;s Slim Fit</p>
                         <p>Broad shoulders with a tapered waist for V-shaped bodies.</p>
                         <p>Narrow waist without much room around the midsection.</p>
                         <p>Designed to fit very closely to your body with less space between you and the jacket compared to Modern Fit.</p>
@@ -29,7 +29,7 @@ const page = () => {
                     </div>
 
                     <div className='flex flex-col gap-1 text-start'>
-                        <p className='font-semibold text-2xl mb-5'>Men&apos;s Modern Fit</p>
+                        <p className='font-semibold text-xl md:text-2xl mb-5'>Men&apos;s Modern Fit</p>
                         <p>Straighter cut from the shoulders through the waist.</p>
                         <p>More room in the waist compared to our Slim Fit.</p>
                         <p>Designed with slightly more room between your body and the jacket compared to Slim Fit.</p>
@@ -39,7 +39,7 @@ const page = () => {
 
                 <div className='flex gap-5'>
                     <div className='flex flex-col gap-1 text-start'>
-                        <p className='font-semibold text-2xl mb-5'>Women&apos;s Fit</p>
+                        <p className='font-semibold text-xl md:text-2xl mb-5'>Women&apos;s Fit</p>
                         <p>Classic, menswear-inspired look designed for a feminine body.</p>
                         <p>Tapered waistline cinches in to create an hourglass shape.</p>
                         <p>Close fit flatters your natural shape without feeling too tight or restrictive.</p>
@@ -47,7 +47,7 @@ const page = () => {
                     </div>
 
                     <div className='flex flex-col gap-1 text-start'>
-                        <p className='font-semibold text-2xl mb-5'>Unisex Fit</p>
+                        <p className='font-semibold text-xl md:text-2xl mb-5'>Unisex Fit</p>
                         <p>More structured, traditionally masculine suiting details paired with an updated fit to accommodate a wider range of bodies.</p>
                         <p>Compared to Women&apos;s Fit, no bust shaping, larger bicep, and stronger shoulder shape.</p>
                         <p>Compared to Men&apos;s Fit, shoulder is narrower, bicep is smaller, and the waist & hip areas are less tapered.</p>

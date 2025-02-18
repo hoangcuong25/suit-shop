@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import couponRouter from './routes/couponModel.js'
 
 // app config
 const app = express()
@@ -43,6 +44,7 @@ app.use('/api/oauth', oauthRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/payment', paymentRouter)
+app.use('/api/coupon', couponRouter)
 
 app.get('/test', (req, res) => {
     res.send("API WORKING")

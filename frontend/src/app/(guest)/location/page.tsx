@@ -25,9 +25,9 @@ const Page = () => {
 
         // Add markers for the cities
         const cities = [
-            { name: "Ha noi - Suit shop", coordinates: [105.8412, 21.0285] as [number, number] },
-            { name: "Ho Chi Minh City - Suit shop", coordinates: [106.7074, 10.7769] as [number, number] },
-            { name: "Da Nang - Suit shop", coordinates: [108.2022, 16.0544] as [number, number] },
+            { name: "Ha Noi - Suit Shop", coordinates: [105.8412, 21.0285] as [number, number] },
+            { name: "Ho Chi Minh City - Suit Shop", coordinates: [106.7074, 10.7769] as [number, number] },
+            { name: "Da Nang - Suit Shop", coordinates: [108.2022, 16.0544] as [number, number] },
         ];
 
         cities.forEach(city => {
