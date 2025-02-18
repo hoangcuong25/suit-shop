@@ -58,18 +58,22 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
     const sort = searchParams.get('sort') || false
 
     const [productData, setProductData] = useState<ProductData[]>([]);
+    const [totalProducts, setTotalProducts] = useState<number>(0)
+    const [remainProducts, setRemainProducts] = useState<number>(0)
+
     const [typeProduct, setTypeProduct] = useState<string | false>(type)
     const [priceOptionData, setPriceOptionData] = useState<string | false>(price_option)
     const [sorting, setSorting] = useState<string | false>(sort)
 
-    const lastPostIndex = page * limit
-    const firstPostIndex = lastPostIndex - limit
-    const currentPosts = productData?.slice(firstPostIndex, lastPostIndex)
-
     const getProduct = async (): Promise<void> => {
         try {
-            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products")
-            setProductData(data.products)
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/get-products", { limit, page, type, price_option, sort })
+
+            if (data.success) {
+                setProductData(data.productData)
+                setTotalProducts(data.totalProducts)
+                setRemainProducts(data.remmainProducts)
+            }
         }
         catch (error: any) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -78,7 +82,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
     const pages = []
 
-    for (let i = 1; i <= Math.ceil(productData.length / limit); i++) {
+    for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
         pages.push(i)
     }
 
@@ -89,7 +93,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
     }
 
     const handleNext = () => {
-        if (page < 2) {
+        if (page < pages.length) {
             router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page + 1}`)
         }
     }
@@ -98,18 +102,8 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
         setSorting(value);
     };
 
-    const filteAndSort = () => {
-        if (type) {
-            setProductData(productData.filter((p) => p.type === type))
-        }
-    }
-
     useEffect(() => {
         getProduct()
-    }, [])
-
-    useEffect(() => {
-        filteAndSort()
     }, [page, limit, type, price_option, sort])
 
     return (
@@ -223,7 +217,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
             <div className='mt-7'>
                 <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-center gap-3'>
                     {
-                        currentPosts?.map((product, index) => (
+                        productData?.map((product, index) => (
                             <div key={index} className='relative'>
                                 <div
                                     onClick={() => router.push(`/collections/${product._id}`)}
@@ -260,13 +254,13 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                         Previous
                     </div>
 
-                    {pages.map((page, index) => (
+                    {pages.map((pageCurrent, index) => (
                         <Link
                             key={index}
-                            className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${page === 1 && 'bg-[#20303f] text-white'}`}
-                            href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page}`}
+                            className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${pageCurrent === page && 'bg-[#20303f] text-white'}`}
+                            href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${pageCurrent}`}
                         >
-                            {page}
+                            {pageCurrent}
                         </Link>
                     ))
                     }

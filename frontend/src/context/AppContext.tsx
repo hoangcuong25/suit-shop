@@ -6,6 +6,7 @@
 import axiosClient from "@/lib/axiosClient";
 import { CartData, OrderData, ProductData, UserData } from "@/type/appType";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,6 +24,7 @@ interface AppContextType {
     totalPrice: () => number
     order: OrderData[] | false
     getOrder: () => Promise<void>
+    logout: () => Promise<void>
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -38,7 +40,8 @@ export const AppContext = createContext<AppContextType>({
     isWishlist: () => false,
     totalPrice: () => 0,
     order: false,
-    getOrder: async () => { }
+    getOrder: async () => { },
+    logout: async () => { }
 })
 
 interface AppContextProviderProps {
@@ -46,6 +49,8 @@ interface AppContextProviderProps {
 }
 
 const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
+
+    const router = useRouter()
 
     const [token, setToken] = useState<string | false>(false)
 
@@ -115,6 +120,22 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         }
     }
 
+    const logout = async (): Promise<void> => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/oauth/log-out')
+
+            if (data.success) {
+                setToken(false)
+                localStorage.removeItem('access_token')
+                localStorage.removeItem('refresh_token')
+                router.push('/')
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     const value = {
         token, setToken,
         userData,
@@ -126,7 +147,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         isWishlist,
         totalPrice,
         order,
-        getOrder
+        getOrder,
+        logout
     }
 
     useEffect(() => {

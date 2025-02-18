@@ -111,16 +111,46 @@ export const updatePassword = async (req, res) => {
     }
 }
 
-// api get all product
-export const getAllProduct = async (req, res) => {
+// API fetch product data
+export const fetchProduct = async (req, res) => {
     try {
-        const products = await productModel.find()
+        const { limit = 15, page = 1, type, price_option, sort } = req.body
 
-        res.json({ success: true, products })
-    }
-    catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        let query = productModel.find()
+
+        if (type) {
+            query = query.where('type').equals(type)
+        }
+
+        if (price_option === 'option1') {
+            query = query.where('newPrice').gte(100).lt(300)
+        }
+        if (price_option === 'option2') {
+            query = query.where('newPrice').gte(300).lte(350)
+        }
+        if (price_option === 'option3') {
+        }
+
+        if (sort === 'low to high') {
+            query = query.sort({ newPrice: 1 })
+        }
+
+        if (sort === 'high to low') {
+            query = query.sort({ newPrice: -1 })
+        }
+
+        // Count total products
+        const totalProducts = await productModel.countDocuments();
+
+        // Count filtered products (remaining products)
+        const remmainProducts = await query.clone().countDocuments();
+
+        const products = await query.skip((page - 1) * limit).limit(Number(limit))
+
+        res.json({ success: true, productData: products, totalProducts, remmainProducts })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "An error occurred. Please try again." })
     }
 }
 

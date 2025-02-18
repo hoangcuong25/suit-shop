@@ -30,14 +30,9 @@ import Search from './Search';
 
 const Navbar = () => {
 
-    const { userData, token, setToken, cart, setSidebar } = useContext(AppContext)
+    const { userData, token, logout, cart, setSidebar } = useContext(AppContext)
 
     const router = useRouter()
-
-    const logout = (): void => {
-        setToken(false)
-        localStorage.removeItem('access_token')
-    }
 
     return (
         <div className=' bg-white relative'>

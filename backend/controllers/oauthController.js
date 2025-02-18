@@ -161,7 +161,7 @@ export const refreshToken = async (req, res) => {
             return res.status(401).json({ message: "No refresh token provided!!!" });
         }
 
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECERT);
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECERT)
         const storedToken = await redis.get(`refresh_token:${decoded.id}`);
 
         if (storedToken !== refreshToken) {
@@ -177,6 +177,22 @@ export const refreshToken = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
+export const logout = async (req, res) => {
+    try {
+        const accessToken = req.headers.authorization?.split(' ')[1]
+
+        if (accessToken) {
+            const decoded = jwt.verify(accessToken, process.env.ACCESS_JWT_SECERT)
+            await redis.del(`refresh_token:${decoded.id}`);
+        }
+
+        res.json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+        console.log("Error in logout controller", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
 
 export const sendResetOtp = async (req, res) => {
     try {

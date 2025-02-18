@@ -1,6 +1,5 @@
 import { AppContext } from '@/context/AppContext'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import React, { useContext } from 'react'
 
 type Props = {
@@ -12,15 +11,7 @@ type Props = {
 
 const Sidebar = ({ sidebar, setSidebar, show, setShow }: Props) => {
 
-    const { userData, setToken } = useContext(AppContext)
-
-    const router = useRouter()
-
-    const logout = (): void => {
-        setToken(false)
-        localStorage.removeItem('access_token')
-        router.push('/')
-    }
+    const { userData, logout } = useContext(AppContext)
 
     return (
         <div className='relative'>
