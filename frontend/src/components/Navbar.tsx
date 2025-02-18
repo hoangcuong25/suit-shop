@@ -241,7 +241,7 @@ const Navbar = () => {
                                         <p onClick={() => router.push('/get-started')} className='hover:underline cursor-pointer'>Get Started</p>
                                         <p onClick={() => router.push('/fit-guide')} className='hover:underline cursor-pointer'>Fit Guide</p>
                                         <p onClick={() => router.push('/contact-us')} className='hover:underline cursor-pointer'>Contact Us</p>
-                                        <p className='hover:underline cursor-pointer block md:hidden'>Location</p>
+                                        <p onClick={() => router.push('/location')} className='hover:underline cursor-pointer block md:hidden'>Location</p>
                                         <p className='hover:underline cursor-pointer block md:hidden'>Help</p>
                                     </div>
                                 </SheetHeader>

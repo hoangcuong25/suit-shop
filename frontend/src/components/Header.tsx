@@ -1,6 +1,7 @@
 import React from 'react'
 import { IoIosInformationCircleOutline } from "react-icons/io"
 import Search from './Search'
+import Link from 'next/link'
 
 const Header = () => {
     return (
@@ -9,7 +10,7 @@ const Header = () => {
 
             <div className='hidden md:flex items-center'>
                 <Search />
-                <p className='border-x px-3 mx-3 hover:underline cursor-pointer'>Location</p>
+                <Link href={'/location'} className='border-x px-3 mx-3 hover:underline cursor-pointer'>Location</Link>
                 <div className='flex items-center gap-1.5 cursor-pointer hover:underline'>
                     <IoIosInformationCircleOutline className='text-xl' />
                     <p className=''>Help</p>
