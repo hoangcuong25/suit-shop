@@ -41,7 +41,10 @@ const Page = () => {
     const pathName = usePathname()
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={
+            <div className='flex justify-center items-center'>
+                Loading...
+            </div>}>
             <Content router={router} pathName={pathName} wishlistProduct={wishlistProduct} isWishlist={isWishlist} />
         </Suspense>
     )
@@ -51,19 +54,29 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
     const searchParams = useSearchParams()
 
-    const limit = Number(searchParams.get('limit')) || 15
+    let limit = Number(searchParams.get('limit')) || 12
+
+    useEffect(() => {
+        if (window.innerWidth > 1536) {
+            limit = 15
+        } else {
+            limit = 12
+        }
+    }, [])
+
     const page = Number(searchParams.get('page')) || 1
     const type = searchParams.get('type') || false
     const price_option = searchParams.get('price_option') || false
     const sort = searchParams.get('sort') || false
 
     const [productData, setProductData] = useState<ProductData[]>([]);
-    const [totalProducts, setTotalProducts] = useState<number>(0)
     const [remainProducts, setRemainProducts] = useState<number>(0)
 
     const [typeProduct, setTypeProduct] = useState<string | false>(type)
     const [priceOptionData, setPriceOptionData] = useState<string | false>(price_option)
     const [sorting, setSorting] = useState<string | false>(sort)
+
+    const [pages, setPages] = useState<number[]>([])
 
     const getProduct = async (): Promise<void> => {
         try {
@@ -71,7 +84,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
             if (data.success) {
                 setProductData(data.productData)
-                setTotalProducts(data.totalProducts)
+                generatePages(data.remmainProducts, limit)
                 setRemainProducts(data.remmainProducts)
             }
         }
@@ -80,21 +93,24 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
         }
     }
 
-    const pages = []
-
-    for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
-        pages.push(i)
+    const generatePages = (totalProducts: number, limit: number) => {
+        const pageArray: number[] = []; // Create a temporary array
+        for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
+            pageArray.push(i); // Add page numbers to the array
+        }
+        console.log(pageArray)
+        setPages(pageArray); // Update state with the complete array
     }
 
     const handlePre = () => {
         if (page > 1) {
-            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page - 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=${limit}&page=${page - 1}`)
         }
     }
 
     const handleNext = () => {
         if (page < pages.length) {
-            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${page + 1}`)
+            router.push(`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=${limit}&page=${page + 1}`)
         }
     }
 
@@ -202,7 +218,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                                     </div>
 
                                     <Button
-                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `sort=${sorting}&` : ''}limit=15&page=1`)}
+                                        onClick={() => router.push(`${pathName}?${typeProduct ? `type=${typeProduct}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `sort=${sorting}&` : ''}limit=${limit}&page=1`)}
                                         className='border border-[#0e141a] w-full mt-8'
                                     >
                                         Apply
@@ -258,7 +274,7 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
                         <Link
                             key={index}
                             className={`px-3.5 py-2 hover:bg-[#20303f] hover:text-white rounded-lg ${pageCurrent === page && 'bg-[#20303f] text-white'}`}
-                            href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=15&page=${pageCurrent}`}
+                            href={`${pathName}?${type ? `type=${type}&` : ''}${priceOptionData ? `price_option=${priceOptionData}&` : ''}${sorting ? `price_option=${sorting}&` : ''}limit=${limit}&page=${pageCurrent}`}
                         >
                             {pageCurrent}
                         </Link>

@@ -139,15 +139,12 @@ export const fetchProduct = async (req, res) => {
             query = query.sort({ newPrice: -1 })
         }
 
-        // Count total products
-        const totalProducts = await productModel.countDocuments();
-
         // Count filtered products (remaining products)
         const remmainProducts = await query.clone().countDocuments();
 
         const products = await query.skip((page - 1) * limit).limit(Number(limit))
 
-        res.json({ success: true, productData: products, totalProducts, remmainProducts })
+        res.json({ success: true, productData: products, remmainProducts })
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: "An error occurred. Please try again." })
