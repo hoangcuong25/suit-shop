@@ -1,8 +1,9 @@
 import express from "express";
-import { getCoupon } from "../controllers/couponController";
+import { getCoupon, validateCoupon } from "../controllers/couponController.js";
 
 const couponRouter = express.Router();
 
-router.post("/", protectRoute, getCoupon);
+couponRouter.post("/", getCoupon);
+couponRouter.post("/validate", validateCoupon);
 
 export default couponRouter

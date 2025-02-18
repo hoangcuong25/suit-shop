@@ -48,8 +48,8 @@ const Payment = () => {
                 window.location.href = paymentUrl;
 
                 const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/vnpay_return`;
-                console.log(returnUrl)
-                if (returnUrl) return;
+
+                if (!returnUrl) return;
 
                 isPay = true
             }

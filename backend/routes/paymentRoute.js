@@ -91,7 +91,7 @@ paymentRouter.get('/vnpay_return', (req, res) => {
     res.render('success', { code: responseCode });
 });
 
-paymentRouter.get('/vnpay_ipn', (req, res) => {
+paymentRouter.get('/vnpay_return', (req, res) => {
     const vnp_Params = { ...req.query };
     const secureHash = vnp_Params.vnp_SecureHash;
 
@@ -104,19 +104,8 @@ paymentRouter.get('/vnpay_ipn', (req, res) => {
     const hmac = crypto.createHmac('sha512', secretKey);
     const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
 
-    if (secureHash === signed) {
-        const rspCode = vnp_Params.vnp_ResponseCode;
-
-        if (rspCode === '00') {
-            // Payment success
-            return res.status(200).json({ RspCode: '00', Message: 'Payment successful' });
-        } else {
-            // Payment failed
-            return res.status(400).json({ RspCode: rspCode, Message: 'Payment failed. Please try again.' });
-        }
-    } else {
-        return res.status(400).json({ RspCode: '97', Message: 'Checksum failed' });
-    }
+    const responseCode = secureHash === signed ? vnp_Params.vnp_ResponseCode : '97';
+    res.render('success', { code: responseCode });
 });
 
 paymentRouter.post('/querydr', (req, res) => {

@@ -372,10 +372,15 @@ export const order = async (req, res) => {
         const newOrder = new orderModel(orderData)
         await newOrder.save()
 
+        if (isPay) {
+            const user = userModel.findById(userId)
+            const newPoints = user.points + 1000
+            await userModel.findByIdAndUpdate(userId, { points: newPoints })
+        }
+
         await userModel.findByIdAndUpdate(userId, { cart: cart })
 
         res.status(200).json({ success: true })
-
     }
     catch (error) {
         console.log(error)

@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     wishlist: { type: Array, default: [] },
     resetOpt: { type: String, default: "" },
     resetOptExpireAt: { type: Number, default: 0 },
+    points: { type: Number, default: 0 },
 }, { minimize: false, timestamps: true })
 
 const userModel = mongoose.model('user', userSchema)

@@ -13,6 +13,7 @@ export type UserData = {
     gender: string
     cart: CartData[]
     wishlist: any[]
+    points: number
 }
 
 export type ProductData = {

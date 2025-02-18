@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { RiCopperCoinFill } from "react-icons/ri";
 import { FaPen, FaRegWindowClose } from "react-icons/fa";
 import { IoIosGift } from "react-icons/io";
 import { IoMdPaper } from "react-icons/io";
 import { AiOutlineMenu } from "react-icons/ai";
+import { AppContext } from '@/context/AppContext';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -11,6 +12,9 @@ type Props = {
 }
 
 const Point = ({ setShow, show }: Props) => {
+
+    const { userData } = useContext(AppContext)
+
     return (
         <div className='flex flex-col gap-3 w-full bg-gray-100 px-3 py-3 shadow-md'>
             <div
@@ -26,7 +30,7 @@ const Point = ({ setShow, show }: Props) => {
             <div className='w-full h-20 bg-stone-200 rounded-md flex justify-center items-center gap-5'>
                 <RiCopperCoinFill className='text-yellow-400 text-2xl' />
                 <p>Available Points</p>
-                <p className='text-2xl font-bold text-orange-500'>0</p>
+                <p className='text-2xl font-bold text-orange-500'>{userData && userData.points}</p>
             </div>
 
             <div className='w-full h-fit bg-gray-200 rounded-md flex items-center justify-evenly py-5'>
