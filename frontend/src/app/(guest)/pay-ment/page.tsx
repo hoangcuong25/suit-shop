@@ -45,13 +45,9 @@ const Payment = () => {
 
             if (optionPayment !== 'Cash on Delivery') {
                 const paymentUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/create_payment_url?amount=${subtotal}`;
-                window.location.href = paymentUrl;
+                window.open(paymentUrl, '_blank');
 
-                const returnUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/vnpay_return`;
-
-                if (!returnUrl) return;
-
-                isPay = true
+                isPay = true 
             }
 
             const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay })

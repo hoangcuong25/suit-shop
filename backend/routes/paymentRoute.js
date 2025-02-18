@@ -91,21 +91,28 @@ paymentRouter.get('/vnpay_return', (req, res) => {
     res.render('success', { code: responseCode });
 });
 
-paymentRouter.get('/vnpay_return', (req, res) => {
-    const vnp_Params = { ...req.query };
-    const secureHash = vnp_Params.vnp_SecureHash;
+paymentRouter.get('/vnpay_ipn', (req, res) => {
+    let vnp_Params = req.query;
+    const secureHash = vnp_Params['vnp_SecureHash'];
 
-    delete vnp_Params.vnp_SecureHash;
-    delete vnp_Params.vnp_SecureHashType;
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
 
-    const sortedParams = sortObject(vnp_Params);
-    const signData = qs.stringify(sortedParams, { encode: false });
+    vnp_Params = sortObject(vnp_Params);
     const secretKey = config.get('vnp_HashSecret');
+    const signData = qs.stringify(vnp_Params, { encode: false });
+
     const hmac = crypto.createHmac('sha512', secretKey);
     const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
 
-    const responseCode = secureHash === signed ? vnp_Params.vnp_ResponseCode : '97';
-    res.render('success', { code: responseCode });
+    if (secureHash === signed) {
+        const orderId = vnp_Params['vnp_TxnRef'];
+        const rspCode = vnp_Params['vnp_ResponseCode'];
+        // Check and update order status here
+        res.status(200).json({ RspCode: '00', Message: 'success' });
+    } else {
+        res.status(200).json({ RspCode: '97', Message: 'Fail checksum' });
+    }
 });
 
 paymentRouter.post('/querydr', (req, res) => {

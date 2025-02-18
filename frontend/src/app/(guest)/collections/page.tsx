@@ -98,7 +98,6 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
         for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
             pageArray.push(i); // Add page numbers to the array
         }
-        console.log(pageArray)
         setPages(pageArray); // Update state with the complete array
     }
 

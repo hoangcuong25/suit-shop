@@ -22,6 +22,9 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Learn More
 
+NEXT_PUBLIC_BACKEND_URL='https://nha-xinh-fullstack.onrender.com'
+NEXT_PUBLIC_FIREBASE_API_KEY="AIzaSyC35NbAmFnjX4XzfCjAY-gKv3eytV-2HAI"
+
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.

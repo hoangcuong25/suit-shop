@@ -373,7 +373,7 @@ export const order = async (req, res) => {
         await newOrder.save()
 
         if (isPay) {
-            const user = userModel.findById(userId)
+            const user = await userModel.findById(userId)
             const newPoints = user.points + 1000
             await userModel.findByIdAndUpdate(userId, { points: newPoints })
         }
