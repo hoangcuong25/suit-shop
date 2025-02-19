@@ -44,7 +44,7 @@ const Payment = () => {
             })
 
             if (optionPayment !== 'Cash on Delivery') {
-                isPay = true 
+                isPay = true
             }
 
             const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay })

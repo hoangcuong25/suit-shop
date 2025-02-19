@@ -6,7 +6,6 @@ import connectCloudinary from './config/cloudinary.js'
 import oauthRouter from './routes/oauthRouter.js'
 import userRouter from './routes/userRouter.js'
 import adminRouter from './routes/adminRouter.js'
-import paymentRouter from './routes/paymentRoute.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import logger from 'morgan';
@@ -43,7 +42,6 @@ app.use(cors({ origin: allowedOrigins, credentials: true }))
 app.use('/api/oauth', oauthRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)
-app.use('/api/payment', paymentRouter)
 app.use('/api/coupon', couponRouter)
 
 app.get('/test', (req, res) => {

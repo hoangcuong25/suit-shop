@@ -186,7 +186,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                         <p className='text-lg font-semibold'>Subtotal: {totalPrice()},00 usd</p>
                         <Button
                             onClick={() => router.push('/pay-ment')}
-                            className='w-52 py-3.5 text-base font-semibold'
+                            className='w-52 py-6 text-lg font-semibold'
                         >
                             Pay Now
                         </Button>
