@@ -44,9 +44,6 @@ const Payment = () => {
             })
 
             if (optionPayment !== 'Cash on Delivery') {
-                const paymentUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/create_payment_url?amount=${subtotal}`;
-                window.open(paymentUrl, '_blank');
-
                 isPay = true 
             }
 
@@ -164,6 +161,11 @@ const Payment = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {
+                            optionPayment === 'Payment by bank transfer' &&
+                            <img src={`https://img.vietqr.io/image/MB-0251125112003-print.png?amount=${subtotal * 25110}&addInfo=chuyen tien&accountName=HOANG VAN CUONG`} className="w-96" />
+                        }
                     </div>
 
                     <div className='flex flex-col mt-3'>
