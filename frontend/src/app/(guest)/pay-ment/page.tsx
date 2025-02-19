@@ -10,10 +10,11 @@ import { AppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import axiosClient from '@/lib/axiosClient';
+import { CiDiscount1 } from 'react-icons/ci';
 
 const Payment = () => {
 
-    const { token, totalPrice, loadUserProfileData, cart, getOrder } = useContext(AppContext)
+    const { token, totalPrice, loadUserProfileData, cart, getOrder, coupon } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -21,6 +22,8 @@ const Payment = () => {
 
     const [optionShip, setOptionShip] = useState<string>('Standard Delivery')
     const [optionPayment, setOptionPayment] = useState<string>('Cash on Delivery')
+
+    const [choseCoupon, setChoseCoupon] = useState<string | false>(false)
 
     const subtotal = totalPrice() + (optionShip === 'Standard Delivery' ? 2 : 3.5)
 
@@ -178,12 +181,32 @@ const Payment = () => {
                                 type="text"
                                 placeholder='Enter promo code'
                                 className='w-52 py-1 border border-gray-300 hover:border-gray-400 px-1.5 focus:outline-none'
+                                value={choseCoupon ? choseCoupon : ''}
+                                onChange={(e) => setChoseCoupon(e.target.value)}
                             />
                             <div className='w-24 py-1 bg-black text-white text-center'>
                                 Apply
                             </div>
                         </div>
-                        <p className='mt-1 md:text-end text-sm text-blue-500 hover:text-blue-600 cursor-pointer'>Select coupon code</p>
+
+                        <div className='relative group'>
+                            <p className='md:text-end pt-2 pb-3 text-sm text-blue-500 hover:text-blue-600 cursor-pointer'>
+                                Select coupon code
+                            </p>
+
+                            <div className='hidden group-hover:flex flex-col gap-5 absolute right-0 z-50 p-5 rounded-md bg-gray-100  '>
+                                {coupon && coupon.map((c, index) => (
+                                    <div key={index} className='flex items-center gap-2 text-nowrap'>
+                                        <CiDiscount1 className='text-2xl' />
+                                        <p>Code: {c.code} - </p>
+                                        <p>{c.discount}$ discount - </p>
+                                        <Button onClick={() => setChoseCoupon(`${c.code}`)}>Apply</Button>
+                                    </div>
+                                ))
+                                }
+                            </div>
+                        </div>
+
                         <div className='mt-5 flex justify-between'>
                             <p>Tạm tính:</p>
                             <p>{totalPrice()} usd</p>
@@ -212,7 +235,7 @@ const Payment = () => {
                         </Button>
                     </div>
                 </div>
-            </div>
+            </div >
         )
 }
 
