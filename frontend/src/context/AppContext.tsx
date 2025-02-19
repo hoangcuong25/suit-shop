@@ -5,7 +5,6 @@
 
 import axiosClient from "@/lib/axiosClient";
 import { CartData, CouponData, OrderData, ProductData, UserData } from "@/type/appType";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -85,7 +84,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const wishlistProduct = async (productId: string): Promise<void> => {
         try {
-            const { data } = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/wishlist', { productId }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/wishlist', { productId }, { headers: { token } })
 
             if (data.success) {
                 toast.success(data.message)

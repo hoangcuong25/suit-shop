@@ -85,8 +85,8 @@ const Products = () => {
                         <div key={index} className='bg-gray-100 border border-gray-200 rounded-md shadow-md hover:shadow-xl flex flex-col gap-2 px-2 py-1.5 md:px-5 md:py-5'>
                             <p><span className='font-semibold'>Name: </span>{i.name}</p>
                             <p><span className='font-semibold capitalize'>Type: </span>{i.type}</p>
-                            <p><span className='font-semibold'>New price: </span>{i.newPrice} usd</p>
-                            <p><span className='font-semibold'>Old price: </span>{i.oldPrice} usd</p>
+                            <p><span className='font-semibold'>New price: </span>{i.newPrice} US$</p>
+                            <p><span className='font-semibold'>Old price: </span>{i.oldPrice} US$</p>
                             <Image src={i && i.image1} width={200} height={200} className='w-20' alt="" />
                             {loading
                                 ? <button className='flex justify-center mt-3.5 bg-gray-300 py-2.5 text-white'>

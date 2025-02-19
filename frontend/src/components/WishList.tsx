@@ -52,7 +52,7 @@ const WishList: React.FC<Props> = ({ setShow, show, wishlist_icon }) => {
                                 <div className='lg:hidden flex flex-col gap-2 text-[13px]'>
                                     <p className='text-start'>{i.name}</p>
                                     <div className='flex gap-3.5 items-center'>
-                                        <p className=''>{i.newPrice},00 usd</p>
+                                        <p className=''>{i.newPrice},00 US$</p>
                                         <MdDeleteForever
                                             className='text-gray-700 text-2xl cursor-pointer'
                                             onClick={() => wishlistProduct(i._id)}
@@ -61,7 +61,7 @@ const WishList: React.FC<Props> = ({ setShow, show, wishlist_icon }) => {
                                 </div>
                             </div>
                             <p className='lg:block hidden capitalize'>{i.type}</p>
-                            <p className='lg:block hidden'>{i.newPrice},00 usd</p>
+                            <p className='lg:block hidden'>{i.newPrice},00 US$</p>
                             <MdDeleteForever
                                 className='text-gray-700 text-2xl cursor-pointer lg:block hidden'
                                 onClick={() => wishlistProduct(i._id)}

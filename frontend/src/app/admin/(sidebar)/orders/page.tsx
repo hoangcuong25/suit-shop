@@ -27,7 +27,7 @@ const Orders = () => {
                         <div key={index} className='bg-gray-100 border border-gray-200 rounded-md shadow-md hover:shadow-xl flex flex-col gap-2 px-2 py-1.5 md:px-5 md:py-5'>
                             <p>Order code: <span className='font-semibold'>{i._id}</span></p>
                             <p>Status: <span className='font-semibold'>{i.status}</span></p>
-                            <p>Price to pay: <span className='font-semibold'>{i.price} usd</span></p>
+                            <p>Price to pay: <span className='font-semibold'>{i.price} US$</span></p>
                             <p>Order date: <span className='font-semibold'></span></p>
                             <p>Shipping method: <span className='font-semibold'>{i.optionShip}</span></p>
                             <p>Payment method: <span className='font-semibold'>{i.optionPayment}</span></p>
@@ -42,7 +42,7 @@ const Orders = () => {
                                         <div>
                                             <p>Name: <span className='font-semibold'>{i.productList.name}</span> </p>
                                             <p>Quantity: <span className='font-semibold'>{i.quantity}</span></p>
-                                            <p>Price per product: <span className='font-semibold'>{i.productList.newPrice}</span> usd</p>
+                                            <p>Price per product: <span className='font-semibold'>{i.productList.newPrice}</span> US$</p>
                                         </div>
                                     </div>
                                 ))}

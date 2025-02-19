@@ -14,7 +14,7 @@ import { CiDiscount1 } from 'react-icons/ci';
 
 const Payment = () => {
 
-    const { token, totalPrice, loadUserProfileData, cart, getOrder, coupon } = useContext(AppContext)
+    const { token, totalPrice, loadUserProfileData, cart, getOrder, coupon, getCoupon } = useContext(AppContext)
 
     const router = useRouter()
 
@@ -24,8 +24,26 @@ const Payment = () => {
     const [optionPayment, setOptionPayment] = useState<string>('Cash on Delivery')
 
     const [choseCoupon, setChoseCoupon] = useState<string | false>(false)
+    const [discount, setDiscount] = useState<number | false>(false)
+    const [codeUse, setCodeUse] = useState<number | false>(false)
+    const [isShow, setIsShow] = useState<boolean>(false)
 
-    const subtotal = totalPrice() + (optionShip === 'Standard Delivery' ? 2 : 3.5)
+    const subtotal = totalPrice() + (optionShip === 'Standard Delivery' ? 2 : 3.5) - (discount ? discount : 0)
+
+    const handleDiscount = async (): Promise<void> => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/coupon/validate-coupon', { choseCoupon })
+
+            if (data.success) {
+                setDiscount(data.discount)
+                setCodeUse(data.coupon.code)
+                toast.success('Apply successfully')
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
 
     const productInfor: any[] = []
 
@@ -50,13 +68,14 @@ const Payment = () => {
                 isPay = true
             }
 
-            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/order', { productInfor, subtotal, optionShip, optionPayment, isPay, codeUse })
 
             if (data.success) {
                 toast.success('Order successful')
                 scrollTo(0, 0)
                 loadUserProfileData()
                 getOrder()
+                getCoupon()
             }
         }
         catch (error: any) {
@@ -65,6 +84,8 @@ const Payment = () => {
 
         setLoading(false)
     }
+
+    console.log(isShow)
 
     return token &&
         loading ?
@@ -98,7 +119,7 @@ const Payment = () => {
                                         Free shipping for orders within Ho Chi Minh City
                                     </p>
                                     <p className="text-gray-600">
-                                        Other addresses: <span className="font-semibold">2,00 usd</span>
+                                        Other addresses: <span className="font-semibold">2,00 US$</span>
                                     </p>
                                 </div>
                             </div>
@@ -115,10 +136,10 @@ const Payment = () => {
                                         Express delivery
                                     </p>
                                     <p className="text-gray-600">
-                                        Express delivery for orders within Ho Chi Minh City: <span className="font-semibold">2,00 usd</span>
+                                        Express delivery for orders within Ho Chi Minh City: <span className="font-semibold">2,00 US$</span>
                                     </p>
                                     <p className="text-gray-600">
-                                        Other addresses: <span className="font-semibold">3,50 usd</span>
+                                        Other addresses: <span className="font-semibold">3,50 US$</span>
                                     </p>
                                 </div>
                             </div>
@@ -182,25 +203,24 @@ const Payment = () => {
                                 placeholder='Enter promo code'
                                 className='w-52 py-1 border border-gray-300 hover:border-gray-400 px-1.5 focus:outline-none'
                                 value={choseCoupon ? choseCoupon : ''}
-                                onChange={(e) => setChoseCoupon(e.target.value)}
                             />
-                            <div className='w-24 py-1 bg-black text-white text-center'>
+                            <div onClick={() => handleDiscount()} className='w-24 py-1 bg-black text-white text-center cursor-pointer'>
                                 Apply
                             </div>
                         </div>
 
-                        <div className='relative group'>
-                            <p className='md:text-end pt-2 pb-3 text-sm text-blue-500 hover:text-blue-600 cursor-pointer'>
+                        <div className='relative'>
+                            <p onClick={() => setIsShow(!isShow)} className='md:text-end pt-2 pb-3 text-sm text-blue-500 hover:text-blue-600 cursor-pointer'>
                                 Select coupon code
                             </p>
 
-                            <div className='hidden group-hover:flex flex-col gap-5 absolute right-0 z-50 p-5 rounded-md bg-gray-100  '>
+                            <div className={`${isShow ? 'flex flex-col gap-5' : 'hidden'} absolute right-0 z-50 p-5 rounded-md bg-gray-100`} >
                                 {coupon && coupon.map((c, index) => (
                                     <div key={index} className='flex items-center gap-2 text-nowrap'>
                                         <CiDiscount1 className='text-2xl' />
                                         <p>Code: {c.code} - </p>
-                                        <p>{c.discount}$ discount - </p>
-                                        <Button onClick={() => setChoseCoupon(`${c.code}`)}>Apply</Button>
+                                        <p>{c.discount}$ discount</p>
+                                        <Button className='ml-5' onClick={() => setChoseCoupon(`${c.code}`)}>Apply</Button>
                                     </div>
                                 ))
                                 }
@@ -208,12 +228,16 @@ const Payment = () => {
                         </div>
 
                         <div className='mt-5 flex justify-between'>
-                            <p>Tạm tính:</p>
-                            <p>{totalPrice()} usd</p>
+                            <p>Total:</p>
+                            <p>{totalPrice()} US$</p>
                         </div>
                         <div className='mt-3 flex justify-between'>
                             <p>Delivery:</p>
-                            <p>{optionShip === 'Standard Delivery' ? '+ 2,00' : '+ 3,50'} usd</p>
+                            <p>{optionShip === 'Standard Delivery' ? '+ 2,00' : '+ 3,50'} US$</p>
+                        </div>
+                        <div className='mt-3 flex justify-between'>
+                            <p>Discount:</p>
+                            <p>- {discount ? discount : 0} US$</p>
                         </div>
                         <div className='mt-3 flex justify-between'>
                             <p>Accumulated points:</p>
@@ -222,7 +246,7 @@ const Payment = () => {
                         <div className='mt-5 flex justify-between'>
                             <p>Subtotal:</p>
                             <p className='text-red-500 font-semibold'>
-                                {subtotal} usd
+                                {subtotal} US$
                             </p>
                         </div>
                         <p className='mt-1 text-sm'>(This price includes VAT, packaging, shipping and other incidental charges.)</p>

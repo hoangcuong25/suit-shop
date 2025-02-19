@@ -3,6 +3,7 @@ import userModel from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import productModel from '../models/productModel.js'
 import orderModel from '../models/orderModel.js'
+import couponModel from '../models/couponModel.js'
 
 // api get profile
 export const getProfile = async (req, res) => {
@@ -343,7 +344,7 @@ export const wishlist = async (req, res) => {
 // api order
 export const order = async (req, res) => {
     try {
-        const { userId, productInfor, subtotal, optionShip, optionPayment, isPay } = req.body
+        const { userId, productInfor, subtotal, optionShip, optionPayment, isPay, codeUse } = req.body
 
         const cart = []
         const productList = []
@@ -376,6 +377,13 @@ export const order = async (req, res) => {
             const user = await userModel.findById(userId)
             const newPoints = user.points + 1000
             await userModel.findByIdAndUpdate(userId, { points: newPoints })
+        }
+
+        if (codeUse) {
+            const coupon = await couponModel.findOne({ userId: userId, code: codeUse })
+            const couponId = coupon._id
+            const newIsActive = false
+            await couponModel.findByIdAndUpdate(couponId, { isActive: newIsActive })
         }
 
         await userModel.findByIdAndUpdate(userId, { cart: cart })

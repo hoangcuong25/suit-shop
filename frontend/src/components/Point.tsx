@@ -88,16 +88,16 @@ const Point = ({ setShow, show }: Props) => {
                 </div>
             </div>
 
-            <div className='mt-3 w-full h-fit bg-gray-100 shadow-md border-gray-300 rounded-md flex flex-col sm:flex-row items-center justify-evenly gap-3 py-5'>
+            <div className='mt-3 w-full h-fit bg-gray-100 shadow-md border-gray-300 rounded-md flex flex-col items-center justify-evenly gap-3 py-5'>
+                <p className='mb-3 text-lg font-semibold'>Your Coupon</p>
                 {
                     coupon
                         ? <div className='flex flex-col gap-2'>
                             {coupon.slice().reverse().map((c, i) => (
-                                <div key={i} className='flex items-center gap-2'>
+                                <div key={i} className='flex items-center gap-2 text-xs md:text-base'>
                                     <CiDiscount1 className='text-2xl' />
                                     <p>Code: {c.code} - </p>
-                                    <p>{c.discount}$ discount - </p>
-                                    <p>{c.isActive ? 'Available' : 'Unavailable'}</p>
+                                    <p>{c.discount}$ discount</p>
                                 </div>
                             ))}
                         </div>

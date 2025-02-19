@@ -134,7 +134,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                         <p className='mt-1.5'>size: {i.amount.size} - length: {i.amount.length}</p>
                                     </div>
                                     <div className='flex justify-between items-center'>
-                                        <p className=''>{(i.product.newPrice * i.amount.quantity)},00 usd</p>
+                                        <p className=''>{(i.product.newPrice * i.amount.quantity)},00 US$</p>
 
                                         {loadingDelete ?
                                             <AiOutlineReload className='animate-spin text-green-500 text-xl text-center' />
@@ -146,7 +146,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                     </div>
                                 </div>
                             </div>
-                            <p className='lg:block hidden text-center'>{(i.product.newPrice)},00 usd</p>
+                            <p className='lg:block hidden text-center'>{(i.product.newPrice)},00 US$</p>
                             <div className=''>
                                 <div className='lg:flex hidden justify-center items-center gap-3.5'>
                                     <p
@@ -170,7 +170,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                                 </div>
                                 <p className='mt-3.5 lg:block hidden'>size: {i.amount.size} - length: {i.amount.length}</p>
                             </div>
-                            <p className='lg:block hidden'>{(i.product.newPrice * i.amount.quantity)},00 usd</p>
+                            <p className='lg:block hidden'>{(i.product.newPrice * i.amount.quantity)},00 US$</p>
 
                             {loadingDelete ?
                                 <AiOutlineReload className='animate-spin text-green-500 text-xl text-center lg:block hidden' />
@@ -183,7 +183,7 @@ const Cart: React.FC<Props> = ({ show, setShow, empty }) => {
                     ))}
 
                     <div className='mt-3.5 flex flex-col items-center gap-5 place-self-start lg:place-self-end'>
-                        <p className='text-lg font-semibold'>Subtotal: {totalPrice()},00 usd</p>
+                        <p className='text-lg font-semibold'>Subtotal: {totalPrice()},00 US$</p>
                         <Button
                             onClick={() => router.push('/pay-ment')}
                             className='w-52 py-6 text-lg font-semibold'
