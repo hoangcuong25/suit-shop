@@ -43,3 +43,11 @@ export type OrderData = {
     optionShip: string
     optionPayment: string
 }
+
+export type CouponData = {
+    _id: string
+    code: string
+    discount: number
+    isActive: boolean
+    userId: string
+}

@@ -4,7 +4,7 @@
 'use client'
 
 import axiosClient from "@/lib/axiosClient";
-import { CartData, OrderData, ProductData, UserData } from "@/type/appType";
+import { CartData, CouponData, OrderData, ProductData, UserData } from "@/type/appType";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
@@ -25,6 +25,8 @@ interface AppContextType {
     order: OrderData[] | false
     getOrder: () => Promise<void>
     logout: () => Promise<void>
+    coupon: CouponData[] | false
+    getCoupon: () => Promise<void>
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -41,7 +43,9 @@ export const AppContext = createContext<AppContextType>({
     totalPrice: () => 0,
     order: false,
     getOrder: async () => { },
-    logout: async () => { }
+    logout: async () => { },
+    coupon: false,
+    getCoupon: async () => { }
 })
 
 interface AppContextProviderProps {
@@ -60,6 +64,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     const [cart, setCart] = useState<CartData[] | false>(false)
     const [wishlist, setWishlist] = useState<ProductData[] | false>(false)
     const [order, setOrder] = useState<OrderData[] | false>(false)
+    const [coupon, setCounpon] = useState<CouponData[] | false>(false)
 
     const loadUserProfileData = async (): Promise<void> => {
         try {
@@ -113,7 +118,6 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
             if (data.success) {
                 setOrder(data.orderData)
             }
-
         }
         catch (error: any) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -136,6 +140,19 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         }
     }
 
+    const getCoupon = async (): Promise<void> => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/coupon/get-coupon')
+
+            if (data.success) {
+                setCounpon(data.coupons)
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     const value = {
         token, setToken,
         userData,
@@ -148,7 +165,9 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
         totalPrice,
         order,
         getOrder,
-        logout
+        logout,
+        coupon,
+        getCoupon
     }
 
     useEffect(() => {
@@ -161,6 +180,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     useEffect(() => {
         if (token) {
             loadUserProfileData()
+            getCoupon()
             getOrder()
         } else {
             setUserData(false)

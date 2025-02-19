@@ -7,6 +7,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { AppContext } from '@/context/AppContext';
 import { CiDiscount1 } from "react-icons/ci";
 import { Button } from './ui/button';
+import { toast } from 'react-toastify';
+import axiosClient from '@/lib/axiosClient';
 
 type Props = {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,9 +17,22 @@ type Props = {
 
 const Point = ({ setShow, show }: Props) => {
 
-    const { userData } = useContext(AppContext)
+    const { userData, loadUserProfileData, coupon, getCoupon } = useContext(AppContext)
 
-    // const [coupon, setCoupon] = useState<string>('')
+    const buyCounpon = async (coupon: string): Promise<void> => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/coupon/buy-coupon', { coupon })
+
+            if (data.success) {
+                toast.success('Buy successfully')
+                loadUserProfileData()
+                getCoupon()
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
 
     return (
         <div className='flex flex-col gap-3 w-full bg-gray-100 px-3 py-3 shadow-md'>
@@ -61,7 +76,7 @@ const Point = ({ setShow, show }: Props) => {
                         <p className='font-bold text-xs lg:text-[14px]'>$2 discount</p>
                         <p className='font-bold text-xs lg:text-[14px]'>5000 Points</p>
                     </div>
-                    <Button>Buy Now</Button>
+                    <Button onClick={() => buyCounpon('2$')}>Buy Now</Button>
                 </div>
                 <div className='flex items-center gap-5 text-gray-700 cursor-pointer'>
                     <CiDiscount1 className='text-2xl md:text-3xl' />
@@ -69,8 +84,25 @@ const Point = ({ setShow, show }: Props) => {
                         <p className='font-bold text-xs lg:text-[14px]'>$5 discount</p>
                         <p className='font-bold text-xs lg:text-[14px]'>5000 Points</p>
                     </div>
-                    <Button>Buy Now</Button>
+                    <Button onClick={() => buyCounpon('5$')}>Buy Now</Button>
                 </div>
+            </div>
+
+            <div className='mt-3 w-full h-fit bg-gray-100 shadow-md border-gray-300 rounded-md flex flex-col sm:flex-row items-center justify-evenly gap-3 py-5'>
+                {
+                    coupon
+                        ? <div className='flex flex-col gap-2'>
+                            {coupon.slice().reverse().map((c, i) => (
+                                <div key={i} className='flex items-center gap-2'>
+                                    <CiDiscount1 className='text-2xl' />
+                                    <p>Code: {c.code} - </p>
+                                    <p>{c.discount}$ discount - </p>
+                                    <p>{c.isActive ? 'Available' : 'Unavailable'}</p>
+                                </div>
+                            ))}
+                        </div>
+                        : <p className='font-semibold text-lg'>You dont have any coupon</p>
+                }
             </div>
         </div>
     )

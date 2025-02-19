@@ -3,10 +3,10 @@ import userModel from "../models/userModel.js";
 
 export const getCoupon = async (req, res) => {
     try {
-        const { userId } = req.bodyv
+        const { userId } = req.body
 
-        const coupon = await couponModel.findOne({ userId: userId, isActive: true });
-        res.json(coupon || null);
+        const coupons = await couponModel.find({ userId: userId, isActive: true });
+        res.json({ success: true, coupons });
     } catch (error) {
         console.log("Error in getCoupon controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -28,7 +28,7 @@ export const buyCoupon = async (req, res) => {
         }
 
         if (coupon === '2$' && user.points >= 5000) {
-            user.points - 5000
+            const newPoints = user.points - 5000
 
             const couponData = {
                 code: code,
@@ -38,12 +38,13 @@ export const buyCoupon = async (req, res) => {
 
             const newCoupon = new couponModel(couponData)
             await newCoupon.save()
+            await userModel.findByIdAndUpdate(userId, { points: newPoints })
 
             return res.json({ success: true })
         }
 
-        if (coupon === '2$' && user.points >= 5000) {
-            user.points - 10000
+        if (coupon === '5$' && user.points >= 5000) {
+            const newPoints = user.points - 10000
 
             const couponData = {
                 code: code,
@@ -53,6 +54,7 @@ export const buyCoupon = async (req, res) => {
 
             const newCoupon = new couponModel(couponData)
             await newCoupon.save()
+            await userModel.findByIdAndUpdate(userId, { points: newPoints })
 
             return res.json({ success: true })
         }
