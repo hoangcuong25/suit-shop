@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import Image from 'next/image'
 import { FaStar } from "react-icons/fa";
 import { FaRuler } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -38,6 +37,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { AiOutlineReload } from 'react-icons/ai';
 import axiosClient from '@/lib/axiosClient';
+import ProductImages from '@/components/ProductImages';
 
 const Page = () => {
 
@@ -126,6 +126,7 @@ const Page = () => {
 
             if (data.success) {
                 toast.success('Rating this product successfully')
+                getRate()
             }
         }
         catch (error: any) {
@@ -153,11 +154,18 @@ const Page = () => {
 
     const ratingCounts = rate.reduce(
         (acc, { rate }) => {
-            acc[rate as keyof typeof acc] = (acc[rate as keyof typeof acc] || 0) + 1;
-            return acc;
+            acc[rate as keyof typeof acc] = (acc[rate as keyof typeof acc] || 0) + 1
+            return acc
         },
         { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
     )
+
+    let sumRatings = 0
+    rate.forEach(({ rate }) => {
+        sumRatings += rate
+    })
+    const totalRatings = rate.length
+    const averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(1) : "0"
 
     if (loading) {
         return <p className="text-center mt-20">Loading...</p>
@@ -170,12 +178,7 @@ const Page = () => {
     return (
         <div className='mt-10 px-3.5 md:px-7 xl:px-16 flex flex-col'>
             <div className='flex flex-col md:items-start items-center gap-5 md:flex-row 2xl:justify-evenly justify-between'>
-                {productInfo &&
-                    <div className='flex flex-col lg:flex-row gap-2'>
-                        <Image src={productInfo?.image1 || ''} width={380} height={300} quality={100} alt='product' className='w-72 xl:w-96 h-fit' />
-                        <Image src={productInfo?.image2 || ''} width={380} height={300} quality={100} alt='product' className='w-72 xl:w-96 h-fit' />
-                    </div>
-                }
+                {productInfo && <ProductImages productInfo={productInfo} />}
                 <div className='flex flex-col gap-3'>
                     <p className='text-2xl font-semibold'>{productInfo?.name}</p>
                     <div className='flex items-center text-sm text-gray-900'>
@@ -358,7 +361,7 @@ const Page = () => {
                 <div className='bg-gray-100 rounded-md shadow-md flex gap-1.5 md:gap-16 md:px-7 px-1.5 md:py-3.5 py-1.5 w-fit items-center'>
                     <div className='flex flex-col items-center gap-2'>
                         <div className='flex items-center gap-3'>
-                            <p className='md:text-2xl font-bold text-yellow-500 '>4.8</p>
+                            <p className='md:text-2xl font-bold text-yellow-500 '>{averageRating}</p>
                             <FaStar className='md:text-2xl text-orange-500' />
                         </div>
                         <p className='md:text-lg text-xs font-semibold'>Average rating</p>
