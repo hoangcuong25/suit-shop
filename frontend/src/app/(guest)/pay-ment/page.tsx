@@ -203,6 +203,7 @@ const Payment = () => {
                                 placeholder='Enter promo code'
                                 className='w-52 py-1 border border-gray-300 hover:border-gray-400 px-1.5 focus:outline-none'
                                 value={choseCoupon ? choseCoupon : ''}
+                                onChange={(e) => setChoseCoupon(e.target.value)}
                             />
                             <div onClick={() => handleDiscount()} className='w-24 py-1 bg-black text-white text-center cursor-pointer'>
                                 Apply
@@ -214,7 +215,7 @@ const Payment = () => {
                                 Select coupon code
                             </p>
 
-                            <div className={`${isShow ? 'flex flex-col gap-5' : 'hidden'} absolute right-0 z-50 p-5 rounded-md bg-gray-100`} >
+                            <div className={`${isShow ? 'flex flex-col gap-5' : 'hidden'} absolute right-0 z-50 p-5 rounded-md bg-gray-100 border-gray-200`} >
                                 {coupon && coupon.map((c, index) => (
                                     <div key={index} className='flex items-center gap-2 text-nowrap'>
                                         <CiDiscount1 className='text-2xl' />

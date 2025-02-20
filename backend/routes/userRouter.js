@@ -1,6 +1,6 @@
 import express from 'express'
 import authUser from '../middlewares/authUser.js'
-import { addToCard, comment, decreaseQuantity, fetchProduct, getInterestingProducts, getOrder, getProductById, increaseQuantity, order, getProfile, removeFromCart, search, updatePassword, updatePhone, updateProfile, wishlist } from '../controllers/userController.js'
+import { addToCard, comment, decreaseQuantity, fetchProduct, getInterestingProducts, getOrder, getProductById, increaseQuantity, order, getProfile, removeFromCart, search, updatePassword, updatePhone, updateProfile, wishlist, rateProduct } from '../controllers/userController.js'
 import upload from '../middlewares/multer.js'
 
 const userRouter = express.Router()
@@ -21,5 +21,6 @@ userRouter.get('/get-order', authUser, getOrder)
 userRouter.post('/comment', authUser, comment)
 userRouter.get('/search', search)
 userRouter.get('/get-interesting-products', getInterestingProducts)
+userRouter.post('/rate-product', authUser, rateProduct)
 
 export default userRouter

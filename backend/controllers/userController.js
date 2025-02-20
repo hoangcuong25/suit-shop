@@ -243,7 +243,7 @@ export const removeFromCart = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -271,7 +271,7 @@ export const increaseQuantity = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -299,7 +299,7 @@ export const decreaseQuantity = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -337,7 +337,7 @@ export const wishlist = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -392,7 +392,7 @@ export const order = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -408,7 +408,7 @@ export const getOrder = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -440,7 +440,7 @@ export const comment = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -465,7 +465,7 @@ export const search = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -479,7 +479,56 @@ export const getInterestingProducts = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
+
+// api rating product
+export const rateProduct = async (req, res) => {
+    try {
+        const { userId, productId, rate } = req.body;
+
+        // Validate input
+        if (!userId || !productId || rate < 1 || rate > 5) {
+            return res.status(400).json({ success: false, message: "Invalid input" })
+        }
+
+        // Find the product
+        const product = await productModel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" })
+        }
+
+        // Check if the user has purchased the product
+        const orders = await orderModel.find({ userId: userId, isPay: true }) // Only fetch paid orders
+
+        const isBuy = orders.some((order) =>
+            order.productList.some((product) => product.productList._id.toString() === productId)
+        )
+
+        if (!isBuy) {
+            return res.status(403).json({ success: false, message: "You can only rate products you have purchased and paid for" })
+        }
+
+        // Check if user already rated the product
+        const alreadyRated = product.rate.some((i) => i.userId.toString() === userId)
+        if (alreadyRated) {
+            return res.status(400).json({ success: false, message: "You have already rated this product" })
+        }
+
+        // Create rate data
+        const rateData = { userId, rate };
+
+        // Update product's rate array
+        await productModel.findByIdAndUpdate(productId, { $push: { rate: rateData } })
+
+        res.json({ success: true, message: "Product rated successfully" })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Internal server error" })
+    }
+}
+
+
+
 

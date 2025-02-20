@@ -25,7 +25,8 @@ export type ProductData = {
     image1: string;
     image2: string;
     comments: any[];
-    interesting: boolean
+    interesting: boolean;
+    rate: any[]
 }
 
 export type CartData = {

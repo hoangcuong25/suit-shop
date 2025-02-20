@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/accordion"
 import { toast } from 'react-toastify';
 import { ProductData } from '@/type/appType';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { AppContext } from '@/context/AppContext';
 import { useContext, useEffect, useState } from 'react';
@@ -25,12 +25,25 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { AiOutlineReload } from 'react-icons/ai';
 import axiosClient from '@/lib/axiosClient';
 
 const Page = () => {
 
     const { loadUserProfileData } = useContext(AppContext)
+
+    const router = useRouter()
 
     const [loadingComment, setLoadingComment] = useState<boolean>(false)
 
@@ -45,6 +58,8 @@ const Page = () => {
 
     const [size, setSize] = useState<string>('')
     const [length, setLength] = useState<string>('')
+
+    const ratings = [1, 2, 3, 4, 5]
 
     const getProductById = async (): Promise<void> => {
         try {
@@ -103,6 +118,19 @@ const Page = () => {
         setLoadingComment(false)
     }
 
+    const ratingProduct = async (rate: number) => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/rate-product', { productId, rate })
+
+            if (data.success) {
+                toast.success('Rating this product successfully')
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     useEffect(() => {
         getProductById()
     }, [productId])
@@ -134,15 +162,50 @@ const Page = () => {
                         <FaStar />
                         <p className='mx-3 underline underline-offset-4'>123 Reviews</p>
                     </div>
+
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <p className='text-blue-500 hover:underline text-sm cursor-pointer'>Rate this product</p>
+                        </DialogTrigger>
+                        <DialogContent className='sm:max-w-[600px]'>
+                            <DialogHeader>
+                                <DialogTitle>Rating</DialogTitle>
+                                <div className='flex sm:flex-row flex-col justify-between sm:gap-0 gap-3'>
+                                    {ratings.map((rating) => (
+                                        <div key={rating} className='flex flex-col items-center gap-1 sm:gap-3'>
+                                            <p>{rating} {rating === 1 ? 'star' : 'stars'}</p>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger>
+                                                    <Button>Choose</Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. Your rating of this product cannot change.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => ratingProduct(rating)}>Continue</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                    ))}
+                                </div>
+                            </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
+
                     <div className='flex gap-2'>
                         <p>{productInfo?.newPrice},00 US$</p>
                         <p className='text-gray-700 line-through'>{productInfo?.oldPrice},00 US$</p>
                     </div>
 
-
                     <hr className='border-gray-300 my-2' />
 
-                    <div className='text-sm flex items-center gap-5 cursor-pointer group'>
+                    <div onClick={() => router.push('/fit-guide')} className='text-sm flex items-center gap-5 cursor-pointer group'>
                         <FaRuler className='text-3xl' />
                         <div>
                             <p className='font-semibold mb-3'>Complete the Fit Finder</p>
@@ -159,7 +222,7 @@ const Page = () => {
                     <div className='flex flex-col gap-2'>
                         <div className='flex justify-between text-sm'>
                             <p>Size</p>
-                            <p className='underline underline-offset-4 cursor-pointer'>View Size Charts</p>
+                            <p onClick={() => router.push('/fit-guide')} className='underline underline-offset-4 cursor-pointer'>View Size Charts</p>
                         </div>
                         <div className='flex gap-2'>
                             <div
