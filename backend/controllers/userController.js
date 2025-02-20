@@ -529,6 +529,24 @@ export const rateProduct = async (req, res) => {
     }
 }
 
+// api get rate 
+export const getRate = async (req, res) => {
+    try {
+        const { productId } = req.body
+
+        const product = await productModel.findById(productId)
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" })
+        }
+
+        res.json({ success: true, rate: product.rate })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Internal server error" })
+    }
+}
+
 
 
 

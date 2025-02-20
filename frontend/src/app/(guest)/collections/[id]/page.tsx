@@ -59,6 +59,8 @@ const Page = () => {
     const [size, setSize] = useState<string>('')
     const [length, setLength] = useState<string>('')
 
+    const [rate, setRate] = useState<{ rate: number }[]>([])
+
     const ratings = [1, 2, 3, 4, 5]
 
     const getProductById = async (): Promise<void> => {
@@ -131,9 +133,31 @@ const Page = () => {
         }
     }
 
+    const getRate = async () => {
+        try {
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/get-rate', { productId })
+
+            if (data.success) {
+                setRate(data.rate)
+            }
+        }
+        catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     useEffect(() => {
         getProductById()
+        getRate()
     }, [productId])
+
+    const ratingCounts = rate.reduce(
+        (acc, { rate }) => {
+            acc[rate as keyof typeof acc] = (acc[rate as keyof typeof acc] || 0) + 1;
+            return acc;
+        },
+        { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    )
 
     if (loading) {
         return <p className="text-center mt-20">Loading...</p>
@@ -160,7 +184,7 @@ const Page = () => {
                         <FaStar />
                         <FaStar />
                         <FaStar />
-                        <p className='mx-3 underline underline-offset-4'>123 Reviews</p>
+                        <p className='mx-3 underline underline-offset-4'>{rate ? rate.length : 0} Reviews</p>
                     </div>
 
                     <Dialog>
@@ -340,11 +364,11 @@ const Page = () => {
                         <p className='md:text-lg text-xs font-semibold'>Average rating</p>
                     </div>
                     <div className='flex flex-col md:text-base text-xs md:px-16 px-1.5 border-x-2 border-gray-300'>
-                        <p>8 rating 5 stars</p>
-                        <p>5 rating 4 stars</p>
-                        <p>0 rating 3 stars</p>
-                        <p>0 rating 2 stars</p>
-                        <p>0 rating 1 stars</p>
+                        <p>{ratingCounts[5]} rating 5 stars</p>
+                        <p>{ratingCounts[4]} rating 4 stars</p>
+                        <p>{ratingCounts[3]} rating 3 stars</p>
+                        <p>{ratingCounts[2]} rating 2 stars</p>
+                        <p>{ratingCounts[1]} rating 1 stars</p>
                     </div>
 
                     <Dialog>
@@ -390,7 +414,7 @@ const Page = () => {
                                 }
                             </div>
                             : <div>
-                                There are no reviews for this product yet.
+                                There are no comment for this product yet.
                             </div>
                     }
                 </div>
