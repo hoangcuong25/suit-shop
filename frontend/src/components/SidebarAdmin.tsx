@@ -5,6 +5,7 @@ import { FaUsers } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { FaVest } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -57,6 +58,14 @@ const SidebarAdmin = () => {
                         ${isActive('orders') ? 'border-r-4 border-[#0e141a]' : ''}`}>
                     <p className='hidden md:block'>Orders</p>
                     <FaBox className='text-xl' />
+                </Link>
+
+                <Link
+                    href={'/admin/messages'}
+                    className={`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer 
+                        ${isActive('messages') ? 'border-r-4 border-[#0e141a]' : ''}`}>
+                    <p className='hidden md:block'>Messages</p>
+                    <MdMessage className='text-xl' />
                 </Link>
             </div>
         </div>

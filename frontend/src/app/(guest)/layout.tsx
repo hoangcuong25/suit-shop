@@ -1,3 +1,4 @@
+import Chat from "@/components/Chat";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
@@ -15,6 +16,7 @@ export default function RootLayout({
             </div>
             {children}
             <Footer />
+            <Chat />
         </>
     )
 }
