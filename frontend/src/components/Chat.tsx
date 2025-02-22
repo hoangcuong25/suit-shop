@@ -7,7 +7,10 @@ import { CiCircleRemove } from "react-icons/ci";
 import { BiSolidSend } from "react-icons/bi";
 import { AppContext } from "@/context/AppContext";
 
-const socket: Socket = io(process.env.NEXT_PUBLIC_BACKEND_URL)
+const socket: Socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
+    transports: ["websocket"],
+    withCredentials: true
+})
 
 interface Message {
     userId: string,

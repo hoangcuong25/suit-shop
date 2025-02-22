@@ -27,7 +27,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }))
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "https://suit-shop-wine.vercel.app/",
+        origin: allowedOrigins,
         methods: ["GET", "POST"],
     },
 })
