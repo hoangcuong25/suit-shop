@@ -160,7 +160,7 @@ const Navbar = () => {
                     {token
                         ? userData &&
                         <div className='cursor-pointer relative group'>
-                            <div className='flex items-center gap-1.5 '>
+                            <div onClick={() => router.push('/my-profile')} className='flex items-center gap-1.5 '>
                                 <Image src={userData.image || ""} width={50} height={50} className='rounded-full size-8' alt='avata' />
                                 <p>{`${userData?.lastName} ${userData?.firstName}`}</p>
                             </div>

@@ -54,13 +54,13 @@ const Content = ({ router, pathName, wishlistProduct, isWishlist }: any) => {
 
     const searchParams = useSearchParams()
 
-    let limit = Number(searchParams.get('limit')) || 12
+    const [limit, setLimit] = useState<number>(12);
 
     useEffect(() => {
         if (window.innerWidth > 1536) {
-            limit = 15
+            setLimit(15);
         } else {
-            limit = 12
+            setLimit(12);
         }
     }, [])
 

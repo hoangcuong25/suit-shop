@@ -11,6 +11,7 @@ import image3 from '../../public/spotlight-collection-prom.jpg'
 import image4 from '../../public/spotlight-collection-womens.jpg'
 import fullImage from '../../public/tan-magazine.jpg'
 import Interested from './interestingProducts';
+import Link from 'next/link';
 
 const Hero = () => {
     return (
@@ -21,9 +22,9 @@ const Hero = () => {
                     <p>Yours to own, from your wedding day to everyday.</p>
                     <p>Starting under $200.</p>
                     <div className=' mt-5 flex flex-wrap justify-center gap-7 text-sm text-gray-700 text-nowrap'>
-                        <p className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP MEN</p>
-                        <p className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP WOMEN</p>
-                        <p className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP MAKE-TO-ORDER</p>
+                        <Link href={'/collections?type=men&page=1'} className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP MEN</Link>
+                        <Link href={'/collections?type=women&page=1'} className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP WOMEN</Link>
+                        <Link href={'/collections'} className='underline underline-offset-[15px] hover:underline-offset-[5px] transition-all cursor-pointer'>SHOP MAKE-TO-ORDER</Link>
                     </div>
                 </div>
                 <div className='w-full xl:w-1/2'>

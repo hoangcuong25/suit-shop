@@ -83,7 +83,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const wishlistProduct = async (productId: string): Promise<void> => {
         try {
-            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/wishlist', { productId }, { headers: { token } })
+            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/user/wishlist', { productId })
 
             if (data.success) {
                 toast.success(data.message)
