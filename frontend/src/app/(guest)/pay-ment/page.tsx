@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -188,6 +189,7 @@ const Payment = () => {
 
                         {
                             optionPayment === 'Payment by bank transfer' &&
+                            // eslint-disable-next-line jsx-a11y/alt-text
                             <img src={`https://img.vietqr.io/image/MB-0251125112003-print.png?amount=${subtotal * 25110}&addInfo=chuyen tien&accountName=HOANG VAN CUONG`} className="w-96" />
                         }
                     </div>

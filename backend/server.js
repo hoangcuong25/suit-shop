@@ -41,22 +41,25 @@ io.on("connection", (socket) => {
         socket.join(room);
         joinedRoom = room;
 
-        const messages = await messagesModel.find({ userId: room }); 
+        const messages = await messagesModel.find({ userId: room });
         socket.emit("loadMessages", messages);
     })
 
     socket.on("sendMessage", async ({ userId, userName, role, message }) => {
-        if (!joinedRoom) return
+        if (!joinedRoom) return;
 
         const newMessage = new messagesModel({ userId, userName, role, message });
         await newMessage.save();
 
         io.to(joinedRoom).emit("receiveMessage", { userId, userName, role, message });
+
+        // Send notification event
+        socket.broadcast.emit("newNotification", { userName, message });
     });
 
-    // socket.on("disconnect", () => {
-    //     console.log(`User disconnected: ${socket.id}`);
-    // });
+    socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+    });
 });
 
 

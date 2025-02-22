@@ -26,6 +26,8 @@ const Chat = () => {
     const [message, setMessage] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
 
+    const [unreadCount, setUnreadCount] = useState(0);
+
     // Send Message
     const sendMessage = () => {
         if (message.trim() === "") return;
@@ -67,6 +69,16 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
+        socket.on("newNotification", () => {
+            setUnreadCount((prev) => prev + 1);
+        });
+
+        return () => {
+            socket.off("newNotification");
+        };
+    }, []);
+
+    useEffect(() => {
         if (userData && userData?._id) {
             socket.emit("join_room", userData._id);
         }
@@ -75,10 +87,18 @@ const Chat = () => {
     return (
         <div>
             <div
-                className='fixed bottom-10 right-5 bg-gray-200 shadow-md hover:shadow-lg rounded-full p-1 text-3xl text-red-500 hover:text-red-900 cursor-pointer'
-                onClick={() => setIsShow(!isShow)}
+                className="fixed bottom-10 right-5 bg-gray-200 shadow-md hover:shadow-lg rounded-full p-1 text-3xl text-red-500 hover:text-red-900 cursor-pointer"
+                onClick={() => {
+                    setIsShow(!isShow);
+                    setUnreadCount(0);
+                }}
             >
                 {isShow ? <CiCircleRemove /> : <BiMessageDetail />}
+                {unreadCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2">
+                        {unreadCount}
+                    </span>
+                )}
             </div>
 
             <div
