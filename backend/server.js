@@ -18,7 +18,7 @@ connectDB()
 connectCloudinary()
 
 // middlewares
-const allowedOrigins = ["", "http://localhost:3000"]
+const allowedOrigins = ["https://suit-shop-wine.vercel.app", "http://localhost:3000"]
 
 app.use(express.json())
 app.use(cors({ origin: allowedOrigins, credentials: true }))
