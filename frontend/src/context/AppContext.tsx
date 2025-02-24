@@ -140,7 +140,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
     const getCoupon = async (): Promise<void> => {
         try {
-            const { data } = await axiosClient.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/coupon/get-coupon')
+            const { data } = await axiosClient.get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/coupon/get-coupon')
 
             if (data.success) {
                 setCounpon(data.coupons)

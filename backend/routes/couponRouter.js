@@ -4,7 +4,7 @@ import authUser from "../middlewares/authUser.js";
 
 const couponRouter = express.Router();
 
-couponRouter.post("/get-coupon", authUser, getCoupon);
+couponRouter.get("/get-coupon", authUser, getCoupon);   
 couponRouter.post("/validate-coupon", authUser, validateCoupon);
 couponRouter.post("/buy-coupon", authUser, buyCoupon);
 

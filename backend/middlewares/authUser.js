@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import userModel from '../models/userModel.js';
 
 // user authentication middleware
 const authUser = async (req, res, next) => {
@@ -7,7 +6,7 @@ const authUser = async (req, res, next) => {
         const accessToken = req.headers.authorization?.split(' ')[1]
 
         if (!accessToken) {
-            return res.status(401).json({ message: "Unauthorized - No access token provided" });
+            return res.status(401).json({ success: false, message: "You have to login first" });
         }
 
         try {
@@ -17,7 +16,7 @@ const authUser = async (req, res, next) => {
             next()
         } catch (error) {
             if (error.name === "TokenExpiredError") {
-                return res.status(401).json({ message: "Unauthorized - Access token expired" });
+                return res.status(401).json({ success: false, message: "Unauthorized - Access token expired" });
             }
             throw error;
         }
