@@ -48,6 +48,8 @@ export const updateProfile = async (req, res) => {
             await userModel.findByIdAndUpdate(userId, { image: imageUrl })
         }
 
+        await redis.del(`user:${userId}`);
+
         res.json({ success: true, messgae: 'profile updated' })
 
     } catch (error) {
@@ -76,8 +78,10 @@ export const updatePhone = async (req, res) => {
         }
 
         await userModel.findByIdAndUpdate(userId, { phone: phone })
-        res.status(200).json({ success: true })
 
+        await redis.del(`user:${userId}`);
+
+        res.status(200).json({ success: true })
     }
     catch (error) {
         console.error(error)
@@ -480,7 +484,17 @@ export const search = async (req, res) => {
 // api get interesting products
 export const getInterestingProducts = async (req, res) => {
     try {
+        const cacheKey = 'interestingProducts';
+
+        // Kiểm tra Redis cache
+        const cachedData = await redis.get(cacheKey);
+        if (cachedData) {
+            return res.json({ success: true, interestingProducts: JSON.parse(cachedData) });
+        }
+
         const interestingProducts = await productModel.find({ interesting: true });
+
+        await redis.setex(cacheKey, 60 * 60, JSON.stringify(interestingProducts));
 
         res.json({ success: true, interestingProducts });
 

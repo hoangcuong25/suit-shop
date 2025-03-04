@@ -2,6 +2,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import productModel from '../models/productModel.js'
 import userModel from '../models/userModel.js'
 import orderModel from '../models/orderModel.js'
+import { redis } from "../config/redis.js"
 
 // api login 
 export const login = async (req, res) => {
@@ -139,6 +140,8 @@ export const addToInterestingProducts = async (req, res) => {
 
         const newInteresting = !product.interesting
         await productModel.findByIdAndUpdate(productId, { interesting: newInteresting })
+
+        await redis.del('interestingProducts')
 
         if (product.interesting) {
             return res.json({ success: true, message: "Remove from interesting products successfully" })
