@@ -11,14 +11,7 @@ export const getProfile = async (req, res) => {
     try {
         const { userId } = req.body
 
-        const cachedUser = await redis.get(`user:${userId}`);
-        if (cachedUser) {
-            return res.json({ success: true, userData: JSON.parse(cachedUser) });
-        }
-
         const userData = await userModel.findById(userId).select('-password')
-
-        await redis.setex(`user:${userId}`, 600, JSON.stringify(userData))
 
         res.json({ success: true, userData })
 
@@ -48,8 +41,6 @@ export const updateProfile = async (req, res) => {
             await userModel.findByIdAndUpdate(userId, { image: imageUrl })
         }
 
-        await redis.del(`user:${userId}`);
-
         res.json({ success: true, messgae: 'profile updated' })
 
     } catch (error) {
@@ -78,8 +69,6 @@ export const updatePhone = async (req, res) => {
         }
 
         await userModel.findByIdAndUpdate(userId, { phone: phone })
-
-        await redis.del(`user:${userId}`);
 
         res.status(200).json({ success: true })
     }
@@ -222,8 +211,6 @@ export const addToCard = async (req, res) => {
             }
             const cartData = [...cart, addToCart]
 
-            await redis.del(`user:${userId}`);
-
             await userModel.findByIdAndUpdate(userId, { cart: cartData })
             res.json({ success: true })
         }
@@ -253,8 +240,6 @@ export const removeFromCart = async (req, res) => {
         cart.splice(indexProduct, 1)
         await userModel.findByIdAndUpdate(userId, { cart })
 
-        await redis.del(`user:${userId}`);
-
         res.status(200).json({ success: true })
     }
     catch (error) {
@@ -280,8 +265,6 @@ export const increaseQuantity = async (req, res) => {
         })
 
         cart[indexProduct].amount.quantity += 1
-
-        await redis.del(`user:${userId}`);
 
         await userModel.findByIdAndUpdate(userId, { cart })
         res.status(200).json({ success: true })
@@ -310,8 +293,6 @@ export const decreaseQuantity = async (req, res) => {
         })
 
         cart[indexProduct].amount.quantity -= 1
-
-        await redis.del(`user:${userId}`);
 
         await userModel.findByIdAndUpdate(userId, { cart })
         res.status(200).json({ success: true })
@@ -344,13 +325,11 @@ export const wishlist = async (req, res) => {
         if (isProduct) {
             const wishlist = user.wishlist
             wishlist.splice(indexProduct, 1)
-            await redis.del(`user:${userId}`);
             await userModel.findByIdAndUpdate(userId, { wishlist })
 
             res.json({ success: true, message: 'Remove from success list' })
         } else {
             const wishlistData = [...user.wishlist, productData]
-            await redis.del(`user:${userId}`);
             await userModel.findByIdAndUpdate(userId, { wishlist: wishlistData })
 
             res.json({ success: true, message: 'Add to list successfuly' })
@@ -408,7 +387,6 @@ export const order = async (req, res) => {
             await couponModel.findByIdAndUpdate(couponId, { isActive: newIsActive })
         }
 
-        await redis.del(`user:${userId}`);
         await userModel.findByIdAndUpdate(userId, { cart: cart })
 
         res.status(200).json({ success: true })
