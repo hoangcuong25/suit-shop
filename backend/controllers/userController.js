@@ -4,13 +4,21 @@ import bcrypt from 'bcrypt'
 import productModel from '../models/productModel.js'
 import orderModel from '../models/orderModel.js'
 import couponModel from '../models/couponModel.js'
+import { redis } from "../config/redis.js"
 
 // api get profile
 export const getProfile = async (req, res) => {
     try {
         const { userId } = req.body
 
+        const cachedUser = await redis.get(`user:${userId}`);
+        if (cachedUser) {
+            return res.json({ success: true, userData: JSON.parse(cachedUser) });
+        }
+
         const userData = await userModel.findById(userId).select('-password')
+
+        await redis.setex(`user:${userId}`, 600, JSON.stringify(userData))
 
         res.json({ success: true, userData })
 

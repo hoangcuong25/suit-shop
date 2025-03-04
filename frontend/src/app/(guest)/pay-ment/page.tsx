@@ -218,14 +218,19 @@ const Payment = () => {
                             </p>
 
                             <div className={`${isShow ? 'flex flex-col gap-5' : 'hidden'} absolute right-0 z-50 p-5 rounded-md bg-gray-100 border-gray-200`} >
-                                {coupon && coupon.map((c, index) => (
-                                    <div key={index} className='flex items-center gap-2 text-nowrap'>
-                                        <CiDiscount1 className='text-2xl' />
-                                        <p>Code: {c.code} - </p>
-                                        <p>{c.discount}$ discount</p>
-                                        <Button className='ml-5' onClick={() => setChoseCoupon(`${c.code}`)}>Apply</Button>
-                                    </div>
-                                ))
+                                {
+                                    coupon && coupon.length !== 0
+                                        ? coupon.map((c, index) => (
+                                            <div key={index} className='flex items-center gap-2 text-nowrap'>
+                                                <CiDiscount1 className='text-2xl' />
+                                                <p>Code: {c.code} - </p>
+                                                <p>{c.discount}$ discount</p>
+                                                <Button className='ml-5' onClick={() => setChoseCoupon(`${c.code}`)}>Apply</Button>
+                                            </div>
+                                        ))
+                                        : <div>
+                                            <p>You do not have any coupon</p>
+                                        </div>
                                 }
                             </div>
                         </div>
