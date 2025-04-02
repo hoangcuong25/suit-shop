@@ -112,6 +112,8 @@ const Login = () => {
                     <p>to receive amazing offers and services</p>
                     <Link href='/sign-up' className='text-blue-500 hover:text-blue-700 underline underline-offset-2'>Sign up</Link>
                 </div>
+
+                <Link href='/admin' className='text-blue-500 hover:text-blue-700 underline underline-offset-2'>Login with admin</Link>
             </div>
         </div>
     )
