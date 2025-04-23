@@ -86,10 +86,10 @@ export const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (isMatch) {
-            const access_token = jwt.sign({ id: newUser._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
-            const refresh_token = jwt.sign({ id: newUser._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
+            const access_token = jwt.sign({ id: user._id }, process.env.ACCESS_JWT_SECERT, { expiresIn: '30m' })
+            const refresh_token = jwt.sign({ id: user._id }, process.env.REFRESH_JWT_SECERT, { expiresIn: '7d' })
 
-            await storeRefreshToken(newUser._id, refresh_token);
+            await storeRefreshToken(user._id, refresh_token);
 
             return res.json({ success: true, access_token, refresh_token });
 
